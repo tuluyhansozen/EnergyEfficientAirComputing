@@ -151,6 +151,7 @@ class UAV(Server):
         UAV.id += 1
         self.location = location
         self.batteryLevel = 100
+        self.energy_mode = self.determine_energy_mode()
         self.horizontalSpeed = 0
         self.verticalSpeed = 0
         self.altitude = 200
@@ -211,6 +212,27 @@ class UAV(Server):
     #TODO
     def updateTrajectory(self):
         pass
+
+    def determine_energy_mode(self):
+        if self.batteryLevel > 70:
+            return "High"
+        elif self.batteryLevel > 30:
+            return "Mid"
+        elif self.batteryLevel > 10:
+            return "Low"
+        else:
+            return "Critical"
+
+    def consume_energy(self, amount):
+        self.batteryLevel = max(0, self.batteryLevel - amount)
+        self.energy_mode = self.determine_energy_mode()
+
+    def get_energy_status(self):
+        return {
+            "id": self.id,
+            "battery": self.batteryLevel,
+            "mode": self.energy_mode
+        }
 
 
 class CloudServer(Server):
