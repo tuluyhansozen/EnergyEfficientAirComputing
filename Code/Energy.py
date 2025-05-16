@@ -103,3 +103,16 @@ def should_return_to_charge(uav):
 
 def energy_based_behavior_summary(uav):
     return f"[UAV {uav.id}] Energy: {uav.batteryLevel:.1f}%, Mode: {uav.energy_mode}"
+
+def find_nearest_station(uav, stations):
+    """
+    Selects the nearest charging station to the UAV.
+    """
+    closest_station = None
+    min_distance = float('inf') # Initialize to a large number
+    for station in stations:
+        distance = uav.location.getDistance(station.location)
+        if distance < min_distance:
+            closest_station = station
+            min_distance = distance
+    return closest_station
