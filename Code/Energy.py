@@ -82,3 +82,24 @@ class ChargingStation:
             "Occupied Slots": self.occupied_slots,
             "Capacity": self.capacity
         }
+    
+# UAV HELPERS
+
+def should_accept_task(uav, estimated_energy_cost):
+    """
+    Returns True if UAV can accept the task based on its energy level and mode.
+    """
+    if uav.energy_mode == "Critical":
+        return False
+    elif uav.energy_mode == "Low" and estimated_energy_cost > 10:
+        return False
+    return uav.batteryLevel >= estimated_energy_cost + 5  # keeps some buffer
+
+def should_return_to_charge(uav):
+    """
+    Determines if UAV should go to nearest charging station.
+    """
+    return uav.energy_mode == "Critical"
+
+def energy_based_behavior_summary(uav):
+    return f"[UAV {uav.id}] Energy: {uav.batteryLevel:.1f}%, Mode: {uav.energy_mode}"
