@@ -4,6 +4,7 @@ from typing import List, Optional
 from Location import Location
 from Application import Task, Application
 import math
+from Energy import EnergyModel
 
 class Server(object):
 
@@ -22,6 +23,8 @@ class Server(object):
         self.radius = radius
         self.innerTime = 0
         self.processedTasks = []  # for X seconds window
+        self.energyConsumed = 0
+        self.energyModel = EnergyModel()
 
 
 
@@ -83,9 +86,8 @@ class Server(object):
     def getNumberOfConnectedComponents(self):
         return len(self.connectedComponents)
 
-    #TODO:
     def getEnergyConsumption(self):
-        pass
+        return self.energyConsumed
 
 
     def getProcessingDelay(self, task: Task):
@@ -98,6 +100,11 @@ class Server(object):
         self.nextAvailableTime += task.processingTime
         self.innerTime += task.processingTime
         # self.earliestIdleTime += task.processingTime
+
+        # energy usage (computation only)
+        energy_used = self.energyModel.compute_computation_energy(task.processingTime)
+        self.energyConsumed += energy_used
+
         return task.processingTime
 
     def updateEarliestIdleTime(self, val):
@@ -160,6 +167,8 @@ class UAV(Server):
         self.isFlying = False
         self.notFlyingSince = 0
         self.flyingTo = None
+        self.energyConsumed = 0
+        self.energyModel = EnergyModel()
         UAV.uavs.append(self)
 
     def __eq__(self, other):
@@ -226,6 +235,7 @@ class UAV(Server):
     def consume_energy(self, amount):
         self.batteryLevel = max(0, self.batteryLevel - amount)
         self.energy_mode = self.determine_energy_mode()
+        self.energyConsumed += amount
 
     def get_energy_status(self):
         return {
@@ -237,6 +247,21 @@ class UAV(Server):
     def can_accept_task(self):
         # Check if the UAV has enough battery to accept the task
         return self.energy_mode != "Critical"
+
+    def consume_flight_energy(self, distance, velocity=2.5):
+        energy = self.energyModel.compute_flight_energy(distance, velocity)
+        self.consume_energy(energy)
+        logging.info("UAV %d consumed %.2fJ for flight (%.2fm)", self.id, energy, distance)
+
+    def consume_hover_energy(self, duration):
+        energy = self.energyModel.compute_hover_energy(duration)
+        self.consume_energy(energy)
+        logging.info("UAV %d consumed %.2fJ for hover (%.2fs)", self.id, energy, duration)
+
+    def consume_comm_energy(self, duration):
+        energy = self.energyModel.compute_communication_energy(duration)
+        self.consume_energy(energy)
+        logging.info("UAV %d consumed %.2fJ for communication (%.2fs)", self.id, energy, duration)
 
 class CloudServer(Server):
     def __init__(self, capacity: float, location: Location, radius: float, power: float):

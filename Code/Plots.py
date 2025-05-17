@@ -291,6 +291,27 @@ class Plots(object):
         plt.savefig("TaskRejections.pdf")
 
 
+    def getEnergyDistribution(self, filePath="EnergyConsumption.csv"):
+        """
+        Plots the percentage of energy consumed by Edge, UAV, and Cloud servers.
+        """
+        try:
+            df = pd.read_csv(filePath)
+        except FileNotFoundError:
+            print(f"[ERROR] {filePath} not found.")
+            return
+
+        energy_vals = df.iloc[0].to_dict()
+        labels = list(energy_vals.keys())
+        sizes = list(energy_vals.values())
+
+        plt.figure()
+        plt.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=140)
+        plt.title("Energy Consumption Distribution")
+        plt.axis('equal')
+        plt.savefig("EnergyDistribution.pdf")
+
+
 if __name__ == '__main__':
     # TODO: Take these from a configuration file based on a scenario
     numberOfUsers = [20, 40, 60, 80, 100]

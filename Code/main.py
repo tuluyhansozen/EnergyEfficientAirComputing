@@ -15,6 +15,7 @@ from User import User
 from Application import Application, Task, OffloadEntity, ApplicationType
 from Location import Location
 from Server import Server, EdgeServer, UAV, CloudServer
+from Energy import EnergyModel
 from Event import Event, EventType
 from Scenario import Scenario
 from DRL import ActorCriticAgent, ActorCriticNetwork, MemoryItem, State, Trainer
@@ -232,6 +233,8 @@ class Simulation(object):
                             else:
                                 newLoc: Location = clusterLocations[clusterNo]
 
+                            distance = Location.getEuclideanDistance2D(loc1=uav.location, loc2=newLoc)
+                            uav.consume_flight_energy(distance)
 
                             travelTime = uav.computeFlightDurationBasedOn(loc=newLoc)
                             newEvent: Event = Event(type=EventType.UAVStop, task=None,
@@ -485,6 +488,13 @@ class Simulation(object):
                         if event.task.isSuccess:
                             #self.reward += 100
                             self.successTaskCountForEpisode += 1
+                    
+                    comm_time = 0.1 #TODO: network delay should be considered
+                    if isinstance(event.task.processedServer, UAV):
+                        event.task.processedServer.consume_communication_energy(comm_time)
+                    elif isinstance(event.task.processedServer, EdgeServer):
+                        event.task.processedServer.consume_communication_energy(comm_time)
+                    #TODO: cloud server?
 
                 elif event.type == EventType.UAVStop:
                     uav = event.uav
@@ -495,6 +505,8 @@ class Simulation(object):
                     uav.trajectory.append(uav.location)
                     #uav.flyingTo = None
                     uav.isFlying = False
+                    hover_time = simulationTime - uav.notFlyingSince
+                    uav.consume_hover_energy(hover_time)
 
                 elif event.type == EventType.UAVMove:
                     uav = event.uav
@@ -657,8 +669,13 @@ class Simulation(object):
                              str(timeLimit))
                 break
 
-
-
+        energy_data = {
+            "Edge": sum(e.getEnergyConsumption() for e in EdgeServer.edgeServers),
+            "UAV": sum(u.getEnergyConsumption() for u in UAV.uavs),
+            "Cloud": cloudServer.getEnergyConsumption()
+        }
+        energy_df = pd.DataFrame([energy_data])
+        energy_df.to_csv("EnergyConsumption.csv", index=False)
 
 
         # pandas dataframes
