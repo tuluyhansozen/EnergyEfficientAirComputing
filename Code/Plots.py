@@ -254,6 +254,42 @@ class Plots(object):
         plt.grid(True)
         plt.savefig("UAV-Energy-Level.pdf")
 
+    def getTaskRejectionResults(self, logPath="aircompsim.log"):
+        """
+        Reads log file and plots number of task rejections due to critical UAV battery per UAV.
+        Log line pattern: UAV X rejected task due to critical battery (...)
+        """
+
+        rejection_pattern = r"UAV (\d+) rejected task due to critical battery"
+
+        uav_rejections = defaultdict(int)
+
+        try:
+            with open(logPath, "r") as f:
+                for line in f:
+                    match = re.search(rejection_pattern, line)
+                    if match:
+                        uav_id = int(match.group(1))
+                        uav_rejections[uav_id] += 1
+        except FileNotFoundError:
+            print(f"[ERROR] Log file {logPath} not found.")
+            return
+
+        if not uav_rejections:
+            print("[WARNING] No task rejections found in log.")
+            return
+
+        uav_ids = list(uav_rejections.keys())
+        rejection_counts = list(uav_rejections.values())
+
+        plt.figure()
+        plt.bar(uav_ids, rejection_counts, color="red")
+        plt.xlabel("UAV ID")
+        plt.ylabel("Task Rejection Count")
+        plt.title("Task Rejections Due to Critical Battery")
+        plt.grid(True)
+        plt.savefig("TaskRejections.pdf")
+
 
 if __name__ == '__main__':
     # TODO: Take these from a configuration file based on a scenario
@@ -288,6 +324,7 @@ if __name__ == '__main__':
         plots.getEdgeCloudUAVRatio(uavCount)
     
     plots.getUavBatteryLevels()
+    plots.getTaskRejectionResults()
 
 
 

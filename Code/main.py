@@ -90,7 +90,7 @@ class Simulation(object):
         timeLimit: float = 1000
         timeStepForUsers = 2
         stateInterval = timeStepForUsers + 1  # stateInterval is used for consecutive states for DRL
-
+        taskRejections = 0
 
         cloudLocation = Location(x=self.boundry.maxX, y=self.boundry.maxY, z=0)
         cloudServer = CloudServer(capacity=100000, location=cloudLocation, radius=self.boundry.maxX, power=100)
@@ -362,6 +362,11 @@ class Simulation(object):
                             logging.info("For uav %s is in coverage check", str(uav.id))
 
                             if not uav.isFlying and uav.isInCoverage(theUser.getLocation()): # and not uav.isFlying: # FOR EARTHQUAKE THIS WAS ACTIVE!!
+                                if not uav.can_accept_task():
+                                    taskRejections += 1
+                                    logging.warning("SimTime: %.2f ---> UAV %d rejected task due to critical battery (%.2f%%)",
+                                                    simulationTime, uav.id, uav.batteryLevel)
+                                    continue
                                 logging.info("SimTime: %s ---> UAV %s, at location %s, can be used for the user %s",
                                              str(simulationTime), str(uav.id), uav.location,
                                              str(theUser.id))

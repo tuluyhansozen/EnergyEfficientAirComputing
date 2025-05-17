@@ -234,6 +234,9 @@ class UAV(Server):
             "mode": self.energy_mode
         }
 
+    def can_accept_task(self):
+        # Check if the UAV has enough battery to accept the task
+        return self.energy_mode != "Critical"
 
 class CloudServer(Server):
     def __init__(self, capacity: float, location: Location, radius: float, power: float):
