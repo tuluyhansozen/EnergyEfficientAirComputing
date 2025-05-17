@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
+import re
+from collections import defaultdict
 
 
 '''
@@ -201,6 +203,56 @@ class Plots(object):
         plt.savefig("AvgServiceTime.pdf")
 
 
+    def getUavBatteryLevels(self, logPath = "aircompsim.log"):
+        """
+        Parses UAV battery level and mode logs from aircompsim.log and plots them over time.
+        Modes are color-coded: High (green), Mid (orange), Low (red), Critical (black)
+        """
+
+        pattern = r"UAV ID: (\d+) \| Time: ([\d\.]+) \| Battery: ([\d\.]+)% \| Mode: (\w+)"
+        uav_data = defaultdict(list)
+
+        try:
+            with open(logPath, "r") as f:
+                for line in f:
+                    match = re.search(pattern, line)
+                    if match:
+                        uav_id = int(match.group(1))
+                        time = float(match.group(2))
+                        battery = float(match.group(3))
+                        mode = match.group(4)
+                        uav_data[uav_id].append((time, battery, mode))
+        except FileNotFoundError:
+            print(f"[ERROR] Log file {logPath} not found.")
+            return
+
+        if not uav_data:
+            print("[WARNING] No UAV log entries found.")
+            return
+
+        mode_colors = {
+            "High": "green",
+            "Mid": "orange",
+            "Low": "red",
+            "Critical": "black"
+        }
+
+        plt.figure()
+
+        for uav_id, entries in uav_data.items():
+            for mode in ["High", "Mid", "Low", "Critical"]:
+                mode_times = [time for time, bat, m in entries if m == mode]
+                mode_levels = [bat for time, bat, m in entries if m == mode]
+                if mode_times:
+                    plt.plot(mode_times, mode_levels, label=f"UAV {uav_id} - {mode}", color=mode_colors[mode])
+
+        plt.xlabel("Time")
+        plt.ylabel("Battery Level (%)")
+        plt.title("UAV Battery Levels Over Time (Mode-colored)")
+        plt.ylim(0, 100)
+        plt.legend()
+        plt.grid(True)
+        plt.savefig("UAV-Energy-Level.pdf")
 
 
 if __name__ == '__main__':
@@ -234,6 +286,8 @@ if __name__ == '__main__':
     plots.getNumberOfTasks()
     for uavCount in numberOfUAVs:
         plots.getEdgeCloudUAVRatio(uavCount)
+    
+    plots.getUavBatteryLevels()
 
 
 
