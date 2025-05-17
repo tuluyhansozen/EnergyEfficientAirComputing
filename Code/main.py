@@ -142,6 +142,11 @@ class Simulation(object):
 
         while simulationTime < timeLimit:
 
+            for uav in UAV.uavs:
+                logging.info("UAV ID: %d | Time: %.2f | Battery: %.2f%% | Mode: %s",
+                             uav.id, simulationTime, uav.batteryLevel, uav.energy_mode)
+
+
             # This is for the event-based dynamic scenarios
             simScenario.updateScenario(simulationTime, heapq, self.eventQueue)
 
