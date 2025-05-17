@@ -225,6 +225,27 @@ class Simulation(object):
                         clusterNo = 0
                         for uav in UAV.uavs:
                             newLoc: Location = None
+                            if uav.energy_mode in ["Low", "Critical"]:
+                                logging.info("SimTime %s: UAV %s in %s mode → redirecting to charging location",
+                                            str(simulationTime), str(uav.id), uav.energy_mode)
+
+                                charging_target = min(EdgeServer.edgeServers,
+                                                    key=lambda e: Location.getEuclideanDistance2D(uav.location, e.location))
+                                newLoc = charging_target.location
+
+                                distance = Location.getEuclideanDistance2D(uav.location, newLoc)
+                                uav.consume_flight_energy(distance)
+
+                                travelTime = uav.computeFlightDurationBasedOn(loc=newLoc)
+                                newEvent = Event(type=EventType.UAVStop, task=None,
+                                                simTime=simulationTime + travelTime,
+                                                user=None, uav=uav, loc=newLoc)
+                                heapq.heappush(self.eventQueue, newEvent)
+
+                                uav.isFlying = True
+                                uav.flyingTo = newLoc
+                                continue
+
                             if self.uavFlyPolicy == "Random":
                                 if not uav.isFlying and simulationTime - uav.notFlyingSince > self.uavWaitingPolicy:
                                     newLoc: Location = Mobility.randomUAVMove(locations=self.locations)
@@ -507,6 +528,12 @@ class Simulation(object):
                     uav.isFlying = False
                     hover_time = simulationTime - uav.notFlyingSince
                     uav.consume_hover_energy(hover_time)
+                    
+                    if uav.energy_mode == "Critical" or uav.energy_mode == "Low":
+                        logging.info("UAV %s reached charging point and is recharged.", str(uav.id))
+                        uav.batteryLevel = 100
+                        uav.energy_mode = uav.determine_energy_mode()
+
 
                 elif event.type == EventType.UAVMove:
                     uav = event.uav
