@@ -3,6 +3,7 @@ from User import User
 from Application import Application, Task, OffloadEntity, ApplicationType
 from Location import Location
 from Server import Server, EdgeServer, UAV, CloudServer
+from Energy import EnergyModel, ChargingStation, should_accept_task, uav_go_to_charge
 import logging
 
 import matplotlib.pyplot as plt
@@ -33,7 +34,15 @@ class Scenario(object):
                  edgeRadius=100,
                  edgePower=100,
                  uavPower=100,
-                 altitude=200):
+                 altitude=200,
+                 energy_alpha=0.5,
+                 energy_beta=0.3,
+                 energy_gamma=0.2,
+                 energy_delta=0.1,
+                 initial_battery=100,
+                 charging_rate=1.0,
+                 staion_locations=None
+                 ):
         self.numberOfUsers = numberOfUsers
         self.testNumber = testNo
         self.scenarioName = scenario
@@ -58,6 +67,24 @@ class Scenario(object):
         self.isDRL = False  # for DRL-based studies
         self.isMovementStart = False
 
+        self.energy_model = EnergyModel(alpha=energy_alpha, beta=energy_beta, gamma=energy_gamma, delta=energy_delta)
+        self.initial_battery = initial_battery
+        self.charging_rate = charging_rate
+        self.stations = []
+        if staion_locations:
+            for location in staion_locations:
+                station = ChargingStation(location=location, charging_rate=self.charging_rate)
+                self.stations.append(station)
+    
+     
+    def update_all_uavs(self):
+        for uav in UAV.uavs:
+            if uav.energy_mode in ["Critical", "Low"]:
+                uav_go_to_charge(uav, self.stations)
+
+    def get_station_statuses(self):
+        return [s.get_status() for s in self.stations]
+    
 
     def basicEdgeScenario(self):
 
