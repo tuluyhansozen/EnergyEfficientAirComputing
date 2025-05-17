@@ -116,3 +116,16 @@ def find_nearest_station(uav, stations):
             closest_station = station
             min_distance = distance
     return closest_station
+
+def uav_go_to_charge(uav, stations):
+    """
+    Simulate UAV going to the charging station.
+    """
+    station = find_nearest_station(uav, stations)
+    if station and station.is_available():
+        if uav.location != station.location:
+            uav.location = station.location
+        if station.start_charging():
+            uav.batteryLevel = station.charge(uav.batteryLevel)
+            uav.energy_mode = uav.determine_energy_mode()
+            print(f"[UAV {uav.id}] Charging at {station.location}. Battery: {uav.batteryLevel:.1f}%")
