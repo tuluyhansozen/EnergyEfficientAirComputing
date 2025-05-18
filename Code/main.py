@@ -512,9 +512,9 @@ class Simulation(object):
                     
                     comm_time = 0.1 #TODO: network delay should be considered
                     if isinstance(event.task.processedServer, UAV):
-                        event.task.processedServer.consume_comm_energy(comm_time)
+                        event.task.processedServer.consume_communication_energy(comm_time)
                     elif isinstance(event.task.processedServer, EdgeServer):
-                        event.task.processedServer.consume_comm_energy(comm_time)
+                        event.task.processedServer.consume_communication_energy(comm_time)
                     #TODO: cloud server?
 
                 elif event.type == EventType.UAVStop:

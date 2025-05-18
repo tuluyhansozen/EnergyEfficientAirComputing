@@ -263,7 +263,7 @@ class UAV(Server):
         self.consume_energy(energy)
         logging.info("UAV %d consumed %.2fJ for hover (%.2fs)", self.id, energy, duration)
 
-    def consume_comm_energy(self, duration):
+    def consume_communication_energy(self, duration):
         energy = self.energyModel.compute_communication_energy(duration)
         self.consume_energy(energy)
         logging.info("UAV %d consumed %.2fJ for communication (%.2fs)", self.id, energy, duration)
