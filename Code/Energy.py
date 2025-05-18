@@ -1,3 +1,5 @@
+import time
+
 class EnergyModel:
     def __init__(self, alpha=0.05, beta=3, gamma=20, delta=10): #TODO: coefficient calculations are NOT finalized yet
         """
@@ -43,7 +45,7 @@ class EnergyModel:
         }
     
 class ChargingStation:
-    def __init__(self, location, capacity=2, charging_rate=1):
+    def __init__(self, location, capacity=2, charging_rate=0.2):
         """
         Represents a fixed-position UAV charging station.
         :param location: tuple (x, y)
@@ -72,9 +74,14 @@ class ChargingStation:
     
     def charge(self, current_energy):
         """
-        Simulate one unit of charging. Returns updated energy level.
+        Charges UAV in real time until battery is full
+        using the charging_rate per second.
         """
-        return min(100, current_energy + self.charging_rate)
+        energy = current_energy
+        while energy < 100:
+            energy = min(100, energy + self.charging_rate)
+            time.sleep(1)
+        return energy
 
     def get_status(self):
         return {
