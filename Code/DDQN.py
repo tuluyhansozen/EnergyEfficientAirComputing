@@ -4,7 +4,7 @@ import keras
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Flatten
 from keras.optimizers.legacy import SGD, Adam
-from keras.losses import mse
+from keras.losses import MeanSquaredError
 from DRL import MemoryItem, State
 import matplotlib.pyplot as plt
 import numpy as np
