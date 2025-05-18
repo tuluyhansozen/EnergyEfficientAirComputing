@@ -1,5 +1,5 @@
 class EnergyModel:
-    def __init__(self, alpha=0.5, beta=0.3, gamma=0.2, delta=0.1): #TODO: coefficient calculations are NOT finalized yet
+    def __init__(self, alpha=0.05, beta=3, gamma=20, delta=10): #TODO: coefficient calculations are NOT finalized yet
         """
         Energy model coefficients:
         alpha: flight energy per unit distance * velocity^2

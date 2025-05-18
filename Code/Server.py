@@ -139,6 +139,11 @@ class EdgeServer(Server):
 
     def __eq__(self, other):
         return self.id == other.id
+    
+    def consume_communication_energy(self, comm_time): # for server
+        energy_used = self.energyModel.compute_communication_energy(comm_time)
+        self.energyConsumed += energy_used
+        logging.info(f"EdgeServer {self.id}: Communication energy consumed: {energy_used} units. Total energy: {self.energyConsumed} units.")
 
 
 class UAV(Server):

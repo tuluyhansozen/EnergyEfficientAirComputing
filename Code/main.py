@@ -512,9 +512,9 @@ class Simulation(object):
                     
                     comm_time = 0.1 #TODO: network delay should be considered
                     if isinstance(event.task.processedServer, UAV):
-                        event.task.processedServer.consume_communication_energy(comm_time)
+                        event.task.processedServer.consume_comm_energy(comm_time)
                     elif isinstance(event.task.processedServer, EdgeServer):
-                        event.task.processedServer.consume_communication_energy(comm_time)
+                        event.task.processedServer.consume_comm_energy(comm_time)
                     #TODO: cloud server?
 
                 elif event.type == EventType.UAVStop:
@@ -528,7 +528,7 @@ class Simulation(object):
                     uav.isFlying = False
                     hover_time = simulationTime - uav.notFlyingSince
                     uav.consume_hover_energy(hover_time)
-                    
+
                     if uav.energy_mode == "Critical" or uav.energy_mode == "Low":
                         logging.info("UAV %s reached charging point and is recharged.", str(uav.id))
                         uav.batteryLevel = 100
@@ -816,9 +816,9 @@ if __name__ == '__main__':
     args = parser.parse_args()
     #print("Arfs: ", args.userC)
 
-    numberOfUsers = [20, 40, 60, 80, 100] #[args.userC]
+    numberOfUsers = [20] # numberOfUsers = [20, 40, 60, 80, 100] #[args.userC]
     numberOfServers = [4]
-    numberOfUAVs = [0, 5, 10, 15, 20]
+    numberOfUAVs = [5] # numberOfUAVs = [0, 5, 10, 15, 20]
     uavWaitingPolicy = [100]
 
     #edgeServerRadius = [50, 100, 150, 200]
@@ -838,7 +838,7 @@ if __name__ == '__main__':
     print("Simulation is starting...")
     logging.basicConfig(filename="AirSim.log", level=logging.INFO)
     # logging.basicConfig(filename="AirSimDebug.log", level=logging.DEBUG)
-    logging.disable(logging.INFO)
+    # logging.disable(logging.INFO)
     logging.info("Simulation log is started")
     # logging.disable(logging.DEBUG)
 
