@@ -287,7 +287,7 @@ class QNetwork(nn.Module):
         Returns:
             Q-values for each action.
         """
-        return self.network(x)
+        return self.network(x)  # type: ignore
 
 
 @dataclass

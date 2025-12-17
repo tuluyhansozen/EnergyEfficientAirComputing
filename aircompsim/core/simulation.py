@@ -8,14 +8,14 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional
+from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Union
 
 import numpy as np
 
 from aircompsim.config.settings import SimulationConfig
 from aircompsim.core.event import Event, EventQueue, EventType
 from aircompsim.entities.location import Location, SimulationBoundary
-from aircompsim.entities.server import UAV, CloudServer, EdgeServer, Server
+from aircompsim.entities.server import UAV, CloudServer, EdgeServer
 from aircompsim.entities.task import Application, ApplicationType, Task
 from aircompsim.entities.user import User
 
@@ -228,7 +228,9 @@ class Simulation:
 
             # Assign random application
             if app_types:
-                app_type = np.random.choice(app_types)
+                import random
+
+                app_type = random.choice(app_types)
                 app = Application(app_type=app_type, start_time=0)
                 user.add_application(app)
 
@@ -402,7 +404,7 @@ class Simulation:
             return None
 
         # Find covering servers
-        candidates: List[Server] = []
+        candidates: List[Union[EdgeServer, UAV]] = []
 
         for edge in EdgeServer.get_all():
             if edge.is_in_coverage(location):

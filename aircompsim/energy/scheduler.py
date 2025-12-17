@@ -10,7 +10,7 @@ import logging
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from enum import Enum, auto
-from typing import TYPE_CHECKING, Optional, Protocol
+from typing import TYPE_CHECKING, Any, Optional, Protocol
 
 if TYPE_CHECKING:
     from aircompsim.entities.server import Server
@@ -49,7 +49,7 @@ class ServerProtocol(Protocol):
 
     def get_processing_delay(self, task: Task) -> float: ...
 
-    def is_in_coverage(self, location) -> bool: ...
+    def is_in_coverage(self, location: Any) -> bool: ...
 
 
 @dataclass

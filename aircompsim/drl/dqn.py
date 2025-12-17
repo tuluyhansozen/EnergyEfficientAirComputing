@@ -102,7 +102,7 @@ class DQNAgent(BaseAgent):
         with torch.no_grad():
             state_tensor = torch.from_numpy(state).float().to(self.device)
             q_values = self.network(state_tensor)
-            action = q_values.argmax().item()
+            action = int(q_values.argmax().item())
         return action
 
     def learn(
@@ -172,7 +172,7 @@ class DQNAgent(BaseAgent):
         # Decay epsilon
         self.update_epsilon()
 
-        return loss.item()
+        return float(loss.item())
 
     def save(self, path: str) -> None:
         """Save agent to file.

@@ -40,9 +40,9 @@ def load_yaml(path: Union[str, Path]) -> Dict[str, Any]:
 
     try:
         with path.open() as f:
-            data: Dict[str, Any] = yaml.safe_load(f) or {}
+            data = yaml.safe_load(f) or {}
             logger.info(f"Loaded configuration from {path}")
-            return data
+            return dict(data)
     except yaml.YAMLError as e:
         raise ValueError(f"Invalid YAML file: {e}") from e
 
@@ -68,7 +68,7 @@ def load_json(path: Union[str, Path]) -> Dict[str, Any]:
         with path.open() as f:
             data = json.load(f)
             logger.info(f"Loaded configuration from {path}")
-            return data
+            return dict(data)
     except json.JSONDecodeError as e:
         raise ValueError(f"Invalid JSON file: {e}") from e
 
