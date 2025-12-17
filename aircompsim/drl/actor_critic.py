@@ -161,7 +161,7 @@ class ActorCriticAgent(BaseAgent):
                 return int(action_probs.argmax().item())
 
     def learn(
-        self, state: np.ndarray, action: int, reward: float, next_state: np.ndarray, done: bool
+        self, state: np.ndarray, _action: int, reward: float, next_state: np.ndarray, done: bool
     ) -> Optional[float]:
         """Update agent using TD error.
 

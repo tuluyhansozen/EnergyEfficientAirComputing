@@ -1,13 +1,12 @@
 """Generate combined PDF report from benchmark results."""
 
 import json
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
 
+import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
-import matplotlib.image as mpimg
-import numpy as np
 
 
 def create_title_page(pdf: PdfPages, title: str, subtitle: str):
@@ -107,7 +106,7 @@ def create_table_page(pdf: PdfPages, title: str, data: list, columns: list):
     table.scale(1.2, 1.5)
 
     # Style header
-    for i, key in enumerate(col_labels):
+    for i, _ in enumerate(col_labels):
         table[(0, i)].set_facecolor("#2c3e50")
         table[(0, i)].set_text_props(color="white", fontweight="bold")
 
@@ -224,13 +223,13 @@ def generate_pdf_report(results_dir: Path, output_path: Path):
     basic_data = []
     basic_json = results_dir / "benchmark_report.json"
     if basic_json.exists():
-        with open(basic_json, "r") as f:
+        with basic_json.open() as f:
             basic_data = json.load(f)
 
     adv_data = []
     adv_json = results_dir / "advanced_benchmark_report.json"
     if adv_json.exists():
-        with open(adv_json, "r") as f:
+        with adv_json.open() as f:
             adv_data = json.load(f)
 
     with PdfPages(str(output_path)) as pdf:

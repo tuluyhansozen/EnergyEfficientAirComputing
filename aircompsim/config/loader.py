@@ -32,19 +32,19 @@ def load_yaml(path: Union[str, Path]) -> Dict[str, Any]:
     except ImportError:
         raise ImportError(
             "PyYAML is required for YAML config loading. " "Install with: pip install PyYAML"
-        )
+        ) from ImportError
 
     path = Path(path)
     if not path.exists():
         raise FileNotFoundError(f"Configuration file not found: {path}")
 
     try:
-        with open(path, "r") as f:
+        with path.open() as f:
             data: Dict[str, Any] = yaml.safe_load(f) or {}
             logger.info(f"Loaded configuration from {path}")
             return data
     except yaml.YAMLError as e:
-        raise ValueError(f"Invalid YAML file: {e}")
+        raise ValueError(f"Invalid YAML file: {e}") from e
 
 
 def load_json(path: Union[str, Path]) -> Dict[str, Any]:
@@ -65,12 +65,12 @@ def load_json(path: Union[str, Path]) -> Dict[str, Any]:
         raise FileNotFoundError(f"Configuration file not found: {path}")
 
     try:
-        with open(path, "r") as f:
+        with path.open() as f:
             data = json.load(f)
             logger.info(f"Loaded configuration from {path}")
             return data
     except json.JSONDecodeError as e:
-        raise ValueError(f"Invalid JSON file: {e}")
+        raise ValueError(f"Invalid JSON file: {e}") from e
 
 
 def load_config(path: Union[str, Path]) -> Dict[str, Any]:
@@ -110,12 +110,12 @@ def save_yaml(data: Dict[str, Any], path: Union[str, Path]) -> None:
     try:
         import yaml
     except ImportError:
-        raise ImportError("PyYAML is required. Install with: pip install PyYAML")
+        raise ImportError("PyYAML is required. Install with: pip install PyYAML") from ImportError
 
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
 
-    with open(path, "w") as f:
+    with path.open("w") as f:
         yaml.dump(data, f, default_flow_style=False, sort_keys=False)
 
     logger.info(f"Saved configuration to {path}")
@@ -131,7 +131,7 @@ def save_json(data: Dict[str, Any], path: Union[str, Path]) -> None:
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
 
-    with open(path, "w") as f:
+    with path.open("w") as f:
         json.dump(data, f, indent=2)
 
     logger.info(f"Saved configuration to {path}")

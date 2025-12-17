@@ -7,26 +7,24 @@ Tests:
 4. Scheduling algorithm comparison
 """
 
-import os
-import sys
 import json
+import sys
+from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import List, Dict, Any
-from dataclasses import dataclass
+from typing import Any, Dict, List
+
 import numpy as np
 
 # Add project to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from aircompsim import Simulation, SimulationConfig
-from aircompsim.entities.location import Location
-from aircompsim.entities.server import EdgeServer, UAV
-from aircompsim.entities.user import User
-from aircompsim.entities.task import ApplicationType, Application, Task
-from aircompsim.energy.scheduler import EnergyAwareScheduler, SchedulingStrategy
 from aircompsim.energy.charging import ChargingStation, ChargingStationRegistry
-from aircompsim.energy.models import EnergyModel
+from aircompsim.energy.scheduler import SchedulingStrategy
+from aircompsim.entities.location import Location
+from aircompsim.entities.server import UAV, EdgeServer
+from aircompsim.entities.user import User
 
 
 @dataclass
@@ -170,7 +168,7 @@ class AdvancedBenchmark:
             col = i % side
             uav.location = Location(x=step_x * (col + 1), y=step_y * (row + 1), z=200)
 
-    def _edge_centric_positions(self, sim: Simulation):
+    def _edge_centric_positions(self, _sim: Simulation):
         """Position UAVs near edge servers to extend coverage."""
         uavs = UAV.get_all()
         edges = EdgeServer.get_all()
@@ -187,7 +185,7 @@ class AdvancedBenchmark:
                     z=200,
                 )
 
-    def _user_centric_positions(self, sim: Simulation):
+    def _user_centric_positions(self, _sim: Simulation):
         """Position UAVs based on user distribution."""
         uavs = UAV.get_all()
         users = User.get_all()
@@ -209,7 +207,7 @@ class AdvancedBenchmark:
                 avg_y = sum(u.location.y for u in subset) / len(subset)
                 uav.location = Location(x=avg_x, y=avg_y, z=200)
 
-    def _cluster_positions(self, sim: Simulation):
+    def _cluster_positions(self, _sim: Simulation):
         """Position UAVs in strategic clusters."""
         uavs = UAV.get_all()
 
@@ -245,13 +243,13 @@ class AdvancedBenchmark:
             ("4 Stations (Edges)", 4, [(200, 50), (350, 200), (200, 350), (50, 200)]),
         ]
 
-        for name, count, positions in placements:
+        for name, _, positions in placements:
             config = SimulationConfig(time_limit=500, user_count=15)
             config.uav.count = 4
             config.uav.initial_battery = 60  # Start with lower battery
             config.edge.count = 4
 
-            def setup(sim, pos=positions):
+            def setup(_sim, pos=positions):
                 # Create charging stations
                 ChargingStationRegistry.reset()
                 for i, (x, y) in enumerate(pos):
@@ -288,7 +286,7 @@ class AdvancedBenchmark:
             config.uav.count = 3
             config.edge.count = 4
 
-            def setup(sim, spd=speed, pat=pattern):
+            def setup(_sim, spd=speed, pat=pattern):
                 users = User.get_all()
 
                 if pat == "clustered":
@@ -327,7 +325,7 @@ class AdvancedBenchmark:
             ("Utilization-Based", SchedulingStrategy.UTILIZATION),
         ]
 
-        for name, strategy in algorithms:
+        for name, _ in algorithms:
             config = SimulationConfig(time_limit=500, user_count=20)
             config.uav.count = 4
             config.edge.count = 4
@@ -350,7 +348,7 @@ class AdvancedBenchmark:
 
 ## Overview
 
-This report presents results from advanced benchmarking of the AirCompSim simulator, 
+This report presents results from advanced benchmarking of the AirCompSim simulator,
 testing 4 key areas:
 1. UAV positioning strategies
 2. Charging station placement
@@ -377,7 +375,7 @@ testing 4 key areas:
 
         # Save report
         report_path = self.output_dir / "advanced_benchmark_report.md"
-        with open(report_path, "w") as f:
+        with report_path.open("w") as f:
             f.write(report)
 
         # Save JSON data
@@ -396,7 +394,7 @@ testing 4 key areas:
             }
             for r in self.results
         ]
-        with open(json_path, "w") as f:
+        with json_path.open("w") as f:
             json.dump(json_data, f, indent=2)
 
         return str(report_path)
@@ -430,28 +428,24 @@ testing 4 key areas:
 
             # Category-specific insights
             if name == "UAV Positioning":
-                section += """**Key Insight:** UAV positioning strategy significantly impacts coverage. 
-User-centric and cluster-based positioning tend to outperform random placement by ensuring 
+                section += """**Key Insight:** UAV positioning strategy significantly impacts coverage.
+User-centric and cluster-based positioning tend to outperform random placement by ensuring
 UAVs are located where demand is highest.
-
 """
             elif name == "Charging Stations":
-                section += """**Key Insight:** Charging station availability affects UAV uptime. 
-With low initial battery (60%), having strategically placed charging stations can 
+                section += """**Key Insight:** Charging station availability affects UAV uptime.
+With low initial battery (60%), having strategically placed charging stations can
 improve task success rates by keeping more UAVs operational.
-
 """
             elif name == "Mobility Patterns":
-                section += """**Key Insight:** User mobility affects task offloading success. 
-Faster moving users may leave server coverage before task completion, while 
+                section += """**Key Insight:** User mobility affects task offloading success.
+Faster moving users may leave server coverage before task completion, while
 clustered users benefit from concentrated coverage.
-
 """
             elif name == "Scheduling":
                 section += """**Key Insight:** Different scheduling strategies optimize for different metrics.
-Energy-first reduces consumption but may increase latency, while latency-first 
+Energy-first reduces consumption but may increase latency, while latency-first
 prioritizes speed at higher energy cost.
-
 """
 
         section += "---\n\n"

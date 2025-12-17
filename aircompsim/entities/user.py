@@ -8,12 +8,9 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, List, Optional, Set, ClassVar
+from typing import ClassVar, List, Optional, Set
 
 import numpy as np
-
-if TYPE_CHECKING:
-    from aircompsim.entities.task import Task
 
 from aircompsim.entities.location import Location
 from aircompsim.entities.task import Application

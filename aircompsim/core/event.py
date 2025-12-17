@@ -13,9 +13,9 @@ from typing import TYPE_CHECKING, Any, Optional
 
 if TYPE_CHECKING:
     from aircompsim.entities.location import Location
+    from aircompsim.entities.server import UAV
     from aircompsim.entities.task import Task
     from aircompsim.entities.user import User
-    from aircompsim.entities.server import UAV
 
 
 logger = logging.getLogger(__name__)

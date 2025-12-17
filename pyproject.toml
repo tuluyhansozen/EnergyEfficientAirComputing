@@ -132,6 +132,9 @@ select = [
 ignore = [
     "E501",   # line too long (handled by black)
     "B008",   # do not perform function calls in argument defaults
+    "RUF001", # ambiguous unicode characters (allow Greek letters)
+    "RUF002",
+    "RUF003",
 ]
 
 [tool.ruff.lint.isort]

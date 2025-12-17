@@ -3,9 +3,9 @@
 import pytest
 
 from aircompsim.energy.models import (
-    EnergyModel,
-    EnergyMode,
     EnergyCoefficients,
+    EnergyMode,
+    EnergyModel,
     EnergyTracker,
 )
 
@@ -55,7 +55,7 @@ class TestEnergyModel:
         """Test basic flight energy calculation."""
         model = EnergyModel()
 
-        # E = α × d × v² = 0.05 × 100 × 10² = 500
+        # E = alpha * d * v^2 = 0.05 * 100 * 10^2 = 500
         energy = model.compute_flight_energy(distance=100, velocity=10)
 
         assert energy == pytest.approx(500.0)
@@ -86,7 +86,7 @@ class TestEnergyModel:
         """Test hover energy calculation."""
         model = EnergyModel()
 
-        # E = β × t = 3.0 × 10 = 30
+        # E = beta * t = 3.0 * 10 = 30
         energy = model.compute_hover_energy(duration=10)
 
         assert energy == pytest.approx(30.0)
@@ -102,7 +102,7 @@ class TestEnergyModel:
         """Test computation energy calculation."""
         model = EnergyModel()
 
-        # E = γ × t = 20.0 × 5 = 100
+        # E = gamma * t = 20.0 * 5 = 100
         energy = model.compute_computation_energy(duration=5)
 
         assert energy == pytest.approx(100.0)
@@ -111,7 +111,7 @@ class TestEnergyModel:
         """Test communication energy calculation."""
         model = EnergyModel()
 
-        # E = δ × t = 10.0 × 3 = 30
+        # E = delta * t = 10.0 * 3 = 30
         energy = model.compute_communication_energy(duration=3)
 
         assert energy == pytest.approx(30.0)

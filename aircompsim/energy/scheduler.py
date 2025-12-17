@@ -8,14 +8,13 @@ from __future__ import annotations
 
 import logging
 from abc import ABC, abstractmethod
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from enum import Enum, auto
 from typing import TYPE_CHECKING, Optional, Protocol
 
 if TYPE_CHECKING:
-    from aircompsim.entities.server import Server, EdgeServer, UAV, CloudServer
+    from aircompsim.entities.server import Server
     from aircompsim.entities.task import Task
-    from aircompsim.entities.user import User
 
 logger = logging.getLogger(__name__)
 
@@ -222,7 +221,7 @@ class EnergyAwareScheduler(BaseScheduler):
 
         return decision
 
-    def should_accept_task(self, server: Server, task: Task) -> bool:
+    def should_accept_task(self, server: Server, _task: Task) -> bool:
         """Check if server should accept task based on energy state.
 
         Args:
@@ -236,9 +235,8 @@ class EnergyAwareScheduler(BaseScheduler):
         from aircompsim.entities.server import UAV
 
         # For UAVs, check battery level
-        if isinstance(server, UAV):
-            if hasattr(server, "battery_level"):
-                if server.battery_level < self.uav_energy_threshold:
+        if isinstance(server, UAV) and hasattr(server, "battery_level"):
+            if server.battery_level < self.uav_energy_threshold:
                     logger.debug(
                         f"UAV {server.server_id} rejected task: "
                         f"battery {server.battery_level:.1f}% < threshold"
@@ -272,7 +270,7 @@ class EnergyAwareScheduler(BaseScheduler):
         processing_delay = server.get_processing_delay(task)
 
         # Network delay (simplified)
-        from aircompsim.entities.server import EdgeServer, UAV, CloudServer
+        from aircompsim.entities.server import UAV, CloudServer
 
         if isinstance(server, CloudServer):
             network_delay = 1.5  # WAN delay
@@ -293,7 +291,7 @@ class EnergyAwareScheduler(BaseScheduler):
         Returns:
             Estimated energy in Joules.
         """
-        from aircompsim.entities.server import EdgeServer, UAV, CloudServer
+        from aircompsim.entities.server import UAV, EdgeServer
 
         # Base computation energy
         processing_time = server.get_processing_delay(task)

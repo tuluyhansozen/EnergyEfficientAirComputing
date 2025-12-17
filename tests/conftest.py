@@ -1,8 +1,9 @@
 """Test configuration for pytest."""
 
-import pytest
 import sys
 from pathlib import Path
+
+import pytest
 
 # Add project root to path
 project_root = Path(__file__).parent.parent
@@ -47,10 +48,10 @@ def reset_registries():
     yield
     # Cleanup after test
     try:
-        from aircompsim.entities.server import EdgeServer, UAV
-        from aircompsim.entities.user import User
-        from aircompsim.entities.task import Application, Task, ApplicationType
         from aircompsim.core.event import Event
+        from aircompsim.entities.server import UAV, EdgeServer
+        from aircompsim.entities.task import Application, ApplicationType
+        from aircompsim.entities.user import User
 
         EdgeServer.reset_all()
         UAV.reset_all()

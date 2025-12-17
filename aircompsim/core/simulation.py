@@ -6,20 +6,18 @@ the discrete event simulation for air computing environments.
 
 from __future__ import annotations
 
-import heapq
 import logging
 from dataclasses import dataclass, field
-from typing import List, Optional, Dict, Any, Callable, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional
 
 import numpy as np
 
-from aircompsim.core.event import Event, EventType, EventQueue
-from aircompsim.entities.location import Location, SimulationBoundary
-from aircompsim.entities.server import EdgeServer, UAV, CloudServer, Server
-from aircompsim.entities.user import User
-from aircompsim.entities.task import Application, Task, ApplicationType
 from aircompsim.config.settings import SimulationConfig
-from aircompsim.energy.models import EnergyModel
+from aircompsim.core.event import Event, EventQueue, EventType
+from aircompsim.entities.location import Location, SimulationBoundary
+from aircompsim.entities.server import UAV, CloudServer, EdgeServer, Server
+from aircompsim.entities.task import Application, ApplicationType, Task
+from aircompsim.entities.user import User
 
 if TYPE_CHECKING:
     from aircompsim.drl.base import BaseAgent
@@ -186,11 +184,7 @@ class Simulation:
         """Create edge servers based on configuration."""
         count = self.config.edge.count
 
-        if self.config.edge.locations:
-            locations = self.config.edge.locations
-        else:
-            # Create evenly distributed servers
-            locations = self._generate_grid_locations(count)
+        locations = self.config.edge.locations or self._generate_grid_locations(count)
 
         for x, y in locations[:count]:
             EdgeServer(
@@ -386,14 +380,14 @@ class Simulation:
         if user:
             user.stop_moving()
 
-    def _handle_state_update(self, event: Event) -> None:
+    def _handle_state_update(self, _event: Event) -> None:
         """Handle DRL state update event."""
         if self.agent and self.is_drl_training:
-            state = self._get_state()
+            _state = self._get_state()
             # DRL training logic would go here
 
     def _select_server(
-        self, task: Task, location: Optional[Location]
+        self, task: Task, _location: Optional[Location]
     ) -> Optional[EdgeServer | UAV]:
         """Select best server for task.
 

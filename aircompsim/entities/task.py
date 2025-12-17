@@ -9,14 +9,14 @@ from __future__ import annotations
 import logging
 from dataclasses import dataclass, field
 from enum import Enum, auto
-from typing import TYPE_CHECKING, Optional, List, Dict, ClassVar
+from typing import TYPE_CHECKING, ClassVar, Dict, List, Optional
 
 import numpy as np
 
 if TYPE_CHECKING:
+    from aircompsim.entities.location import Location
     from aircompsim.entities.server import Server
     from aircompsim.entities.user import User
-    from aircompsim.entities.location import Location
 
 logger = logging.getLogger(__name__)
 

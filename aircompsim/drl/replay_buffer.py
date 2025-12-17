@@ -1,5 +1,5 @@
 """Replay buffer for experience replay."""
 
-from aircompsim.drl.base import ReplayBuffer, Experience
+from aircompsim.drl.base import Experience, ReplayBuffer
 
-__all__ = ["ReplayBuffer", "Experience"]
+__all__ = ["Experience", "ReplayBuffer"]

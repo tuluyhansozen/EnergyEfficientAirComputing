@@ -1,11 +1,10 @@
 """Generate visualizations for benchmark reports."""
 
 import json
-import sys
 from pathlib import Path
 
-import matplotlib.pyplot as plt
 import matplotlib
+import matplotlib.pyplot as plt
 
 matplotlib.use("Agg")  # Non-interactive backend
 import numpy as np
@@ -18,9 +17,9 @@ plt.rcParams["axes.titlesize"] = 14
 plt.rcParams["axes.labelsize"] = 12
 
 
-def load_benchmark_data(json_path: str) -> list:
+def load_benchmark_data(json_path: Path) -> list:
     """Load benchmark results from JSON."""
-    with open(json_path, "r") as f:
+    with json_path.open() as f:
         return json.load(f)
 
 
@@ -31,7 +30,7 @@ def create_bar_comparison(
     names = [d.get("name", d.get("config_name", "Unknown")) for d in data]
     values = [d.get(metric, 0) for d in data]
 
-    fig, ax = plt.subplots(figsize=(12, 6))
+    _, ax = plt.subplots(figsize=(12, 6))
 
     colors = plt.cm.get_cmap(color_scheme)(np.linspace(0.2, 0.8, len(names)))
     bars = ax.bar(names, values, color=colors, edgecolor="black", linewidth=0.5)
@@ -69,17 +68,14 @@ def create_multi_metric_chart(data: list, metrics: list, title: str, output_path
     x = np.arange(len(names))
     width = 0.8 / len(metrics)
 
-    fig, ax = plt.subplots(figsize=(14, 7))
+    _, ax = plt.subplots(figsize=(14, 7))
 
     colors = plt.cm.tab10(np.linspace(0, 1, len(metrics)))
 
     for i, (metric, label) in enumerate(metrics):
         values = [d.get(metric, 0) for d in data]
         # Normalize for comparison
-        if max(values) > 0:
-            normalized = [v / max(values) * 100 for v in values]
-        else:
-            normalized = values
+        normalized = [v / max(values) * 100 for v in values] if max(values) > 0 else values
 
         offset = width * (i - len(metrics) / 2 + 0.5)
         ax.bar(x + offset, normalized, width, label=label, color=colors[i])
@@ -100,7 +96,7 @@ def create_multi_metric_chart(data: list, metrics: list, title: str, output_path
 
 def create_scatter_plot(data: list, x_metric: str, y_metric: str, title: str, output_path: str):
     """Create scatter plot of two metrics."""
-    fig, ax = plt.subplots(figsize=(10, 8))
+    _, ax = plt.subplots(figsize=(10, 8))
 
     x_values = [d.get(x_metric, 0) for d in data]
     y_values = [d.get(y_metric, 0) for d in data]
@@ -156,7 +152,7 @@ def create_radar_chart(data: list, metrics: list, title: str, output_path: str):
     angles = [n / float(N) * 2 * np.pi for n in range(N)]
     angles += angles[:1]  # Complete the circle
 
-    fig, ax = plt.subplots(figsize=(10, 10), subplot_kw=dict(polar=True))
+    _, ax = plt.subplots(figsize=(10, 10), subplot_kw={"polar": True})
 
     colors = plt.cm.Set2(np.linspace(0, 1, len(selected)))
 
@@ -206,7 +202,7 @@ def create_heatmap(data: list, metrics: list, title: str, output_path: str):
         col_max = matrix[:, j].max() or 1
         matrix[:, j] = matrix[:, j] / col_max * 100
 
-    fig, ax = plt.subplots(figsize=(12, 8))
+    _, ax = plt.subplots(figsize=(12, 8))
 
     im = ax.imshow(matrix, cmap="YlGnBu", aspect="auto")
 
@@ -224,7 +220,7 @@ def create_heatmap(data: list, metrics: list, title: str, output_path: str):
     # Add value annotations
     for i in range(len(names)):
         for j in range(len(metric_names)):
-            text = ax.text(
+            ax.text(
                 j, i, f"{matrix[i, j]:.0f}", ha="center", va="center", color="black", fontsize=9
             )
 
@@ -376,9 +372,12 @@ def generate_advanced_benchmark_charts(results_dir: Path):
         )
 
 
+
+
+
 def update_report_with_charts(report_path: Path, charts: list):
     """Add chart references to markdown report."""
-    with open(report_path, "r") as f:
+    with report_path.open() as f:
         content = f.read()
 
     # Add charts section
@@ -397,7 +396,7 @@ def update_report_with_charts(report_path: Path, charts: list):
     else:
         content += charts_section
 
-    with open(report_path, "w") as f:
+    with report_path.open("w") as f:
         f.write(content)
 
     print(f"  Updated: {report_path}")

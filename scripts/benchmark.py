@@ -1,8 +1,7 @@
 """Benchmark script to run simulations with different configurations."""
 
-import os
-import sys
 import json
+import sys
 from datetime import datetime
 from pathlib import Path
 
@@ -10,7 +9,6 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from aircompsim import Simulation, SimulationConfig
-from aircompsim.entities.task import ApplicationType
 
 
 def run_benchmark():
@@ -165,12 +163,12 @@ More edge servers provide better load balancing and lower latency.
 """
 
     # Save report
-    with open(output_path, "w") as f:
+    with output_path.open("w") as f:
         f.write(report)
 
     # Also save raw JSON
-    json_path = output_path.replace(".md", ".json")
-    with open(json_path, "w") as f:
+    json_path = Path(output_path.parent) / output_path.name.replace(".md", ".json")
+    with json_path.open("w") as f:
         json.dump(results, f, indent=2)
 
     return report

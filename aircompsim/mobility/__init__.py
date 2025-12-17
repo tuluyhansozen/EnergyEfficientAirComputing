@@ -1,12 +1,12 @@
 """Mobility models for users and UAVs."""
 
-from aircompsim.mobility.user_mobility import UserMobility, RandomWaypointModel
-from aircompsim.mobility.uav_policies import UAVPolicy, LSIPolicy, RandomPolicy
+from aircompsim.mobility.uav_policies import LSIPolicy, RandomPolicy, UAVPolicy
+from aircompsim.mobility.user_mobility import RandomWaypointModel, UserMobility
 
 __all__ = [
-    "UserMobility",
-    "RandomWaypointModel",
-    "UAVPolicy",
     "LSIPolicy",
     "RandomPolicy",
+    "RandomWaypointModel",
+    "UAVPolicy",
+    "UserMobility",
 ]

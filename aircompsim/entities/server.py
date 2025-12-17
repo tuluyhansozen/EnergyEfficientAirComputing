@@ -10,14 +10,13 @@ import logging
 import math
 from abc import ABC
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, List, Optional, ClassVar
+from typing import TYPE_CHECKING, ClassVar, List, Optional
 
 if TYPE_CHECKING:
-    from aircompsim.entities.task import Task, Application
-    from aircompsim.entities.user import User
+    from aircompsim.entities.task import Task
 
+from aircompsim.energy.models import EnergyMode, EnergyModel, EnergyTracker
 from aircompsim.entities.location import Location
-from aircompsim.energy.models import EnergyModel, EnergyMode, EnergyTracker
 
 logger = logging.getLogger(__name__)
 

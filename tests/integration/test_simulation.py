@@ -1,14 +1,14 @@
 """Integration tests for the simulation system."""
 
-import pytest
 import numpy as np
+import pytest
 
-from aircompsim.entities.location import Location, SimulationBoundary
-from aircompsim.entities.server import EdgeServer, UAV, CloudServer
-from aircompsim.entities.user import User
-from aircompsim.entities.task import ApplicationType, Application, Task, OffloadEntity
-from aircompsim.energy.models import EnergyModel, EnergyMode
 from aircompsim.config.settings import SimulationConfig
+from aircompsim.energy.models import EnergyMode
+from aircompsim.entities.location import Location
+from aircompsim.entities.server import UAV, EdgeServer
+from aircompsim.entities.task import Application, ApplicationType, OffloadEntity, Task
+from aircompsim.entities.user import User
 
 
 class TestServerUserIntegration:
@@ -54,10 +54,10 @@ class TestServerUserIntegration:
 
     def test_multiple_servers_coverage(self):
         """Test user covered by multiple servers."""
-        edge1 = EdgeServer(
+        EdgeServer(
             capacity=1000, location=Location(100, 100, 0), radius=80, power_consumption=100
         )
-        edge2 = EdgeServer(
+        EdgeServer(
             capacity=1000, location=Location(150, 100, 0), radius=80, power_consumption=100
         )
 
