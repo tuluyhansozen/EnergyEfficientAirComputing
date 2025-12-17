@@ -10,7 +10,6 @@
   <a href="#quick-start">Quick Start</a> •
   <a href="#architecture">Architecture</a> •
   <a href="#usage">Usage</a> •
-  <a href="#documentation">Documentation</a>
 </p>
 
 ---
@@ -308,22 +307,6 @@ mypy aircompsim/
 black aircompsim/
 ```
 
-## Citation
-
-If you use AirCompSim in your research, please cite:
-
-```bibtex
-@software{aircompsim2024,
-  title={AirCompSim: Energy-Efficient Air Computing Simulator},
-  author={Your Name},
-  year={2024},
-  url={https://github.com/yourusername/EnergyEfficientAirComputing}
-}
-```
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
 
