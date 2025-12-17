@@ -1,0 +1,2 @@
+[console_scripts]
+aircompsim = aircompsim.cli:main

@@ -1,0 +1,64 @@
+Metadata-Version: 2.4
+Name: aircompsim
+Version: 1.0.0
+Summary: Energy-Efficient Air Computing Discrete Event Simulator
+Author-email: Your Name <your.email@example.com>
+Maintainer-email: Your Name <your.email@example.com>
+License: MIT
+Project-URL: Homepage, https://github.com/yourusername/AirCompSim
+Project-URL: Documentation, https://github.com/yourusername/AirCompSim#readme
+Project-URL: Repository, https://github.com/yourusername/AirCompSim.git
+Project-URL: Issues, https://github.com/yourusername/AirCompSim/issues
+Keywords: air-computing,uav,edge-computing,simulation,deep-reinforcement-learning,energy-efficiency,task-offloading
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: System :: Distributed Computing
+Classifier: Typing :: Typed
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: numpy>=1.21.0
+Requires-Dist: pandas>=1.3.0
+Requires-Dist: matplotlib>=3.5.0
+Requires-Dist: torch>=2.0.0
+Requires-Dist: scikit-learn>=1.0.0
+Requires-Dist: PyYAML>=6.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.0.0; extra == "dev"
+Requires-Dist: mypy>=1.0.0; extra == "dev"
+Requires-Dist: ruff>=0.1.0; extra == "dev"
+Requires-Dist: black>=23.0.0; extra == "dev"
+Requires-Dist: pre-commit>=3.0.0; extra == "dev"
+Provides-Extra: docs
+Requires-Dist: mkdocs>=1.5.0; extra == "docs"
+Requires-Dist: mkdocs-material>=9.0.0; extra == "docs"
+Requires-Dist: mkdocstrings[python]>=0.24.0; extra == "docs"
+
+# AirCompSim - Energy-Efficient Air Computing Simulation
+
+## Overview
+**AirCompSim** is a discrete event simulator designed to evaluate **air computing environments**, integrating **UAVs, edge servers, and cloud computing** for **dynamic task offloading**. 
+
+### Current Limitations:
+- **No energy efficiency calculations** (UAVs and edge servers do not track power usage).
+- **No energy-aware scheduling** (tasks are assigned based on availability, not efficiency).
+- **Static UAV behavior** (UAVs do not adapt based on power constraints).
+
+## Goal: Energy Efficiency Enhancement
+We aim to extend **AirCompSim** by integrating **energy-aware models** for **power-efficient computation and resource allocation**.
+
+### Planned Enhancements:
+1. **UAV Energy Models**
+   - Implement UAV **battery consumption** based on **task load, flight distance, and idle states**.
+   - Simulate **battery depletion & recharging mechanisms**.
+
+2. **Energy-Aware Task Scheduling**
+   - Develop **adaptive offloading strategies** that prioritize **energy-efficient task placement**.
+   - Balance **UAV offloading vs. edge server usage** for **minimum power consumption**.

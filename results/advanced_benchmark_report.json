@@ -1,0 +1,242 @@
+[
+  {
+    "name": "Random Positioning",
+    "category": "UAV Positioning",
+    "total_tasks": 227,
+    "successful_tasks": 216,
+    "success_rate": 0.9515418502202643,
+    "avg_latency": 0.22687224669603973,
+    "avg_qos": 68.50220264317181,
+    "total_energy": 1030.0,
+    "extra_metrics": null
+  },
+  {
+    "name": "Grid Positioning",
+    "category": "UAV Positioning",
+    "total_tasks": 274,
+    "successful_tasks": 266,
+    "success_rate": 0.9708029197080292,
+    "avg_latency": 0.18686131386861704,
+    "avg_qos": 60.76642335766423,
+    "total_energy": 1024.0,
+    "extra_metrics": null
+  },
+  {
+    "name": "Edge-Centric",
+    "category": "UAV Positioning",
+    "total_tasks": 350,
+    "successful_tasks": 328,
+    "success_rate": 0.9371428571428572,
+    "avg_latency": 0.2505714285714337,
+    "avg_qos": 62.57142857142857,
+    "total_energy": 1754.0,
+    "extra_metrics": null
+  },
+  {
+    "name": "User-Centric",
+    "category": "UAV Positioning",
+    "total_tasks": 393,
+    "successful_tasks": 378,
+    "success_rate": 0.9618320610687023,
+    "avg_latency": 0.2765903307888002,
+    "avg_qos": 65.13994910941476,
+    "total_energy": 2182.0,
+    "extra_metrics": null
+  },
+  {
+    "name": "Cluster-Based",
+    "category": "UAV Positioning",
+    "total_tasks": 456,
+    "successful_tasks": 380,
+    "success_rate": 0.8333333333333334,
+    "avg_latency": 0.38245614035087666,
+    "avg_qos": 50.76754385964912,
+    "total_energy": 3488.0,
+    "extra_metrics": null
+  },
+  {
+    "name": "No Charging Stations",
+    "category": "Charging Stations",
+    "total_tasks": 0,
+    "successful_tasks": 0,
+    "success_rate": 0,
+    "avg_latency": 0,
+    "avg_qos": 0,
+    "total_energy": 0,
+    "extra_metrics": {
+      "error": "type object 'ChargingStationRegistry' has no attribute 'reset'"
+    }
+  },
+  {
+    "name": "1 Station (Center)",
+    "category": "Charging Stations",
+    "total_tasks": 0,
+    "successful_tasks": 0,
+    "success_rate": 0,
+    "avg_latency": 0,
+    "avg_qos": 0,
+    "total_energy": 0,
+    "extra_metrics": {
+      "error": "type object 'ChargingStationRegistry' has no attribute 'reset'"
+    }
+  },
+  {
+    "name": "2 Stations (Diagonal)",
+    "category": "Charging Stations",
+    "total_tasks": 0,
+    "successful_tasks": 0,
+    "success_rate": 0,
+    "avg_latency": 0,
+    "avg_qos": 0,
+    "total_energy": 0,
+    "extra_metrics": {
+      "error": "type object 'ChargingStationRegistry' has no attribute 'reset'"
+    }
+  },
+  {
+    "name": "4 Stations (Corners)",
+    "category": "Charging Stations",
+    "total_tasks": 0,
+    "successful_tasks": 0,
+    "success_rate": 0,
+    "avg_latency": 0,
+    "avg_qos": 0,
+    "total_energy": 0,
+    "extra_metrics": {
+      "error": "type object 'ChargingStationRegistry' has no attribute 'reset'"
+    }
+  },
+  {
+    "name": "4 Stations (Edges)",
+    "category": "Charging Stations",
+    "total_tasks": 0,
+    "successful_tasks": 0,
+    "success_rate": 0,
+    "avg_latency": 0,
+    "avg_qos": 0,
+    "total_energy": 0,
+    "extra_metrics": {
+      "error": "type object 'ChargingStationRegistry' has no attribute 'reset'"
+    }
+  },
+  {
+    "name": "Static Users",
+    "category": "Mobility Patterns",
+    "total_tasks": 435,
+    "successful_tasks": 435,
+    "success_rate": 1.0,
+    "avg_latency": 0.13862068965517726,
+    "avg_qos": 78.16091954022988,
+    "total_energy": 1206.0,
+    "extra_metrics": null
+  },
+  {
+    "name": "Low Mobility (speed=1)",
+    "category": "Mobility Patterns",
+    "total_tasks": 448,
+    "successful_tasks": 441,
+    "success_rate": 0.984375,
+    "avg_latency": 0.22232142857142873,
+    "avg_qos": 71.76339285714286,
+    "total_energy": 1992.0,
+    "extra_metrics": null
+  },
+  {
+    "name": "Medium Mobility (speed=3)",
+    "category": "Mobility Patterns",
+    "total_tasks": 463,
+    "successful_tasks": 441,
+    "success_rate": 0.9524838012958964,
+    "avg_latency": 0.23736501079914069,
+    "avg_qos": 69.65442764578833,
+    "total_energy": 2198.0,
+    "extra_metrics": null
+  },
+  {
+    "name": "High Mobility (speed=5)",
+    "category": "Mobility Patterns",
+    "total_tasks": 300,
+    "successful_tasks": 264,
+    "success_rate": 0.88,
+    "avg_latency": 0.29966666666666925,
+    "avg_qos": 59.5,
+    "total_energy": 1798.0,
+    "extra_metrics": null
+  },
+  {
+    "name": "Clustered Static",
+    "category": "Mobility Patterns",
+    "total_tasks": 547,
+    "successful_tasks": 538,
+    "success_rate": 0.9835466179159049,
+    "avg_latency": 0.17952468007312797,
+    "avg_qos": 78.06215722120658,
+    "total_energy": 1972.0,
+    "extra_metrics": null
+  },
+  {
+    "name": "Default (Load Balance)",
+    "category": "Scheduling",
+    "total_tasks": 497,
+    "successful_tasks": 459,
+    "success_rate": 0.9235412474849095,
+    "avg_latency": 0.2336016096579527,
+    "avg_qos": 60.86519114688129,
+    "total_energy": 2322.0,
+    "extra_metrics": {
+      "strategy": "Default (Load Balance)"
+    }
+  },
+  {
+    "name": "Energy-First",
+    "category": "Scheduling",
+    "total_tasks": 458,
+    "successful_tasks": 435,
+    "success_rate": 0.9497816593886463,
+    "avg_latency": 0.20873362445415075,
+    "avg_qos": 70.85152838427948,
+    "total_energy": 1912.0,
+    "extra_metrics": {
+      "strategy": "Energy-First"
+    }
+  },
+  {
+    "name": "Latency-First",
+    "category": "Scheduling",
+    "total_tasks": 612,
+    "successful_tasks": 579,
+    "success_rate": 0.946078431372549,
+    "avg_latency": 0.20457516339869675,
+    "avg_qos": 61.27450980392157,
+    "total_energy": 2506.0,
+    "extra_metrics": {
+      "strategy": "Latency-First"
+    }
+  },
+  {
+    "name": "Balanced",
+    "category": "Scheduling",
+    "total_tasks": 521,
+    "successful_tasks": 471,
+    "success_rate": 0.9040307101727447,
+    "avg_latency": 0.2712092130518262,
+    "avg_qos": 59.69289827255278,
+    "total_energy": 2826.0,
+    "extra_metrics": {
+      "strategy": "Balanced"
+    }
+  },
+  {
+    "name": "Utilization-Based",
+    "category": "Scheduling",
+    "total_tasks": 531,
+    "successful_tasks": 478,
+    "success_rate": 0.9001883239171374,
+    "avg_latency": 0.31280602636535026,
+    "avg_qos": 59.32203389830509,
+    "total_energy": 3330.0,
+    "extra_metrics": {
+      "strategy": "Utilization-Based"
+    }
+  }
+]

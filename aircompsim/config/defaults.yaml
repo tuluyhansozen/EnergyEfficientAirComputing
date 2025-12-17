@@ -1,0 +1,104 @@
+# AirCompSim Default Configuration
+# ================================
+# This file contains the default configuration for the simulation.
+# Copy and modify this file to create custom scenarios.
+
+# Simulation parameters
+simulation:
+  time_limit: 1000.0          # Total simulation time in seconds
+  warmup_period: 100.0        # Ignore results before this time
+  seed: null                  # Random seed (null for random)
+  log_level: INFO             # Logging level: DEBUG, INFO, WARNING, ERROR
+  output_dir: results         # Output directory for results
+
+# Number of users
+user_count: 20
+
+# Simulation boundary
+boundary:
+  max_x: 400.0
+  max_y: 400.0
+  max_z: 400.0
+  min_x: 0.0
+  min_y: 0.0
+  min_z: 0.0
+
+# Edge server configuration
+edge:
+  capacity: 1000.0            # Computational capacity (cycles/second)
+  radius: 100.0               # Coverage radius (meters)
+  power: 100.0                # Power consumption (Watts)
+  count: 4                    # Number of edge servers
+  locations: null             # Optional: list of (x, y) positions
+
+# UAV configuration
+uav:
+  capacity: 500.0             # Computational capacity
+  radius: 100.0               # Coverage radius
+  power: 50.0                 # Power consumption
+  count: 5                    # Number of UAVs
+  altitude: 200.0             # Flying altitude (meters)
+  initial_battery: 100.0      # Initial battery level (%)
+  speed: 2.5                  # Flight speed (m/s)
+
+# Cloud server configuration
+cloud:
+  capacity: 100000.0          # High capacity
+  network_delay: 1.5          # WAN latency (seconds)
+
+# Energy model configuration
+energy:
+  alpha: 0.05                 # Flight energy coefficient
+  beta: 3.0                   # Hover power (W)
+  gamma: 20.0                 # Computation power (W)
+  delta: 10.0                 # Communication power (W)
+  use_physics_model: false    # Use advanced physics model
+  low_battery_threshold: 30.0
+  critical_battery_threshold: 10.0
+
+# Mobility configuration
+mobility:
+  user_mobility: true         # Enable user movement
+  user_speed: 2.0             # User walking speed (m/s)
+  uav_fly_policy: LSI         # UAV policy: LSI, Random, DRL, NoUAV
+  uav_waiting_policy: 100.0   # Time between UAV relocations
+
+# DRL configuration (optional)
+drl:
+  enabled: false              # Enable DRL training
+  algorithm: DDQN             # Algorithm: DQN, DDQN, ActorCritic
+  learning_rate: 0.0001
+  discount_factor: 0.99
+  epsilon_start: 1.0
+  epsilon_min: 0.01
+  epsilon_decay: 0.995
+  batch_size: 64
+  memory_size: 100000
+  episodes: 500
+  state_interval: 3
+
+# Application types
+applications:
+  - name: Entertainment
+    cpu_cycle: 100
+    worst_delay: 0.3
+    best_delay: 0.1
+    interarrival_time: 10
+
+  - name: Multimedia
+    cpu_cycle: 100
+    worst_delay: 3.0
+    best_delay: 0.1
+    interarrival_time: 10
+
+  - name: Rendering
+    cpu_cycle: 200
+    worst_delay: 1.0
+    best_delay: 0.5
+    interarrival_time: 20
+
+  - name: ImageClassification
+    cpu_cycle: 600
+    worst_delay: 1.0
+    best_delay: 0.5
+    interarrival_time: 20
