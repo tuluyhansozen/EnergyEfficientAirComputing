@@ -28,7 +28,7 @@ def load_yaml(path: Union[str, Path]) -> Dict[str, Any]:
         ValueError: If file is not valid YAML.
     """
     try:
-        import yaml
+        import yaml  # type: ignore
     except ImportError:
         raise ImportError(
             "PyYAML is required for YAML config loading. " "Install with: pip install PyYAML"

@@ -436,7 +436,7 @@ class Simulation:
                 ]
             )
 
-        return np.array(uav_positions, dtype=np.float32)
+        return np.array(uav_positions, dtype=np.float32)  # type: ignore
 
     def _collect_results(self) -> SimulationResults:
         """Collect simulation results."""
