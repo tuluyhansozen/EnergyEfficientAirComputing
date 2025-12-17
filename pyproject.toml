@@ -8,10 +8,10 @@ version = "1.0.0"
 description = "Energy-Efficient Air Computing Discrete Event Simulator"
 readme = "README.md"
 authors = [
-    {name = "Tuluyhan Sozen", email = "tuluyhan@example.com"}
+    {name = "Barış Yamansavaşçılar"}
 ]
 maintainers = [
-    {name = "Tuluyhan Sozen", email = "tuluyhan@example.com"}
+    {name = "Tuluyhan Sozen"}
 ]
 keywords = [
     "air-computing",
@@ -25,7 +25,6 @@ keywords = [
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
@@ -61,10 +60,10 @@ docs = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/yourusername/AirCompSim"
-Documentation = "https://github.com/yourusername/AirCompSim#readme"
-Repository = "https://github.com/yourusername/AirCompSim.git"
-Issues = "https://github.com/yourusername/AirCompSim/issues"
+Homepage = "https://github.com/tuluyhansozen/EnergyEfficientAirComputing"
+Documentation = "https://github.com/tuluyhansozen/EnergyEfficientAirComputing#readme"
+Repository = "https://github.com/tuluyhansozen/EnergyEfficientAirComputing.git"
+Issues = "https://github.com/tuluyhansozen/EnergyEfficientAirComputing/issues"
 
 [project.scripts]
 aircompsim = "aircompsim.cli:main"

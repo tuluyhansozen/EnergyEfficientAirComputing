@@ -34,7 +34,7 @@
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/EnergyEfficientAirComputing.git
+git clone https://github.com/tuluyhansozen/EnergyEfficientAirComputing.git
 cd EnergyEfficientAirComputing
 
 # Install in development mode

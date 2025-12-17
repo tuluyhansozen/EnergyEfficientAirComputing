@@ -12,7 +12,6 @@ Project-URL: Issues, https://github.com/yourusername/AirCompSim/issues
 Keywords: air-computing,uav,edge-computing,simulation,deep-reinforcement-learning,energy-efficiency,task-offloading
 Classifier: Development Status :: 4 - Beta
 Classifier: Intended Audience :: Science/Research
-Classifier: License :: OSI Approved :: MIT License
 Classifier: Operating System :: OS Independent
 Classifier: Programming Language :: Python :: 3
 Classifier: Programming Language :: Python :: 3.10
