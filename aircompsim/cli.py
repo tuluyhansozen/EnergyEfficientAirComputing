@@ -7,6 +7,7 @@ import argparse
 import logging
 import sys
 from pathlib import Path
+from typing import Any
 
 from aircompsim import Simulation, SimulationConfig, __version__
 from aircompsim.config.loader import load_config

@@ -15,7 +15,7 @@ import numpy as np
 
 from aircompsim.core.event import Event, EventType, EventQueue
 from aircompsim.entities.location import Location, SimulationBoundary
-from aircompsim.entities.server import EdgeServer, UAV, CloudServer
+from aircompsim.entities.server import EdgeServer, UAV, CloudServer, Server
 from aircompsim.entities.user import User
 from aircompsim.entities.task import Application, Task, ApplicationType
 from aircompsim.config.settings import SimulationConfig
