@@ -189,7 +189,7 @@ class EnergyAwareScheduler(BaseScheduler):
         # Calculate cost for each server
         best_server = None
         best_cost = float("inf")
-        best_metrics = {"latency": 0, "energy": 0}
+        best_metrics = {"latency": 0.0, "energy": 0.0}
 
         for server in valid_servers:
             latency = self._estimate_latency(server, task, current_time)
@@ -211,7 +211,7 @@ class EnergyAwareScheduler(BaseScheduler):
             estimated_latency=best_metrics["latency"],
             estimated_energy=best_metrics["energy"],
             confidence=self._calculate_confidence(best_metrics, task),
-            reason=f"Selected {server_type} {best_server.id} (cost={best_cost:.3f})",
+            reason=f"Selected {server_type} {best_server.server_id} (cost={best_cost:.3f})",
         )
 
         logger.debug(
@@ -240,7 +240,7 @@ class EnergyAwareScheduler(BaseScheduler):
             if hasattr(server, "battery_level"):
                 if server.battery_level < self.uav_energy_threshold:
                     logger.debug(
-                        f"UAV {server.id} rejected task: "
+                        f"UAV {server.server_id} rejected task: "
                         f"battery {server.battery_level:.1f}% < threshold"
                     )
                     return False
@@ -249,7 +249,7 @@ class EnergyAwareScheduler(BaseScheduler):
                 from aircompsim.energy.models import EnergyMode
 
                 if server.energy_mode == EnergyMode.CRITICAL:
-                    logger.debug(f"UAV {server.id} rejected task: CRITICAL energy mode")
+                    logger.debug(f"UAV {server.server_id} rejected task: CRITICAL energy mode")
                     return False
 
         return True

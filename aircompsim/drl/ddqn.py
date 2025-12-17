@@ -171,28 +171,28 @@ class DDQNAgent(BaseAgent):
         states, actions, rewards, next_states, dones = self.replay_buffer.sample(self.batch_size)
 
         # Convert to tensors
-        states = torch.from_numpy(states).float().to(self.device)
-        actions = torch.from_numpy(actions).long().to(self.device)
-        rewards = torch.from_numpy(rewards).float().to(self.device)
-        next_states = torch.from_numpy(next_states).float().to(self.device)
-        dones = torch.from_numpy(dones).float().to(self.device)
+        state_tensor = torch.from_numpy(states).float().to(self.device)
+        action_tensor = torch.from_numpy(actions).long().to(self.device)
+        reward_tensor = torch.from_numpy(rewards).float().to(self.device)
+        next_state_tensor = torch.from_numpy(next_states).float().to(self.device)
+        done_tensor = torch.from_numpy(dones).float().to(self.device)
 
         # Current Q-values
-        current_q = self.network(states)
-        current_q = current_q.gather(1, actions.unsqueeze(1)).squeeze()
+        current_q = self.network(state_tensor)
+        current_q = current_q.gather(1, action_tensor.unsqueeze(1)).squeeze()
 
         # DDQN: Online network selects action, target network evaluates
         with torch.no_grad():
             # Online network selects best action
-            next_q_online = self.network(next_states)
+            next_q_online = self.network(next_state_tensor)
             best_actions = next_q_online.argmax(dim=1)
 
             # Target network evaluates selected action
-            next_q_target = self.target_network(next_states)
+            next_q_target = self.target_network(next_state_tensor)
             next_q_values = next_q_target.gather(1, best_actions.unsqueeze(1)).squeeze()
 
             # Compute target
-            target_q = rewards + self.discount_factor * next_q_values * (1 - dones)
+            target_q = reward_tensor + self.discount_factor * next_q_values * (1 - done_tensor)
 
         # Compute loss and update
         loss = self.loss_fn(current_q, target_q)
@@ -218,8 +218,8 @@ class DDQNAgent(BaseAgent):
         Args:
             path: Save path.
         """
-        path = Path(path)
-        path.parent.mkdir(parents=True, exist_ok=True)
+        save_path = Path(path)
+        save_path.parent.mkdir(parents=True, exist_ok=True)
 
         torch.save(
             {
@@ -237,10 +237,10 @@ class DDQNAgent(BaseAgent):
                     "tau": self.tau,
                 },
             },
-            path,
+            save_path,
         )
 
-        logger.info(f"DDQNAgent saved to {path}")
+        logger.info(f"DDQNAgent saved to {save_path}")
 
     def load(self, path: str) -> None:
         """Load agent from file.

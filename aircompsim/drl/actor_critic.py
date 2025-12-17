@@ -155,10 +155,10 @@ class ActorCriticAgent(BaseAgent):
                 dist = torch.distributions.Categorical(action_probs)
                 action = dist.sample()
                 self.log_prob = dist.log_prob(action)
-                return action.item()
+                return int(action.item())
             else:
                 # Take greedy action
-                return action_probs.argmax().item()
+                return int(action_probs.argmax().item())
 
     def learn(
         self, state: np.ndarray, action: int, reward: float, next_state: np.ndarray, done: bool
@@ -219,12 +219,12 @@ class ActorCriticAgent(BaseAgent):
         # Reset log_prob for next action
         self.log_prob = None
 
-        return total_loss.item()
+        return float(total_loss.item())
 
     def save(self, path: str) -> None:
         """Save agent to file."""
-        path = Path(path)
-        path.parent.mkdir(parents=True, exist_ok=True)
+        save_path = Path(path)
+        save_path.parent.mkdir(parents=True, exist_ok=True)
 
         torch.save(
             {
@@ -239,10 +239,10 @@ class ActorCriticAgent(BaseAgent):
                     "discount_factor": self.discount_factor,
                 },
             },
-            path,
+            save_path,
         )
 
-        logger.info(f"ActorCriticAgent saved to {path}")
+        logger.info(f"ActorCriticAgent saved to {save_path}")
 
     def load(self, path: str) -> None:
         """Load agent from file."""

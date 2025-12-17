@@ -180,13 +180,13 @@ class SimulationConfig:
         import dataclasses
 
         def convert(obj: Any) -> Any:
-            if dataclasses.is_dataclass(obj):
+            if dataclasses.is_dataclass(obj) and not isinstance(obj, type):
                 return {k: convert(v) for k, v in dataclasses.asdict(obj).items()}
             elif isinstance(obj, list):
                 return [convert(item) for item in obj]
             return obj
 
-        return convert(self)
+        return dict(convert(self))
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> SimulationConfig:

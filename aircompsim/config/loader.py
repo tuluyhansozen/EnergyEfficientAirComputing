@@ -40,9 +40,9 @@ def load_yaml(path: Union[str, Path]) -> Dict[str, Any]:
 
     try:
         with open(path, "r") as f:
-            data = yaml.safe_load(f)
+            data: Dict[str, Any] = yaml.safe_load(f) or {}
             logger.info(f"Loaded configuration from {path}")
-            return data or {}
+            return data
     except yaml.YAMLError as e:
         raise ValueError(f"Invalid YAML file: {e}")
 

@@ -155,15 +155,19 @@ class Server(ABC):
         """Get total energy consumed by server."""
         return self.energy_tracker.total_consumed
 
-    def consume_communication_energy(self, duration: float) -> None:
+    def consume_communication_energy(self, duration: float) -> float:
         """Record communication energy consumption.
 
         Args:
             duration: Communication duration in seconds.
+
+        Returns:
+            Energy consumed in Joules.
         """
         energy = self.energy_model.compute_communication_energy(duration)
         self.energy_tracker.record(energy, "communication")
         logger.debug(f"Server {self.server_id}: Comm energy {energy:.2f}J")
+        return energy
 
     def reset_stats(self) -> None:
         """Reset server statistics."""

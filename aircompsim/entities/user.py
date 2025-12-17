@@ -45,7 +45,7 @@ class User:
     location: Location
     user_id: int = field(default=0)
     is_moving: bool = False
-    qoe: int = 0
+    qoe: float = 0.0
     applications: Set[Application] = field(default_factory=set)
     trajectory: List[Location] = field(default_factory=list)
     city: str = ""
@@ -267,6 +267,13 @@ class FlyingUser(MobileUser):
     def current_location(self) -> Location:
         """Get current 3D location including altitude."""
         return Location(self.location.x, self.location.y, self.altitude)
+
+    @current_location.setter
+    def current_location(self, loc: Location) -> None:
+        """Set 3D location."""
+        self.location.x = loc.x
+        self.location.y = loc.y
+        self.altitude = loc.z
 
 
 # Alias for backward compatibility

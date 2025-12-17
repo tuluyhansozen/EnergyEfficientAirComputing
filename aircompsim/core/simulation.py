@@ -353,7 +353,11 @@ class Simulation:
         if task is None:
             return
 
-        task.complete(self.simulation_time, task.processed_server)
+        if task.processed_server:
+            task.complete(self.simulation_time, task.processed_server)
+        else:
+            logger.error(f"Task {task.task_id} returned without processed_server")
+            return
 
         self._task_count += 1
         self._total_latency += task.latency
@@ -404,7 +408,7 @@ class Simulation:
             return None
 
         # Find covering servers
-        candidates = []
+        candidates: List[Server] = []
 
         for edge in EdgeServer.get_all():
             if edge.is_in_coverage(location):

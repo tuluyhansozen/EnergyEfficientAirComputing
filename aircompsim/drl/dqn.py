@@ -144,21 +144,21 @@ class DQNAgent(BaseAgent):
         states, actions, rewards, next_states, dones = self.replay_buffer.sample(self.batch_size)
 
         # Convert to tensors
-        states = torch.from_numpy(states).float().to(self.device)
-        actions = torch.from_numpy(actions).long().to(self.device)
-        rewards = torch.from_numpy(rewards).float().to(self.device)
-        next_states = torch.from_numpy(next_states).float().to(self.device)
-        dones = torch.from_numpy(dones).float().to(self.device)
+        state_tensor = torch.from_numpy(states).float().to(self.device)
+        action_tensor = torch.from_numpy(actions).long().to(self.device)
+        reward_tensor = torch.from_numpy(rewards).float().to(self.device)
+        next_state_tensor = torch.from_numpy(next_states).float().to(self.device)
+        done_tensor = torch.from_numpy(dones).float().to(self.device)
 
         # Current Q-values
-        current_q = self.network(states)
-        current_q = current_q.gather(1, actions.unsqueeze(1)).squeeze()
+        current_q = self.network(state_tensor)
+        current_q = current_q.gather(1, action_tensor.unsqueeze(1)).squeeze()
 
         # Target Q-values (using same network - vanilla DQN)
         with torch.no_grad():
-            next_q = self.network(next_states)
+            next_q = self.network(next_state_tensor)
             max_next_q = next_q.max(dim=1)[0]
-            target_q = rewards + self.discount_factor * max_next_q * (1 - dones)
+            target_q = reward_tensor + self.discount_factor * max_next_q * (1 - done_tensor)
 
         # Compute loss and update
         loss = self.loss_fn(current_q, target_q)
@@ -180,8 +180,8 @@ class DQNAgent(BaseAgent):
         Args:
             path: Save path.
         """
-        path = Path(path)
-        path.parent.mkdir(parents=True, exist_ok=True)
+        save_path = Path(path)
+        save_path.parent.mkdir(parents=True, exist_ok=True)
 
         torch.save(
             {
@@ -197,10 +197,10 @@ class DQNAgent(BaseAgent):
                     "discount_factor": self.discount_factor,
                 },
             },
-            path,
+            save_path,
         )
 
-        logger.info(f"DQNAgent saved to {path}")
+        logger.info(f"DQNAgent saved to {save_path}")
 
     def load(self, path: str) -> None:
         """Load agent from file.

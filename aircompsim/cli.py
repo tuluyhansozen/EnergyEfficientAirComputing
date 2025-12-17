@@ -113,14 +113,14 @@ def main() -> int:
     return 0
 
 
-def run_single_simulation(config: SimulationConfig):
+def run_single_simulation(config: SimulationConfig) -> Any:
     """Run a single simulation."""
     sim = Simulation(config)
     sim.initialize()
     return sim.run()
 
 
-def run_drl_training(config: SimulationConfig):
+def run_drl_training(config: SimulationConfig) -> Any:
     """Run DRL training across multiple episodes."""
     from aircompsim.drl import DDQNAgent
 
