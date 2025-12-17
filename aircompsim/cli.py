@@ -94,10 +94,8 @@ def main() -> int:
     config.output_dir = args.output
 
     # Run simulation
-    if args.drl:
-        results = run_drl_training(config)
-    else:
-        results = run_single_simulation(config)
+    # Run simulation
+    results = run_drl_training(config) if args.drl else run_single_simulation(config)
 
     # Print results
     print("\n" + "=" * 50)

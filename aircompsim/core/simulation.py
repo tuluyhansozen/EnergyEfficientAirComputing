@@ -387,7 +387,7 @@ class Simulation:
             # DRL training logic would go here
 
     def _select_server(
-        self, task: Task, _location: Optional[Location]
+        self, _task: Task, location: Optional[Location]
     ) -> Optional[EdgeServer | UAV]:
         """Select best server for task.
 

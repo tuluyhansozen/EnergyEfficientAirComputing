@@ -1,6 +1,5 @@
 """Unit tests for Location and SimulationBoundary classes."""
 
-
 import pytest
 
 from aircompsim.entities.location import Location, SimulationBoundary

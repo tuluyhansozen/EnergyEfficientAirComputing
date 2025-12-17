@@ -32,7 +32,7 @@ from aircompsim.entities.server import UAV, CloudServer, EdgeServer
 from aircompsim.entities.task import Application, ApplicationType, Task
 from aircompsim.entities.user import User
 
-__all__ = [
+__all__ = [  # noqa: RUF022
     # Core
     "Event",
     "EventQueue",
@@ -47,8 +47,8 @@ __all__ = [
     "Location",
     "SimulationBoundary",
     "Task",
-    "User",
     "UAV",
+    "User",
     # Energy
     "EnergyMode",
     "EnergyModel",

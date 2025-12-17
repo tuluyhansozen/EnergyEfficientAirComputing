@@ -54,12 +54,8 @@ class TestServerUserIntegration:
 
     def test_multiple_servers_coverage(self):
         """Test user covered by multiple servers."""
-        EdgeServer(
-            capacity=1000, location=Location(100, 100, 0), radius=80, power_consumption=100
-        )
-        EdgeServer(
-            capacity=1000, location=Location(150, 100, 0), radius=80, power_consumption=100
-        )
+        EdgeServer(capacity=1000, location=Location(100, 100, 0), radius=80, power_consumption=100)
+        EdgeServer(capacity=1000, location=Location(150, 100, 0), radius=80, power_consumption=100)
 
         # User in overlap zone
         user = User(location=Location(125, 100, 0))

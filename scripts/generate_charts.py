@@ -372,9 +372,6 @@ def generate_advanced_benchmark_charts(results_dir: Path):
         )
 
 
-
-
-
 def update_report_with_charts(report_path: Path, charts: list):
     """Add chart references to markdown report."""
     with report_path.open() as f:

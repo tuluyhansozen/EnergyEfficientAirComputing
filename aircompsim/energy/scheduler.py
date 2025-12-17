@@ -237,11 +237,11 @@ class EnergyAwareScheduler(BaseScheduler):
         # For UAVs, check battery level
         if isinstance(server, UAV) and hasattr(server, "battery_level"):
             if server.battery_level < self.uav_energy_threshold:
-                    logger.debug(
-                        f"UAV {server.server_id} rejected task: "
-                        f"battery {server.battery_level:.1f}% < threshold"
-                    )
-                    return False
+                logger.debug(
+                    f"UAV {server.server_id} rejected task: "
+                    f"battery {server.battery_level:.1f}% < threshold"
+                )
+                return False
 
             if hasattr(server, "energy_mode"):
                 from aircompsim.energy.models import EnergyMode
