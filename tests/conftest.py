@@ -13,6 +13,7 @@ sys.path.insert(0, str(project_root))
 def sample_location():
     """Create a sample location for testing."""
     from aircompsim.entities.location import Location
+
     return Location(x=100.0, y=200.0, z=0.0)
 
 
@@ -20,17 +21,15 @@ def sample_location():
 def sample_boundary():
     """Create a sample simulation boundary."""
     from aircompsim.entities.location import SimulationBoundary
-    return SimulationBoundary(
-        max_x=400.0,
-        max_y=400.0,
-        max_z=400.0
-    )
+
+    return SimulationBoundary(max_x=400.0, max_y=400.0, max_z=400.0)
 
 
 @pytest.fixture
 def sample_energy_model():
     """Create a sample energy model."""
     from aircompsim.energy.models import EnergyModel
+
     return EnergyModel()
 
 
@@ -38,6 +37,7 @@ def sample_energy_model():
 def sample_config():
     """Create a sample simulation config."""
     from aircompsim.config.settings import SimulationConfig
+
     return SimulationConfig()
 
 
@@ -51,7 +51,7 @@ def reset_registries():
         from aircompsim.entities.user import User
         from aircompsim.entities.task import Application, Task, ApplicationType
         from aircompsim.core.event import Event
-        
+
         EdgeServer.reset_all()
         UAV.reset_all()
         User.reset_all()

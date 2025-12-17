@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class BoundaryConfig:
     """Simulation boundary configuration."""
-    
+
     max_x: float = 400.0
     max_y: float = 400.0
     max_z: float = 400.0
@@ -29,7 +29,7 @@ class BoundaryConfig:
 @dataclass
 class EdgeServerConfig:
     """Edge server configuration."""
-    
+
     capacity: float = 1000.0
     radius: float = 100.0
     power: float = 100.0
@@ -40,7 +40,7 @@ class EdgeServerConfig:
 @dataclass
 class UAVConfig:
     """UAV configuration."""
-    
+
     capacity: float = 500.0
     radius: float = 100.0
     power: float = 50.0
@@ -50,10 +50,10 @@ class UAVConfig:
     speed: float = 2.5
 
 
-@dataclass  
+@dataclass
 class CloudServerConfig:
     """Cloud server configuration."""
-    
+
     capacity: float = 100000.0
     network_delay: float = 1.5
 
@@ -61,9 +61,9 @@ class CloudServerConfig:
 @dataclass
 class EnergyConfig:
     """Energy model configuration."""
-    
+
     alpha: float = 0.05  # Flight coefficient
-    beta: float = 3.0    # Hover power
+    beta: float = 3.0  # Hover power
     gamma: float = 20.0  # Computation power
     delta: float = 10.0  # Communication power
     use_physics_model: bool = False
@@ -74,7 +74,7 @@ class EnergyConfig:
 @dataclass
 class ApplicationConfig:
     """Application type configuration."""
-    
+
     name: str = "Default"
     cpu_cycle: float = 100.0
     worst_delay: float = 1.0
@@ -85,7 +85,7 @@ class ApplicationConfig:
 @dataclass
 class DRLConfig:
     """Deep Reinforcement Learning configuration."""
-    
+
     enabled: bool = False
     algorithm: str = "DDQN"  # DQN, DDQN, ActorCritic
     learning_rate: float = 0.0001
@@ -102,7 +102,7 @@ class DRLConfig:
 @dataclass
 class MobilityConfig:
     """Mobility configuration."""
-    
+
     user_mobility: bool = True
     user_speed: float = 2.0  # m/s
     uav_fly_policy: str = "LSI"  # LSI, Random, DRL, NoUAV
@@ -112,25 +112,25 @@ class MobilityConfig:
 @dataclass
 class SimulationConfig:
     """Main simulation configuration.
-    
+
     Aggregates all sub-configurations for the simulation.
-    
+
     Example:
         >>> config = SimulationConfig()
         >>> config.time_limit = 2000
         >>> config.uav.count = 10
     """
-    
+
     # Simulation parameters
     time_limit: float = 1000.0
     warmup_period: float = 100.0
     seed: Optional[int] = None
     log_level: str = "INFO"
     output_dir: str = "results"
-    
+
     # User parameters
     user_count: int = 20
-    
+
     # Sub-configurations
     boundary: BoundaryConfig = field(default_factory=BoundaryConfig)
     edge: EdgeServerConfig = field(default_factory=EdgeServerConfig)
@@ -140,7 +140,7 @@ class SimulationConfig:
     drl: DRLConfig = field(default_factory=DRLConfig)
     mobility: MobilityConfig = field(default_factory=MobilityConfig)
     applications: List[ApplicationConfig] = field(default_factory=list)
-    
+
     def __post_init__(self) -> None:
         """Set up default applications if none provided."""
         if not self.applications:
@@ -150,89 +150,86 @@ class SimulationConfig:
                     cpu_cycle=100,
                     worst_delay=0.3,
                     best_delay=0.1,
-                    interarrival_time=10
+                    interarrival_time=10,
                 ),
                 ApplicationConfig(
                     name="Multimedia",
                     cpu_cycle=100,
                     worst_delay=3.0,
                     best_delay=0.1,
-                    interarrival_time=10
+                    interarrival_time=10,
                 ),
                 ApplicationConfig(
                     name="Rendering",
                     cpu_cycle=200,
                     worst_delay=1.0,
                     best_delay=0.5,
-                    interarrival_time=20
+                    interarrival_time=20,
                 ),
                 ApplicationConfig(
                     name="ImageClassification",
                     cpu_cycle=600,
                     worst_delay=1.0,
                     best_delay=0.5,
-                    interarrival_time=20
+                    interarrival_time=20,
                 ),
             ]
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert configuration to dictionary."""
         import dataclasses
-        
+
         def convert(obj: Any) -> Any:
             if dataclasses.is_dataclass(obj):
                 return {k: convert(v) for k, v in dataclasses.asdict(obj).items()}
             elif isinstance(obj, list):
                 return [convert(item) for item in obj]
             return obj
-        
+
         return convert(self)
-    
+
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> SimulationConfig:
         """Create configuration from dictionary.
-        
+
         Args:
             data: Configuration dictionary.
-            
+
         Returns:
             SimulationConfig instance.
         """
         config = cls()
-        
+
         # Simple fields
-        for key in ['time_limit', 'warmup_period', 'seed', 'log_level', 
-                    'output_dir', 'user_count']:
+        for key in ["time_limit", "warmup_period", "seed", "log_level", "output_dir", "user_count"]:
             if key in data:
                 setattr(config, key, data[key])
-        
+
         # Nested configs
-        if 'boundary' in data:
-            config.boundary = BoundaryConfig(**data['boundary'])
-        if 'edge' in data:
-            config.edge = EdgeServerConfig(**data['edge'])
-        if 'uav' in data:
-            config.uav = UAVConfig(**data['uav'])
-        if 'cloud' in data:
-            config.cloud = CloudServerConfig(**data['cloud'])
-        if 'energy' in data:
-            config.energy = EnergyConfig(**data['energy'])
-        if 'drl' in data:
-            config.drl = DRLConfig(**data['drl'])
-        if 'mobility' in data:
-            config.mobility = MobilityConfig(**data['mobility'])
-        if 'applications' in data:
-            config.applications = [
-                ApplicationConfig(**app) for app in data['applications']
-            ]
-        
+        if "boundary" in data:
+            config.boundary = BoundaryConfig(**data["boundary"])
+        if "edge" in data:
+            config.edge = EdgeServerConfig(**data["edge"])
+        if "uav" in data:
+            config.uav = UAVConfig(**data["uav"])
+        if "cloud" in data:
+            config.cloud = CloudServerConfig(**data["cloud"])
+        if "energy" in data:
+            config.energy = EnergyConfig(**data["energy"])
+        if "drl" in data:
+            config.drl = DRLConfig(**data["drl"])
+        if "mobility" in data:
+            config.mobility = MobilityConfig(**data["mobility"])
+        if "applications" in data:
+            config.applications = [ApplicationConfig(**app) for app in data["applications"]]
+
         return config
 
 
 @dataclass
 class EnvironmentConfig:
     """Environment-specific configuration (e.g., for different scenarios)."""
-    
+
     name: str = "default"
     description: str = ""
     config: SimulationConfig = field(default_factory=SimulationConfig)

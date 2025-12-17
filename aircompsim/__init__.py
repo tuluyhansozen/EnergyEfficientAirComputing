@@ -59,5 +59,3 @@ __all__ = [
     # Metadata
     "__version__",
 ]
-
-
