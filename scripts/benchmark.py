@@ -183,7 +183,7 @@ if __name__ == "__main__":
     output_dir.mkdir(exist_ok=True)
 
     report_path = output_dir / "benchmark_report.md"
-    report = generate_report(results, str(report_path))
+    report = generate_report(results, report_path)
 
     print("=" * 70)
     print(f"Report saved to: {report_path}")
