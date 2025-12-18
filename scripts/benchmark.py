@@ -47,11 +47,12 @@ def run_benchmark():
         try:
             # Create config
             config = SimulationConfig(
-                time_limit=cfg["time_limit"],
-                user_count=cfg["users"],
+                time_limit=float(cfg["time_limit"]),
+                user_count=int(cfg["users"]),
+                workload_seed=42,
             )
-            config.uav.count = cfg["uavs"]
-            config.edge.count = cfg["edges"]
+            config.uav.count = int(cfg["uavs"])
+            config.edge.count = int(cfg["edges"])
 
             # Run simulation
             sim = Simulation(config)
@@ -88,7 +89,7 @@ def run_benchmark():
     return results
 
 
-def generate_report(results: list, output_path: str):
+def generate_report(results: list, output_path: Path):
     """Generate markdown report from results."""
 
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")

@@ -7,6 +7,7 @@ the discrete event simulation for air computing environments.
 from __future__ import annotations
 
 import logging
+import random
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Union
 
@@ -110,6 +111,9 @@ class Simulation:
         self._event_handlers: Dict[EventType, Callable] = {}
         self._setup_event_handlers()
 
+        # Workload RNG
+        self.workload_rng = np.random.RandomState()
+
         logger.info(
             f"Simulation initialized: time_limit={self.config.time_limit}, "
             f"users={self.config.user_count}"
@@ -145,6 +149,22 @@ class Simulation:
             power_consumption=100,
         )
 
+        # Initialize workload RNG
+        workload_seed = (
+            self.config.workload_seed
+            if self.config.workload_seed is not None
+            else self.config.seed
+        )
+        if workload_seed is not None:
+            self.workload_rng.seed(workload_seed)
+
+        if self.config.seed is not None:
+            random.seed(self.config.seed)
+            np.random.seed(self.config.seed)
+            print(f"DEBUG: Seeded with {self.config.seed}. Random state: {random.getstate()[1][0]}")
+
+        # ... (skip to _create_users)
+        
         # Create edge servers
         self._create_edge_servers()
 
@@ -230,7 +250,8 @@ class Simulation:
             if app_types:
                 import random
 
-                app_type = random.choice(app_types)
+                idx = self.workload_rng.randint(0, len(app_types))
+                app_type = app_types[idx]
                 app = Application(app_type=app_type, start_time=0)
                 user.add_application(app)
 
@@ -282,6 +303,10 @@ class Simulation:
 
             self._process_event(event)
 
+        # Final check for tasks up to time limit
+        self.simulation_time = self.config.time_limit
+        self._generate_user_tasks()
+
         results = self._collect_results()
         logger.info(
             f"Simulation complete: {results.total_tasks} tasks, "
@@ -294,13 +319,15 @@ class Simulation:
         """Generate tasks from user applications."""
         for user in User.get_all():
             for app in user.applications:
-                if app.is_task_valid(self.simulation_time):
-                    task = app.generate_task(user)
+                while app.is_task_valid(self.simulation_time):
+                    task = app.generate_task(user, rng=self.workload_rng)
                     if task.creation_time < self.config.time_limit:
                         event = Event.create_offload_event(
                             task=task, time=task.creation_time, location=user.location
                         )
                         self.event_queue.push(event)
+                    else:
+                        break
 
     def _process_event(self, event: Event) -> None:
         """Process a single event.
@@ -458,10 +485,12 @@ class Simulation:
             edge.get_energy_consumption() for edge in EdgeServer.get_all()
         )
 
+        total_tasks = len(Task.get_all())
+
         return SimulationResults(
-            total_tasks=self._task_count,
+            total_tasks=total_tasks,
             successful_tasks=self._successful_tasks,
-            failed_tasks=self._task_count - self._successful_tasks,
+            failed_tasks=total_tasks - self._successful_tasks,
             avg_latency=self._total_latency / max(1, self._task_count),
             avg_qos=self._total_qos / max(1, self._task_count),
             total_energy=total_energy,

@@ -124,6 +124,7 @@ class SimulationConfig:
     time_limit: float = 1000.0
     warmup_period: float = 100.0
     seed: Optional[int] = None
+    workload_seed: Optional[int] = None  # Dedicated seed for task generation
     log_level: str = "INFO"
     output_dir: str = "results"
 

@@ -5,13 +5,13 @@
     "uavs": 3,
     "edges": 4,
     "time_limit": 500,
-    "total_tasks": 288,
-    "successful_tasks": 273,
-    "failed_tasks": 15,
-    "success_rate": 0.9479166666666666,
-    "avg_latency": 0.3975694444444493,
-    "avg_qos": 63.541666666666664,
-    "total_energy": 2290.0
+    "total_tasks": 379,
+    "successful_tasks": 307,
+    "failed_tasks": 72,
+    "success_rate": 0.8100263852242744,
+    "avg_latency": 0.2839285714285738,
+    "avg_qos": 70.53571428571429,
+    "total_energy": 1932.0
   },
   {
     "config_name": "Low Users (5)",
@@ -19,13 +19,13 @@
     "uavs": 3,
     "edges": 4,
     "time_limit": 500,
-    "total_tasks": 116,
-    "successful_tasks": 90,
-    "failed_tasks": 26,
-    "success_rate": 0.7758620689655172,
-    "avg_latency": 0.5465517241379289,
-    "avg_qos": 63.793103448275865,
-    "total_energy": 1268.0
+    "total_tasks": 165,
+    "successful_tasks": 130,
+    "failed_tasks": 35,
+    "success_rate": 0.7878787878787878,
+    "avg_latency": 0.24461538461538698,
+    "avg_qos": 77.6923076923077,
+    "total_energy": 636.0
   },
   {
     "config_name": "Medium Users (20)",
@@ -33,13 +33,13 @@
     "uavs": 3,
     "edges": 4,
     "time_limit": 500,
-    "total_tasks": 521,
-    "successful_tasks": 485,
-    "failed_tasks": 36,
-    "success_rate": 0.9309021113243762,
-    "avg_latency": 0.2792706333973169,
-    "avg_qos": 62.95585412667946,
-    "total_energy": 2910.0
+    "total_tasks": 638,
+    "successful_tasks": 453,
+    "failed_tasks": 185,
+    "success_rate": 0.7100313479623824,
+    "avg_latency": 0.26114790286975637,
+    "avg_qos": 78.69757174392936,
+    "total_energy": 2366.0
   },
   {
     "config_name": "High Users (30)",
@@ -47,13 +47,13 @@
     "uavs": 3,
     "edges": 4,
     "time_limit": 500,
-    "total_tasks": 690,
-    "successful_tasks": 621,
-    "failed_tasks": 69,
-    "success_rate": 0.9,
-    "avg_latency": 0.2936231884058018,
-    "avg_qos": 64.42028985507247,
-    "total_energy": 4076.0
+    "total_tasks": 1073,
+    "successful_tasks": 642,
+    "failed_tasks": 431,
+    "success_rate": 0.5983224603914259,
+    "avg_latency": 0.28628318584070905,
+    "avg_qos": 68.21533923303835,
+    "total_energy": 3890.0
   },
   {
     "config_name": "No UAVs",
@@ -61,13 +61,13 @@
     "uavs": 0,
     "edges": 4,
     "time_limit": 500,
-    "total_tasks": 230,
-    "successful_tasks": 230,
-    "failed_tasks": 0,
-    "success_rate": 1.0,
-    "avg_latency": 0.2695652173913156,
-    "avg_qos": 60.0,
-    "total_energy": 1240.0
+    "total_tasks": 379,
+    "successful_tasks": 320,
+    "failed_tasks": 59,
+    "success_rate": 0.8443271767810027,
+    "avg_latency": 0.22906250000000244,
+    "avg_qos": 77.34375,
+    "total_energy": 1466.0
   },
   {
     "config_name": "Many UAVs (5)",
@@ -75,13 +75,13 @@
     "uavs": 5,
     "edges": 4,
     "time_limit": 500,
-    "total_tasks": 232,
-    "successful_tasks": 176,
-    "failed_tasks": 56,
-    "success_rate": 0.7586206896551724,
-    "avg_latency": 0.469396551724135,
-    "avg_qos": 53.66379310344828,
-    "total_energy": 2190.0
+    "total_tasks": 379,
+    "successful_tasks": 231,
+    "failed_tasks": 148,
+    "success_rate": 0.6094986807387863,
+    "avg_latency": 0.2726190476190455,
+    "avg_qos": 68.84920634920636,
+    "total_energy": 1398.0
   },
   {
     "config_name": "Many UAVs (8)",
@@ -89,13 +89,13 @@
     "uavs": 8,
     "edges": 4,
     "time_limit": 500,
-    "total_tasks": 412,
-    "successful_tasks": 357,
-    "failed_tasks": 55,
-    "success_rate": 0.866504854368932,
-    "avg_latency": 0.31504854368931545,
-    "avg_qos": 54.00485436893204,
-    "total_energy": 2596.0
+    "total_tasks": 379,
+    "successful_tasks": 309,
+    "failed_tasks": 70,
+    "success_rate": 0.8153034300791556,
+    "avg_latency": 0.2893491124260316,
+    "avg_qos": 68.19526627218934,
+    "total_energy": 1980.0
   },
   {
     "config_name": "Few Edges (2)",
@@ -103,13 +103,13 @@
     "uavs": 3,
     "edges": 2,
     "time_limit": 500,
-    "total_tasks": 154,
-    "successful_tasks": 130,
-    "failed_tasks": 24,
-    "success_rate": 0.8441558441558441,
-    "avg_latency": 0.39220779220779095,
-    "avg_qos": 50.97402597402598,
-    "total_energy": 1208.0
+    "total_tasks": 379,
+    "successful_tasks": 193,
+    "failed_tasks": 186,
+    "success_rate": 0.5092348284960422,
+    "avg_latency": 0.34778325123152054,
+    "avg_qos": 67.48768472906404,
+    "total_energy": 1436.0
   },
   {
     "config_name": "Many Edges (6)",
@@ -117,13 +117,13 @@
     "uavs": 3,
     "edges": 6,
     "time_limit": 500,
-    "total_tasks": 452,
-    "successful_tasks": 431,
-    "failed_tasks": 21,
-    "success_rate": 0.9535398230088495,
-    "avg_latency": 0.20044247787610844,
-    "avg_qos": 65.04424778761062,
-    "total_energy": 1812.0
+    "total_tasks": 379,
+    "successful_tasks": 229,
+    "failed_tasks": 150,
+    "success_rate": 0.604221635883905,
+    "avg_latency": 0.2941422594142267,
+    "avg_qos": 71.75732217573221,
+    "total_energy": 1406.0
   },
   {
     "config_name": "High Load",
@@ -131,12 +131,12 @@
     "uavs": 5,
     "edges": 6,
     "time_limit": 500,
-    "total_tasks": 688,
-    "successful_tasks": 660,
-    "failed_tasks": 28,
-    "success_rate": 0.9593023255813954,
-    "avg_latency": 0.23822674418604936,
-    "avg_qos": 62.57267441860465,
-    "total_energy": 3278.0
+    "total_tasks": 1073,
+    "successful_tasks": 717,
+    "failed_tasks": 356,
+    "success_rate": 0.668219944082013,
+    "avg_latency": 0.3140211640211665,
+    "avg_qos": 68.58465608465609,
+    "total_energy": 4752.0
   }
 ]

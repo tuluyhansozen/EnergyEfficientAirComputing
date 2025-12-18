@@ -1,6 +1,6 @@
 # AirCompSim Benchmark Report
 
-**Generated:** 2025-12-18 22:28:03
+**Generated:** 2025-12-18 23:07:51
 
 ## Summary
 
@@ -10,29 +10,29 @@ Ran 10 different configurations to compare performance metrics.
 
 | Configuration | Users | UAVs | Edges | Tasks | Success Rate | Avg Latency (s) | Avg QoS | Energy (J) |
 |--------------|-------|------|-------|-------|--------------|-----------------|---------|------------|
-| Baseline | 10 | 3 | 4 | 288 | 94.8% | 0.3976 | 63.5 | 2290.00 |
-| Low Users (5) | 5 | 3 | 4 | 116 | 77.6% | 0.5466 | 63.8 | 1268.00 |
-| Medium Users (20) | 20 | 3 | 4 | 521 | 93.1% | 0.2793 | 63.0 | 2910.00 |
-| High Users (30) | 30 | 3 | 4 | 690 | 90.0% | 0.2936 | 64.4 | 4076.00 |
-| No UAVs | 10 | 0 | 4 | 230 | 100.0% | 0.2696 | 60.0 | 1240.00 |
-| Many UAVs (5) | 10 | 5 | 4 | 232 | 75.9% | 0.4694 | 53.7 | 2190.00 |
-| Many UAVs (8) | 10 | 8 | 4 | 412 | 86.7% | 0.3150 | 54.0 | 2596.00 |
-| Few Edges (2) | 10 | 3 | 2 | 154 | 84.4% | 0.3922 | 51.0 | 1208.00 |
-| Many Edges (6) | 10 | 3 | 6 | 452 | 95.4% | 0.2004 | 65.0 | 1812.00 |
-| High Load | 30 | 5 | 6 | 688 | 95.9% | 0.2382 | 62.6 | 3278.00 |
+| Baseline | 10 | 3 | 4 | 379 | 81.0% | 0.2839 | 70.5 | 1932.00 |
+| Low Users (5) | 5 | 3 | 4 | 165 | 78.8% | 0.2446 | 77.7 | 636.00 |
+| Medium Users (20) | 20 | 3 | 4 | 638 | 71.0% | 0.2611 | 78.7 | 2366.00 |
+| High Users (30) | 30 | 3 | 4 | 1073 | 59.8% | 0.2863 | 68.2 | 3890.00 |
+| No UAVs | 10 | 0 | 4 | 379 | 84.4% | 0.2291 | 77.3 | 1466.00 |
+| Many UAVs (5) | 10 | 5 | 4 | 379 | 60.9% | 0.2726 | 68.8 | 1398.00 |
+| Many UAVs (8) | 10 | 8 | 4 | 379 | 81.5% | 0.2893 | 68.2 | 1980.00 |
+| Few Edges (2) | 10 | 3 | 2 | 379 | 50.9% | 0.3478 | 67.5 | 1436.00 |
+| Many Edges (6) | 10 | 3 | 6 | 379 | 60.4% | 0.2941 | 71.8 | 1406.00 |
+| High Load | 30 | 5 | 6 | 1073 | 66.8% | 0.3140 | 68.6 | 4752.00 |
 
 ## Key Observations
 
 ### Success Rate
-- **Best:** No UAVs (100.0%)
-- **Worst:** Many UAVs (5) (75.9%)
+- **Best:** No UAVs (84.4%)
+- **Worst:** Few Edges (2) (50.9%)
 
 ### Energy Consumption
-- **Highest:** High Users (30) (4076.00 J)
-- **Lowest:** Few Edges (2) (1208.00 J)
+- **Highest:** High Load (4752.00 J)
+- **Lowest:** Low Users (5) (636.00 J)
 
 ### Task Throughput
-- **Most Tasks:** High Users (30) (690 tasks)
+- **Most Tasks:** High Users (30) (1073 tasks)
 
 ## Configuration Details
 

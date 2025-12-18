@@ -12,7 +12,7 @@ import sys
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 import numpy as np
 
@@ -39,7 +39,7 @@ class BenchmarkResult:
     avg_latency: float
     avg_qos: float
     total_energy: float
-    extra_metrics: Dict[str, Any] = None
+    extra_metrics: Optional[Dict[str, Any]] = None
 
 
 class AdvancedBenchmark:
@@ -78,6 +78,9 @@ class AdvancedBenchmark:
         print(f"  Running: {name}...")
 
         try:
+            # Ensure deterministic workload
+            config.workload_seed = 42
+            
             sim = Simulation(config)
             sim.initialize()
 
@@ -251,15 +254,16 @@ class AdvancedBenchmark:
 
             def setup(_sim, pos=positions):
                 # Create charging stations
-                ChargingStationRegistry.reset()
+                registry = ChargingStationRegistry()
+                registry.clear()
                 for i, (x, y) in enumerate(pos):
                     station = ChargingStation(
                         station_id=i + 1,
                         location=Location(x=x, y=y, z=0),
-                        max_slots=2,
-                        charge_rate=10.0,
+                        capacity=2,
+                        charging_rate=10.0,
                     )
-                    ChargingStationRegistry.register(station)
+                    registry.add_station(station)
 
             self._run_simulation(name, "Charging Stations", config, setup)
 
@@ -360,7 +364,7 @@ testing 4 key areas:
 """
 
         # Group results by category
-        categories = {}
+        categories: Dict[str, List[BenchmarkResult]] = {}
         for r in self.results:
             if r.category not in categories:
                 categories[r.category] = []

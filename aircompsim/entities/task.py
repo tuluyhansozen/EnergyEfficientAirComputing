@@ -245,7 +245,7 @@ class Task:
         logger.debug("Task registry reset")
 
     @classmethod
-    def get_all_tasks(cls) -> List[Task]:
+    def get_all(cls) -> List[Task]:
         """Get all created tasks."""
         return cls._all_tasks.copy()
 
@@ -342,19 +342,27 @@ class Application:
         """
         return self._inner_time < sim_time
 
-    def generate_task(self, user: User) -> Task:
+    def generate_task(
+        self, user: User, rng: Optional[np.random.RandomState] = None
+    ) -> Task:
         """Generate a new task for this application.
 
         Uses exponential distribution for interarrival times.
 
         Args:
             user: User generating the task.
+            rng: Optional random number generator.
 
         Returns:
             New Task instance.
         """
         # Exponential interarrival time
-        interarrival = -np.log(1 - np.random.uniform(0, 1)) * self.interarrival_time
+        if rng:
+            rand_val = rng.uniform(0, 1)
+        else:
+            rand_val = np.random.uniform(0, 1)
+
+        interarrival = -np.log(1 - rand_val) * self.interarrival_time
         creation_time = self._inner_time + interarrival
 
         task = Task(

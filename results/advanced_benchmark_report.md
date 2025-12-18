@@ -1,6 +1,6 @@
 # AirCompSim Advanced Benchmark Report
 
-**Generated:** 2025-12-18 22:28:03
+**Generated:** 2025-12-18 23:07:56
 
 ## Overview
 
@@ -17,16 +17,16 @@ testing 4 key areas:
 
 | Configuration | Tasks | Success Rate | Avg Latency (s) | Avg QoS | Energy (J) |
 |--------------|-------|--------------|-----------------|---------|------------|
-| Random Positioning | 416 | 98.8% | 0.2779 | 66.6 | 2312.00 |
-| Grid Positioning | 347 | 97.4% | 0.2219 | 70.3 | 1540.00 |
-| Edge-Centric | 426 | 98.1% | 0.2498 | 64.4 | 2128.00 |
-| User-Centric | 399 | 97.5% | 0.1992 | 60.5 | 1590.00 |
-| Cluster-Based | 546 | 93.6% | 0.2958 | 57.7 | 3230.00 |
+| Random Positioning | 480 | 63.3% | 0.3282 | 71.0 | 2278.00 |
+| Grid Positioning | 480 | 45.4% | 0.2671 | 74.9 | 1202.00 |
+| Edge-Centric | 480 | 53.3% | 0.2889 | 65.1 | 1590.00 |
+| User-Centric | 480 | 75.8% | 0.3470 | 67.5 | 2894.00 |
+| Cluster-Based | 480 | 73.5% | 0.2935 | 79.5 | 2090.00 |
 
 ### Analysis
 
-- **Best Success Rate:** Random Positioning (98.8%)
-- **Most Energy Efficient:** Grid Positioning (1540.00 J)
+- **Best Success Rate:** User-Centric (75.8%)
+- **Most Energy Efficient:** Grid Positioning (1202.00 J)
 
 **Key Insight:** UAV positioning strategy significantly impacts coverage.
 User-centric and cluster-based positioning tend to outperform random placement by ensuring
@@ -37,27 +37,36 @@ UAVs are located where demand is highest.
 
 | Configuration | Tasks | Success Rate | Avg Latency (s) | Avg QoS | Energy (J) |
 |--------------|-------|--------------|-----------------|---------|------------|
-| No Charging Stations | 0 | 0.0% | 0.0000 | 0.0 | 0.00 |
-| 1 Station (Center) | 0 | 0.0% | 0.0000 | 0.0 | 0.00 |
-| 2 Stations (Diagonal) | 0 | 0.0% | 0.0000 | 0.0 | 0.00 |
-| 4 Stations (Corners) | 0 | 0.0% | 0.0000 | 0.0 | 0.00 |
-| 4 Stations (Edges) | 0 | 0.0% | 0.0000 | 0.0 | 0.00 |
+| No Charging Stations | 480 | 70.2% | 0.2972 | 70.2 | 2104.00 |
+| 1 Station (Center) | 480 | 62.1% | 0.3390 | 71.3 | 2100.00 |
+| 2 Stations (Diagonal) | 480 | 71.9% | 0.2637 | 72.8 | 1830.00 |
+| 4 Stations (Corners) | 480 | 66.0% | 0.3405 | 66.5 | 2368.00 |
+| 4 Stations (Edges) | 480 | 44.8% | 0.3570 | 76.6 | 1678.00 |
+
+### Analysis
+
+- **Best Success Rate:** 2 Stations (Diagonal) (71.9%)
+- **Most Energy Efficient:** 4 Stations (Edges) (1678.00 J)
+
+**Key Insight:** Charging station availability affects UAV uptime.
+With low initial battery (60%), having strategically placed charging stations can
+improve task success rates by keeping more UAVs operational.
 ---
 
 ## Mobility Patterns
 
 | Configuration | Tasks | Success Rate | Avg Latency (s) | Avg QoS | Energy (J) |
 |--------------|-------|--------------|-----------------|---------|------------|
-| Static Users | 330 | 98.2% | 0.2358 | 62.4 | 1556.00 |
-| Low Mobility (speed=1) | 444 | 93.7% | 0.2225 | 65.5 | 1976.00 |
-| Medium Mobility (speed=3) | 410 | 86.1% | 0.4000 | 53.9 | 3280.00 |
-| High Mobility (speed=5) | 445 | 92.4% | 0.2548 | 68.9 | 2272.00 |
-| Clustered Static | 544 | 97.1% | 0.1890 | 72.6 | 2056.00 |
+| Static Users | 480 | 71.0% | 0.2935 | 80.5 | 2084.00 |
+| Low Mobility (speed=1) | 480 | 57.1% | 0.2635 | 79.9 | 1444.00 |
+| Medium Mobility (speed=3) | 480 | 87.1% | 0.2848 | 73.5 | 2530.00 |
+| High Mobility (speed=5) | 480 | 59.8% | 0.2969 | 67.3 | 1918.00 |
+| Clustered Static | 480 | 94.8% | 0.2610 | 76.4 | 2434.00 |
 
 ### Analysis
 
-- **Best Success Rate:** Static Users (98.2%)
-- **Most Energy Efficient:** Static Users (1556.00 J)
+- **Best Success Rate:** Clustered Static (94.8%)
+- **Most Energy Efficient:** Low Mobility (speed=1) (1444.00 J)
 
 **Key Insight:** User mobility affects task offloading success.
 Faster moving users may leave server coverage before task completion, while
@@ -68,16 +77,16 @@ clustered users benefit from concentrated coverage.
 
 | Configuration | Tasks | Success Rate | Avg Latency (s) | Avg QoS | Energy (J) |
 |--------------|-------|--------------|-----------------|---------|------------|
-| Default (Load Balance) | 753 | 100.0% | 0.1652 | 69.9 | 2488.00 |
-| Energy-First | 467 | 98.3% | 0.2683 | 64.7 | 2506.00 |
-| Latency-First | 601 | 98.7% | 0.2333 | 71.7 | 2806.00 |
-| Balanced | 509 | 91.9% | 0.3055 | 60.9 | 3110.00 |
-| Utilization-Based | 583 | 99.5% | 0.1683 | 63.8 | 1962.00 |
+| Default (Load Balance) | 638 | 70.2% | 0.3917 | 65.9 | 4082.00 |
+| Energy-First | 638 | 42.0% | 0.4340 | 65.5 | 2716.00 |
+| Latency-First | 638 | 67.6% | 0.3527 | 74.3 | 3266.00 |
+| Balanced | 638 | 70.8% | 0.3409 | 72.6 | 3348.00 |
+| Utilization-Based | 638 | 64.1% | 0.3094 | 70.8 | 2556.00 |
 
 ### Analysis
 
-- **Best Success Rate:** Default (Load Balance) (100.0%)
-- **Most Energy Efficient:** Utilization-Based (1962.00 J)
+- **Best Success Rate:** Balanced (70.8%)
+- **Most Energy Efficient:** Utilization-Based (2556.00 J)
 
 **Key Insight:** Different scheduling strategies optimize for different metrics.
 Energy-first reduces consumption but may increase latency, while latency-first
@@ -124,10 +133,10 @@ prioritizes speed at higher energy cost.
 
 | Metric | Best Configuration | Value | Category |
 |--------|-------------------|-------|----------|
-| Success Rate | Default (Load Balance) | 100.0% | Scheduling |
-| Energy Efficiency | Grid Positioning | 1540.00 J | UAV Positioning |
-| Throughput | Default (Load Balance) | 753 tasks | Scheduling |
-| Latency | Default (Load Balance) | 0.1652s | Scheduling |
+| Success Rate | Clustered Static | 94.8% | Mobility Patterns |
+| Energy Efficiency | Grid Positioning | 1202.00 J | UAV Positioning |
+| Throughput | Default (Load Balance) | 638 tasks | Scheduling |
+| Latency | Clustered Static | 0.2610s | Mobility Patterns |
 
 ### Recommendations
 
