@@ -450,7 +450,7 @@ class Simulation:
         # Use EnergyAwareScheduler if available
         if self.scheduler:
             decision = self.scheduler.select_server(task, candidates, self.simulation_time)
-            if decision.is_valid:
+            if decision.is_valid and isinstance(decision.server, (EdgeServer, UAV)):
                 return decision.server
             return None
 

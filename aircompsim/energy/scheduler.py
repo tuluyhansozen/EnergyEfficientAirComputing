@@ -10,7 +10,7 @@ import logging
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from enum import Enum, auto
-from typing import TYPE_CHECKING, Any, Protocol
+from typing import TYPE_CHECKING, Any, Protocol, Sequence
 
 if TYPE_CHECKING:
     from aircompsim.entities.server import Server
@@ -84,13 +84,13 @@ class BaseScheduler(ABC):
 
     @abstractmethod
     def select_server(
-        self, task: Task, available_servers: list[Server], current_time: float
+        self, task: Task, available_servers: Sequence[Server], current_time: float
     ) -> SchedulingDecision:
         """Select optimal server for a task.
 
         Args:
             task: Task to be scheduled.
-            available_servers: List of available servers.
+            available_servers: Sequence of available servers.
             current_time: Current simulation time.
 
         Returns:
@@ -162,13 +162,13 @@ class EnergyAwareScheduler(BaseScheduler):
         )
 
     def select_server(
-        self, task: Task, available_servers: list[Server], current_time: float
+        self, task: Task, available_servers: Sequence[Server], current_time: float
     ) -> SchedulingDecision:
         """Select optimal server considering energy efficiency.
 
         Args:
             task: Task to be scheduled.
-            available_servers: List of available servers.
+            available_servers: Sequence of available servers.
             current_time: Current simulation time.
 
         Returns:
