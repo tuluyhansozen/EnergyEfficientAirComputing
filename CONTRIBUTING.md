@@ -12,7 +12,7 @@ Please be respectful and constructive in all interactions.
 
 1. **Fork and clone** the repository:
    ```bash
-   git clone https://github.com/yourusername/EnergyEfficientAirComputing.git
+   git clone https://github.com/tuluyhansozen/EnergyEfficientAirComputing.git
    cd EnergyEfficientAirComputing
    ```
 
