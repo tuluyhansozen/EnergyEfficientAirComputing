@@ -233,262 +233,195 @@ def create_heatmap(data: list, metrics: list, title: str, output_path: str):
     print(f"  Created: {output_path}")
 
 
-def generate_basic_benchmark_charts(results_dir: Path):
-    """Generate charts for basic benchmark report."""
-    print("\n📊 Generating Basic Benchmark Charts...")
+def create_line_comparison(
+    data: list,
+    x_metric: str,
+    y_metric: str,
+    group_by: str,
+    title: str,
+    output_path: str,
+    x_label: str = None,
+    y_label: str = None,
+):
+    """Create line chart comparing metrics grouped by a category."""
+    plt.figure(figsize=(10, 6))
 
-    json_path = results_dir / "benchmark_report.json"
-    if not json_path.exists():
-        print(f"  ⚠ JSON file not found: {json_path}")
-        return
+    # Identify groups
+    groups = sorted(list(set(d[group_by] for d in data)))
+    
+    # Check if x-axis is numeric for proper sorting
+    try:
+        x_values = sorted(list(set(d[x_metric] for d in data)))
+    except:
+        x_values = sorted(list(set(d[x_metric] for d in data)), key=str)
 
-    data = load_benchmark_data(json_path)
-    charts_dir = results_dir / "charts"
-    charts_dir.mkdir(exist_ok=True)
+    for group in groups:
+        # Filter data for this group
+        group_data = [d for d in data if d[group_by] == group]
+        # Sort by x metric
+        group_data.sort(key=lambda x: x[x_metric])
+        
+        x = [d[x_metric] for d in group_data]
+        y = [d[y_metric] for d in group_data]
+        
+        plt.plot(x, y, marker='o', label=f"{group} {group_by.upper()}")
 
-    # 1. Success Rate Bar Chart
-    create_bar_comparison(
-        data,
-        "success_rate",
-        "Task Success Rate by Configuration",
-        str(charts_dir / "basic_success_rate.png"),
-        "RdYlGn",
-    )
-
-    # 2. Energy Consumption Bar Chart
-    create_bar_comparison(
-        data,
-        "total_energy",
-        "Total Energy Consumption by Configuration",
-        str(charts_dir / "basic_energy.png"),
-        "YlOrRd",
-    )
-
-    # 3. Multi-metric Comparison
-    create_multi_metric_chart(
-        data,
-        [("success_rate", "Success Rate"), ("avg_qos", "Avg QoS"), ("total_tasks", "Tasks")],
-        "Performance Metrics Comparison",
-        str(charts_dir / "basic_metrics.png"),
-    )
-
-    # 4. Energy vs Latency Scatter
-    create_scatter_plot(
-        data,
-        "total_energy",
-        "avg_latency",
-        "Energy vs Latency Trade-off",
-        str(charts_dir / "basic_tradeoff.png"),
-    )
-
-    # 5. Radar Chart
-    create_radar_chart(
-        data,
-        [
-            ("success_rate", "Success"),
-            ("avg_qos", "QoS"),
-            ("total_tasks", "Throughput"),
-            ("total_energy", "Energy"),
-            ("avg_latency", "Latency"),
-        ],
-        "Configuration Comparison Radar",
-        str(charts_dir / "basic_radar.png"),
-    )
-
-
-def generate_advanced_benchmark_charts(results_dir: Path):
-    """Generate charts for advanced benchmark report."""
-    print("\n📊 Generating Advanced Benchmark Charts...")
-
-    json_path = results_dir / "advanced_benchmark_report.json"
-    if not json_path.exists():
-        print(f"  ⚠ JSON file not found: {json_path}")
-        return
-
-    data = load_benchmark_data(json_path)
-    charts_dir = results_dir / "charts"
-    charts_dir.mkdir(exist_ok=True)
-
-    # Group by category
-    categories = {}
-    for d in data:
-        cat = d.get("category", "Unknown")
-        if cat not in categories:
-            categories[cat] = []
-        categories[cat].append(d)
-
-    # Generate charts for each category
-    for cat_name, cat_data in categories.items():
-        safe_name = cat_name.lower().replace(" ", "_")
-
-        # Skip empty categories
-        if not any(d.get("total_tasks", 0) > 0 for d in cat_data):
-            continue
-
-        # Bar chart for success rate
-        create_bar_comparison(
-            cat_data,
-            "success_rate",
-            f"{cat_name}: Success Rate Comparison",
-            str(charts_dir / f"adv_{safe_name}_success.png"),
-            "RdYlGn",
+    plt.title(title, fontweight="bold", pad=15)
+    plt.xlabel(x_label or x_metric.replace("_", " ").title())
+    plt.ylabel(y_label or y_metric.replace("_", " ").title())
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    
+    # Set y-axis limits for percentages if applicable
+    if "rate" in y_metric or "percentage" in y_metric:
+        plt.ylim(-0.05, 1.05)
+        # Format y-axis as percentage
+        plt.gca().yaxis.set_major_formatter(
+            matplotlib.ticker.PercentFormatter(xmax=1.0)
         )
 
-        # Energy comparison
+    plt.tight_layout()
+    plt.savefig(output_path, dpi=150, bbox_inches="tight")
+    plt.close()
+
+    print(f"  Created: {output_path}")
+
+
+def generate_paper_replication_charts(data: list, charts_dir: Path):
+    """Generate charts for Paper Replication section (Figs 4-6)."""
+    print("  Generating Paper Replication Charts...")
+    
+    # Filter for category
+    subset = [d for d in data if d.get("category") == "Paper Replication"]
+    if not subset:
+        print("    ⚠ No data found for Paper Replication")
+        return
+
+    # Figure 4: Success Rate vs Users (Grouped by UAVs)
+    create_line_comparison(
+        subset,
+        x_metric="users",
+        y_metric="success_rate",
+        group_by="uavs",
+        title="Avg Task Success Rate (Fig. 4)",
+        output_path=str(charts_dir / "basic_success_rate.png"),
+        x_label="Number of Users",
+        y_label="Success Rate"
+    )
+
+    # Figure 5: Service Time (Latency) vs Users
+    create_line_comparison(
+        subset,
+        x_metric="users",
+        y_metric="avg_latency",
+        group_by="uavs",
+        title="Avg Service Time (Fig. 5)",
+        output_path=str(charts_dir / "basic_latency.png"),
+        x_label="Number of Users",
+        y_label="Avg Service Time (s)"
+    )
+
+    # Figure 6: Energy/Utilization
+    create_line_comparison(
+        subset,
+        x_metric="users",
+        y_metric="total_energy",
+        group_by="uavs",
+        title="Total Energy Consumption",
+        output_path=str(charts_dir / "basic_energy.png"),
+        x_label="Number of Users",
+        y_label="Total Energy (J)"
+    )
+
+
+def generate_advanced_charts(data: list, charts_dir: Path):
+    """Generate charts for advanced scenarios."""
+    print("  Generating Advanced Scenario Charts...")
+
+    # 1. UAV Positioning
+    subset = [d for d in data if d.get("category") == "UAV Positioning"]
+    if subset:
         create_bar_comparison(
-            cat_data,
-            "total_energy",
-            f"{cat_name}: Energy Consumption",
-            str(charts_dir / f"adv_{safe_name}_energy.png"),
-            "YlOrRd",
+            subset, "success_rate", "UAV Positioning - Success Rate", 
+            str(charts_dir / "adv_uav_positioning_success.png")
+        )
+        create_bar_comparison(
+            subset, "total_energy", "UAV Positioning - Energy", 
+            str(charts_dir / "adv_uav_positioning_energy.png"), "YlOrRd"
         )
 
-    # Overall heatmap
+    # 2. Charging Stations
+    subset = [d for d in data if d.get("category") == "Charging Stations"]
+    if subset:
+        create_bar_comparison(
+            subset, "success_rate", "Charging Impact - Success Rate", 
+            str(charts_dir / "adv_charging_stations_success.png")
+        )
+
+    # 3. Mobility Patterns
+    subset = [d for d in data if d.get("category") == "Mobility Patterns"]
+    if subset:
+        create_bar_comparison(
+            subset, "success_rate", "Mobility Impact - Success Rate", 
+            str(charts_dir / "adv_mobility_patterns_success.png")
+        )
+
+    # 4. Scheduling
+    subset = [d for d in data if d.get("category") == "Scheduling"]
+    if subset:
+        create_bar_comparison(
+            subset, "success_rate", "Scheduling - Success Rate", 
+            str(charts_dir / "adv_scheduling_success.png")
+        )
+        create_bar_comparison(
+            subset, "avg_latency", "Scheduling - Latency", 
+            str(charts_dir / "adv_scheduling_latency.png"), "Blues"
+        )
+        
+    # 5. Overall Radar (Top 5 Best Success Rates)
     valid_data = [d for d in data if d.get("total_tasks", 0) > 0]
-    if valid_data:
-        create_heatmap(
-            valid_data,
-            [
-                ("success_rate", "Success"),
-                ("avg_qos", "QoS"),
-                ("total_energy", "Energy"),
-                ("avg_latency", "Latency"),
-            ],
-            "Advanced Benchmark Heatmap",
-            str(charts_dir / "adv_heatmap.png"),
-        )
-
-        # Overall radar
+    valid_data.sort(key=lambda x: x.get("success_rate", 0), reverse=True)
+    top_5 = valid_data[:5]
+    
+    if top_5:
         create_radar_chart(
-            valid_data[:8],  # Top 8
+             top_5,
             [
                 ("success_rate", "Success"),
                 ("avg_qos", "QoS"),
                 ("total_tasks", "Throughput"),
+                ("total_energy", "Energy"),
                 ("avg_latency", "Latency"),
             ],
-            "Top Configurations Comparison",
+            "Top 5 Configurations Radar",
             str(charts_dir / "adv_radar.png"),
         )
-
-
-def update_report_with_charts(report_path: Path, charts: list):
-    """Add chart references to markdown report."""
-    with report_path.open() as f:
-        content = f.read()
-
-    # Add charts section
-    charts_section = "\n\n## Visualizations\n\n"
-    for chart_name, chart_path, description in charts:
-        rel_path = f"charts/{chart_path.name}"
-        charts_section += f"### {chart_name}\n\n"
-        charts_section += f"![{chart_name}]({rel_path})\n\n"
-        charts_section += f"*{description}*\n\n"
-
-    # Insert before conclusion/summary
-    if "## Conclusion" in content:
-        content = content.replace("## Conclusion", charts_section + "## Conclusion")
-    elif "## Overall Summary" in content:
-        content = content.replace("## Overall Summary", charts_section + "## Overall Summary")
-    else:
-        content += charts_section
-
-    with report_path.open("w") as f:
-        f.write(content)
-
-    print(f"  Updated: {report_path}")
 
 
 def main():
     """Generate all visualizations."""
     results_dir = Path(__file__).parent.parent / "results"
-
-    if not results_dir.exists():
-        print("Results directory not found!")
+    json_path = results_dir / "benchmark_report.json"
+    
+    if not json_path.exists():
+        print(f"Results file not found: {json_path}")
         return
 
     print("=" * 60)
     print("AirCompSim Visualization Generator")
     print("=" * 60)
 
-    # Generate charts
-    generate_basic_benchmark_charts(results_dir)
-    generate_advanced_benchmark_charts(results_dir)
-
-    # Update reports with chart references
+    data = load_benchmark_data(json_path)
     charts_dir = results_dir / "charts"
+    charts_dir.mkdir(parents=True, exist_ok=True)
 
-    # Basic report charts
-    basic_charts = [
-        (
-            "Success Rate Comparison",
-            charts_dir / "basic_success_rate.png",
-            "Task success rate across different infrastructure configurations.",
-        ),
-        (
-            "Energy Consumption",
-            charts_dir / "basic_energy.png",
-            "Total energy consumed by each configuration.",
-        ),
-        (
-            "Multi-Metric Comparison",
-            charts_dir / "basic_metrics.png",
-            "Normalized comparison of success rate, QoS, and throughput.",
-        ),
-        (
-            "Energy-Latency Trade-off",
-            charts_dir / "basic_tradeoff.png",
-            "Scatter plot showing the relationship between energy and latency.",
-        ),
-        (
-            "Configuration Radar",
-            charts_dir / "basic_radar.png",
-            "Radar chart comparing top configurations across all metrics.",
-        ),
-    ]
-
-    basic_report = results_dir / "benchmark_report.md"
-    if basic_report.exists():
-        update_report_with_charts(basic_report, basic_charts)
-
-    # Advanced report charts
-    adv_charts = [
-        (
-            "UAV Positioning Success Rates",
-            charts_dir / "adv_uav_positioning_success.png",
-            "Comparison of UAV positioning strategies.",
-        ),
-        (
-            "Mobility Pattern Impact",
-            charts_dir / "adv_mobility_patterns_success.png",
-            "Success rates under different user mobility patterns.",
-        ),
-        (
-            "Scheduling Algorithm Comparison",
-            charts_dir / "adv_scheduling_success.png",
-            "Performance of different scheduling algorithms.",
-        ),
-        (
-            "Performance Heatmap",
-            charts_dir / "adv_heatmap.png",
-            "Heatmap showing normalized metrics across all configurations.",
-        ),
-        (
-            "Top Configurations Radar",
-            charts_dir / "adv_radar.png",
-            "Radar chart comparing the best performing configurations.",
-        ),
-    ]
-
-    adv_report = results_dir / "advanced_benchmark_report.md"
-    if adv_report.exists():
-        update_report_with_charts(adv_report, adv_charts)
+    # Generate charts
+    generate_paper_replication_charts(data, charts_dir)
+    generate_advanced_charts(data, charts_dir)
 
     print("\n" + "=" * 60)
     print("✅ Visualization generation complete!")
     print(f"   Charts saved to: {charts_dir}")
-    print("=" * 60)
-
 
 if __name__ == "__main__":
     main()

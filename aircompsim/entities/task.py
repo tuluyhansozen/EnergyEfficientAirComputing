@@ -342,9 +342,7 @@ class Application:
         """
         return self._inner_time < sim_time
 
-    def generate_task(
-        self, user: User, rng: Optional[np.random.RandomState] = None
-    ) -> Task:
+    def generate_task(self, user: User, rng: Optional[np.random.RandomState] = None) -> Task:
         """Generate a new task for this application.
 
         Uses exponential distribution for interarrival times.

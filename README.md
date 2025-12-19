@@ -376,31 +376,27 @@ for episode in range(500):
 AirCompSim includes a comprehensive benchmarking suite to evaluate system performance.
 
 ### Running Benchmarks
-
-```bash
-# Basic performance benchmark
-python scripts/benchmark.py
-
-# Advanced benchmark (UAV positioning, mobility, scheduling)
-python scripts/advanced_benchmark.py
-```
-
-### Generating Reports
-
-You can generate visual charts and a professional PDF report from the benchmark results:
-
-```bash
-# Generate charts (matplotlib)
-python scripts/generate_charts.py
-
-# Generate combined PDF report
-python scripts/generate_pdf.py
-```
-
-The results will be saved in the `results/` directory:
-- `results/benchmark_report.md`
-- `results/advanced_benchmark_report.md`
-- `results/AirCompSim_Benchmark_Report.pdf`
+ 
+ ```bash
+ # Run unified benchmark suite (Paper Replication + Advanced Scenarios)
+ python scripts/benchmark.py
+ ```
+ 
+ ### Generating Reports
+ 
+ You can generate visual charts and a professional PDF report from the benchmark results:
+ 
+ ```bash
+ # Generate charts (matplotlib)
+ python scripts/generate_charts.py
+ 
+ # Generate combined PDF report
+ python scripts/generate_pdf.py
+ ```
+ 
+ The results will be saved in the `results/` directory:
+ - `results/benchmark_report.json`
+ - `results/AirCompSim_Benchmark_Report.pdf`
 
 ## Testing
 

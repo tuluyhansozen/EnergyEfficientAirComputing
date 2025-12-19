@@ -46,23 +46,15 @@ class TestDeterminism:
         """Test that same workload seed produces same workload."""
         SEED = 42
         TIME_LIMIT = 50.0
-        
-        config1 = SimulationConfig(
-            time_limit=TIME_LIMIT,
-            seed=SEED,
-            workload_seed=SEED
-        )
+
+        config1 = SimulationConfig(time_limit=TIME_LIMIT, seed=SEED, workload_seed=SEED)
         sim1 = Simulation(config1)
         sim1.initialize()
         r1 = sim1.run()
-        
-        config2 = SimulationConfig(
-            time_limit=TIME_LIMIT,
-            seed=SEED,
-            workload_seed=SEED
-        )
+
+        config2 = SimulationConfig(time_limit=TIME_LIMIT, seed=SEED, workload_seed=SEED)
         sim2 = Simulation(config2)
         sim2.initialize()
         r2 = sim2.run()
-        
+
         assert r1.total_tasks == r2.total_tasks

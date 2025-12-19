@@ -1,142 +1,637 @@
 [
   {
-    "config_name": "Baseline",
-    "users": 10,
-    "uavs": 3,
-    "edges": 4,
-    "time_limit": 500,
-    "total_tasks": 379,
-    "successful_tasks": 307,
-    "failed_tasks": 72,
-    "success_rate": 0.8100263852242744,
-    "avg_latency": 0.2839285714285738,
-    "avg_qos": 70.53571428571429,
-    "total_energy": 1932.0
-  },
-  {
-    "config_name": "Low Users (5)",
-    "users": 5,
-    "uavs": 3,
-    "edges": 4,
-    "time_limit": 500,
-    "total_tasks": 165,
-    "successful_tasks": 130,
-    "failed_tasks": 35,
-    "success_rate": 0.7878787878787878,
-    "avg_latency": 0.24461538461538698,
-    "avg_qos": 77.6923076923077,
-    "total_energy": 636.0
-  },
-  {
-    "config_name": "Medium Users (20)",
+    "name": "Users=20, UAVs=0",
+    "category": "Paper Replication",
+    "total_tasks": 1257,
+    "successful_tasks": 810,
+    "success_rate": 0.6443914081145584,
+    "avg_latency": 0.38037740651958235,
+    "avg_qos": 66.0377358490566,
+    "total_energy": 7428.0,
+    "extra_metrics": {
+      "users": 20,
+      "uavs": 0
+    },
     "users": 20,
-    "uavs": 3,
-    "edges": 4,
-    "time_limit": 500,
+    "uavs": 0
+  },
+  {
+    "name": "Users=40, UAVs=0",
+    "category": "Paper Replication",
+    "total_tasks": 2932,
+    "successful_tasks": 1739,
+    "success_rate": 0.5931105047748977,
+    "avg_latency": 0.38925424587058843,
+    "avg_qos": 49.8422712933754,
+    "total_energy": 14126.0,
+    "extra_metrics": {
+      "users": 40,
+      "uavs": 0
+    },
+    "users": 40,
+    "uavs": 0
+  },
+  {
+    "name": "Users=60, UAVs=0",
+    "category": "Paper Replication",
+    "total_tasks": 4293,
+    "successful_tasks": 1931,
+    "success_rate": 0.44980200326112274,
+    "avg_latency": 0.5256956593412516,
+    "avg_qos": 50.02242152466368,
+    "total_energy": 22215.0,
+    "extra_metrics": {
+      "users": 60,
+      "uavs": 0
+    },
+    "users": 60,
+    "uavs": 0
+  },
+  {
+    "name": "Users=80, UAVs=0",
+    "category": "Paper Replication",
+    "total_tasks": 5877,
+    "successful_tasks": 3233,
+    "success_rate": 0.5501106006465883,
+    "avg_latency": 0.3473024061804257,
+    "avg_qos": 54.41008018327606,
+    "total_energy": 21692.0,
+    "extra_metrics": {
+      "users": 80,
+      "uavs": 0
+    },
+    "users": 80,
+    "uavs": 0
+  },
+  {
+    "name": "Users=100, UAVs=0",
+    "category": "Paper Replication",
+    "total_tasks": 7480,
+    "successful_tasks": 3123,
+    "success_rate": 0.41751336898395724,
+    "avg_latency": 0.47707865443846537,
+    "avg_qos": 52.058077248378915,
+    "total_energy": 30061.0,
+    "extra_metrics": {
+      "users": 100,
+      "uavs": 0
+    },
+    "users": 100,
+    "uavs": 0
+  },
+  {
+    "name": "Users=20, UAVs=5",
+    "category": "Paper Replication",
+    "total_tasks": 1257,
+    "successful_tasks": 896,
+    "success_rate": 0.7128082736674622,
+    "avg_latency": 0.4473116694583623,
+    "avg_qos": 54.72906403940887,
+    "total_energy": 16286.0,
+    "extra_metrics": {
+      "users": 20,
+      "uavs": 5
+    },
+    "users": 20,
+    "uavs": 5
+  },
+  {
+    "name": "Users=40, UAVs=5",
+    "category": "Paper Replication",
+    "total_tasks": 2932,
+    "successful_tasks": 1426,
+    "success_rate": 0.4863574351978172,
+    "avg_latency": 0.5444207116712477,
+    "avg_qos": 46.80440771349862,
+    "total_energy": 28112.0,
+    "extra_metrics": {
+      "users": 40,
+      "uavs": 5
+    },
+    "users": 40,
+    "uavs": 5
+  },
+  {
+    "name": "Users=60, UAVs=5",
+    "category": "Paper Replication",
+    "total_tasks": 4293,
+    "successful_tasks": 2884,
+    "success_rate": 0.6717912881434894,
+    "avg_latency": 0.523027603867694,
+    "avg_qos": 48.52088167053364,
+    "total_energy": 67846.0,
+    "extra_metrics": {
+      "users": 60,
+      "uavs": 5
+    },
+    "users": 60,
+    "uavs": 5
+  },
+  {
+    "name": "Users=80, UAVs=5",
+    "category": "Paper Replication",
+    "total_tasks": 5877,
+    "successful_tasks": 3460,
+    "success_rate": 0.5887357495320742,
+    "avg_latency": 0.7131851041136376,
+    "avg_qos": 43.62267493356953,
+    "total_energy": 79372.0,
+    "extra_metrics": {
+      "users": 80,
+      "uavs": 5
+    },
+    "users": 80,
+    "uavs": 5
+  },
+  {
+    "name": "Users=100, UAVs=5",
+    "category": "Paper Replication",
+    "total_tasks": 7480,
+    "successful_tasks": 4673,
+    "success_rate": 0.6247326203208556,
+    "avg_latency": 0.6585259151207208,
+    "avg_qos": 45.28095558546433,
+    "total_energy": 88813.0,
+    "extra_metrics": {
+      "users": 100,
+      "uavs": 5
+    },
+    "users": 100,
+    "uavs": 5
+  },
+  {
+    "name": "Users=20, UAVs=10",
+    "category": "Paper Replication",
+    "total_tasks": 1257,
+    "successful_tasks": 858,
+    "success_rate": 0.6825775656324582,
+    "avg_latency": 0.59224696764683,
+    "avg_qos": 52.30292294065545,
+    "total_energy": 31208.0,
+    "extra_metrics": {
+      "users": 20,
+      "uavs": 10
+    },
+    "users": 20,
+    "uavs": 10
+  },
+  {
+    "name": "Users=40, UAVs=10",
+    "category": "Paper Replication",
+    "total_tasks": 2932,
+    "successful_tasks": 2011,
+    "success_rate": 0.6858799454297408,
+    "avg_latency": 0.512926100143163,
+    "avg_qos": 42.3665546845838,
+    "total_energy": 56385.0,
+    "extra_metrics": {
+      "users": 40,
+      "uavs": 10
+    },
+    "users": 40,
+    "uavs": 10
+  },
+  {
+    "name": "Users=60, UAVs=10",
+    "category": "Paper Replication",
+    "total_tasks": 4293,
+    "successful_tasks": 2878,
+    "success_rate": 0.670393664104356,
+    "avg_latency": 0.6367595329312209,
+    "avg_qos": 42.99065420560748,
+    "total_energy": 84511.0,
+    "extra_metrics": {
+      "users": 60,
+      "uavs": 10
+    },
+    "users": 60,
+    "uavs": 10
+  },
+  {
+    "name": "Users=80, UAVs=10",
+    "category": "Paper Replication",
+    "total_tasks": 5877,
+    "successful_tasks": 4081,
+    "success_rate": 0.6944019057342181,
+    "avg_latency": 0.5784266516952515,
+    "avg_qos": 42.88171221096885,
+    "total_energy": 118363.0,
+    "extra_metrics": {
+      "users": 80,
+      "uavs": 10
+    },
+    "users": 80,
+    "uavs": 10
+  },
+  {
+    "name": "Users=100, UAVs=10",
+    "category": "Paper Replication",
+    "total_tasks": 7480,
+    "successful_tasks": 5142,
+    "success_rate": 0.6874331550802139,
+    "avg_latency": 0.6529885224274553,
+    "avg_qos": 45.369211514392994,
+    "total_energy": 172138.0,
+    "extra_metrics": {
+      "users": 100,
+      "uavs": 10
+    },
+    "users": 100,
+    "uavs": 10
+  },
+  {
+    "name": "Users=20, UAVs=15",
+    "category": "Paper Replication",
+    "total_tasks": 1257,
+    "successful_tasks": 1085,
+    "success_rate": 0.8631662688941926,
+    "avg_latency": 0.5646724124563052,
+    "avg_qos": 54.08576051779935,
+    "total_energy": 44645.0,
+    "extra_metrics": {
+      "users": 20,
+      "uavs": 15
+    },
+    "users": 20,
+    "uavs": 15
+  },
+  {
+    "name": "Users=40, UAVs=15",
+    "category": "Paper Replication",
+    "total_tasks": 2932,
+    "successful_tasks": 2365,
+    "success_rate": 0.8066166439290586,
+    "avg_latency": 0.4482800665833781,
+    "avg_qos": 45.954977136827296,
+    "total_energy": 82620.0,
+    "extra_metrics": {
+      "users": 40,
+      "uavs": 15
+    },
+    "users": 40,
+    "uavs": 15
+  },
+  {
+    "name": "Users=60, UAVs=15",
+    "category": "Paper Replication",
+    "total_tasks": 4293,
+    "successful_tasks": 2756,
+    "success_rate": 0.6419753086419753,
+    "avg_latency": 0.5968439548577189,
+    "avg_qos": 43.59255202628697,
+    "total_energy": 142473.0,
+    "extra_metrics": {
+      "users": 60,
+      "uavs": 15
+    },
+    "users": 60,
+    "uavs": 15
+  },
+  {
+    "name": "Users=80, UAVs=15",
+    "category": "Paper Replication",
+    "total_tasks": 5877,
+    "successful_tasks": 4421,
+    "success_rate": 0.7522545516419942,
+    "avg_latency": 0.5970165586061252,
+    "avg_qos": 43.24659231722429,
+    "total_energy": 170333.0,
+    "extra_metrics": {
+      "users": 80,
+      "uavs": 15
+    },
+    "users": 80,
+    "uavs": 15
+  },
+  {
+    "name": "Users=100, UAVs=15",
+    "category": "Paper Replication",
+    "total_tasks": 7480,
+    "successful_tasks": 5102,
+    "success_rate": 0.6820855614973262,
+    "avg_latency": 0.6266905612233467,
+    "avg_qos": 43.01235302872451,
+    "total_energy": 183513.0,
+    "extra_metrics": {
+      "users": 100,
+      "uavs": 15
+    },
+    "users": 100,
+    "uavs": 15
+  },
+  {
+    "name": "Users=20, UAVs=20",
+    "category": "Paper Replication",
+    "total_tasks": 1257,
+    "successful_tasks": 887,
+    "success_rate": 0.705648369132856,
+    "avg_latency": 0.496512669790016,
+    "avg_qos": 51.733333333333334,
+    "total_energy": 33426.0,
+    "extra_metrics": {
+      "users": 20,
+      "uavs": 20
+    },
+    "users": 20,
+    "uavs": 20
+  },
+  {
+    "name": "Users=40, UAVs=20",
+    "category": "Paper Replication",
+    "total_tasks": 2932,
+    "successful_tasks": 2200,
+    "success_rate": 0.7503410641200545,
+    "avg_latency": 0.4726875281095652,
+    "avg_qos": 43.642550143266476,
+    "total_energy": 86382.0,
+    "extra_metrics": {
+      "users": 40,
+      "uavs": 20
+    },
+    "users": 40,
+    "uavs": 20
+  },
+  {
+    "name": "Users=60, UAVs=20",
+    "category": "Paper Replication",
+    "total_tasks": 4293,
+    "successful_tasks": 3157,
+    "success_rate": 0.7353831819240624,
+    "avg_latency": 0.5296901440651882,
+    "avg_qos": 46.56282183316169,
+    "total_energy": 145287.0,
+    "extra_metrics": {
+      "users": 60,
+      "uavs": 20
+    },
+    "users": 60,
+    "uavs": 20
+  },
+  {
+    "name": "Users=80, UAVs=20",
+    "category": "Paper Replication",
+    "total_tasks": 5877,
+    "successful_tasks": 4596,
+    "success_rate": 0.7820316488004083,
+    "avg_latency": 0.5879301560255183,
+    "avg_qos": 44.01207937877481,
+    "total_energy": 199084.0,
+    "extra_metrics": {
+      "users": 80,
+      "uavs": 20
+    },
+    "users": 80,
+    "uavs": 20
+  },
+  {
+    "name": "Users=100, UAVs=20",
+    "category": "Paper Replication",
+    "total_tasks": 7480,
+    "successful_tasks": 4950,
+    "success_rate": 0.6617647058823529,
+    "avg_latency": 0.7483859086499123,
+    "avg_qos": 39.919063448475214,
+    "total_energy": 249366.0,
+    "extra_metrics": {
+      "users": 100,
+      "uavs": 20
+    },
+    "users": 100,
+    "uavs": 20
+  },
+  {
+    "name": "Random Positioning",
+    "category": "UAV Positioning",
+    "total_tasks": 480,
+    "successful_tasks": 418,
+    "success_rate": 0.8708333333333333,
+    "avg_latency": 0.4012958226343515,
+    "avg_qos": 60.3448275862069,
+    "total_energy": 7221.0,
+    "extra_metrics": null
+  },
+  {
+    "name": "Grid Positioning",
+    "category": "UAV Positioning",
+    "total_tasks": 480,
+    "successful_tasks": 345,
+    "success_rate": 0.71875,
+    "avg_latency": 0.2787480390704072,
+    "avg_qos": 74.13294797687861,
+    "total_energy": 5713.0,
+    "extra_metrics": null
+  },
+  {
+    "name": "Edge-Centric",
+    "category": "UAV Positioning",
+    "total_tasks": 480,
+    "successful_tasks": 356,
+    "success_rate": 0.7416666666666667,
+    "avg_latency": 0.3386407413850354,
+    "avg_qos": 62.30569948186528,
+    "total_energy": 4279.0,
+    "extra_metrics": null
+  },
+  {
+    "name": "User-Centric",
+    "category": "UAV Positioning",
+    "total_tasks": 480,
+    "successful_tasks": 312,
+    "success_rate": 0.65,
+    "avg_latency": 0.41769909480557144,
+    "avg_qos": 65.74344023323616,
+    "total_energy": 6974.0,
+    "extra_metrics": null
+  },
+  {
+    "name": "Cluster-Based",
+    "category": "UAV Positioning",
+    "total_tasks": 480,
+    "successful_tasks": 324,
+    "success_rate": 0.675,
+    "avg_latency": 0.5034042025921002,
+    "avg_qos": 50.129533678756474,
+    "total_energy": 5864.0,
+    "extra_metrics": null
+  },
+  {
+    "name": "No Charging Stations",
+    "category": "Charging Stations",
+    "total_tasks": 480,
+    "successful_tasks": 381,
+    "success_rate": 0.79375,
+    "avg_latency": 0.4181562971471793,
+    "avg_qos": 65.51282051282051,
+    "total_energy": 4659.0,
+    "extra_metrics": null
+  },
+  {
+    "name": "1 Station (Center)",
+    "category": "Charging Stations",
+    "total_tasks": 480,
+    "successful_tasks": 426,
+    "success_rate": 0.8875,
+    "avg_latency": 0.36971469452043065,
+    "avg_qos": 66.27155172413794,
+    "total_energy": 6564.0,
+    "extra_metrics": null
+  },
+  {
+    "name": "2 Stations (Diagonal)",
+    "category": "Charging Stations",
+    "total_tasks": 480,
+    "successful_tasks": 358,
+    "success_rate": 0.7458333333333333,
+    "avg_latency": 0.4120320026230578,
+    "avg_qos": 54.41919191919192,
+    "total_energy": 6121.0,
+    "extra_metrics": null
+  },
+  {
+    "name": "4 Stations (Corners)",
+    "category": "Charging Stations",
+    "total_tasks": 480,
+    "successful_tasks": 311,
+    "success_rate": 0.6479166666666667,
+    "avg_latency": 0.41178121480803426,
+    "avg_qos": 72.71293375394322,
+    "total_energy": 6743.0,
+    "extra_metrics": null
+  },
+  {
+    "name": "4 Stations (Edges)",
+    "category": "Charging Stations",
+    "total_tasks": 480,
+    "successful_tasks": 335,
+    "success_rate": 0.6979166666666666,
+    "avg_latency": 0.5191496912871836,
+    "avg_qos": 55.013550135501355,
+    "total_energy": 4665.0,
+    "extra_metrics": null
+  },
+  {
+    "name": "Static Users",
+    "category": "Mobility Patterns",
+    "total_tasks": 480,
+    "successful_tasks": 304,
+    "success_rate": 0.6333333333333333,
+    "avg_latency": 0.46322027798174253,
+    "avg_qos": 60.02949852507375,
+    "total_energy": 3414.0,
+    "extra_metrics": null
+  },
+  {
+    "name": "Low Mobility (speed=1)",
+    "category": "Mobility Patterns",
+    "total_tasks": 480,
+    "successful_tasks": 322,
+    "success_rate": 0.6708333333333333,
+    "avg_latency": 0.40698784760131884,
+    "avg_qos": 65.37433155080214,
+    "total_energy": 5324.0,
+    "extra_metrics": null
+  },
+  {
+    "name": "Medium Mobility (speed=3)",
+    "category": "Mobility Patterns",
+    "total_tasks": 480,
+    "successful_tasks": 208,
+    "success_rate": 0.43333333333333335,
+    "avg_latency": 0.5542098835963326,
+    "avg_qos": 58.4051724137931,
+    "total_energy": 2853.0,
+    "extra_metrics": null
+  },
+  {
+    "name": "High Mobility (speed=5)",
+    "category": "Mobility Patterns",
+    "total_tasks": 480,
+    "successful_tasks": 290,
+    "success_rate": 0.6041666666666666,
+    "avg_latency": 0.38791606355308034,
+    "avg_qos": 73.5,
+    "total_energy": 3839.0,
+    "extra_metrics": null
+  },
+  {
+    "name": "Clustered Static",
+    "category": "Mobility Patterns",
+    "total_tasks": 480,
+    "successful_tasks": 448,
+    "success_rate": 0.9333333333333333,
+    "avg_latency": 0.35958197646682993,
+    "avg_qos": 68.53448275862068,
+    "total_energy": 4724.0,
+    "extra_metrics": null
+  },
+  {
+    "name": "Default (Load Balance)",
+    "category": "Scheduling",
     "total_tasks": 638,
-    "successful_tasks": 453,
-    "failed_tasks": 185,
-    "success_rate": 0.7100313479623824,
-    "avg_latency": 0.26114790286975637,
-    "avg_qos": 78.69757174392936,
-    "total_energy": 2366.0
+    "successful_tasks": 382,
+    "success_rate": 0.5987460815047022,
+    "avg_latency": 0.398419801621204,
+    "avg_qos": 67.88413098236776,
+    "total_energy": 5636.0,
+    "extra_metrics": {
+      "strategy": "Default (Load Balance)"
+    },
+    "strategy": "Default (Load Balance)"
   },
   {
-    "config_name": "High Users (30)",
-    "users": 30,
-    "uavs": 3,
-    "edges": 4,
-    "time_limit": 500,
-    "total_tasks": 1073,
-    "successful_tasks": 642,
-    "failed_tasks": 431,
-    "success_rate": 0.5983224603914259,
-    "avg_latency": 0.28628318584070905,
-    "avg_qos": 68.21533923303835,
-    "total_energy": 3890.0
+    "name": "Energy-First",
+    "category": "Scheduling",
+    "total_tasks": 638,
+    "successful_tasks": 402,
+    "success_rate": 0.6300940438871473,
+    "avg_latency": 0.5165548039375161,
+    "avg_qos": 59.19037199124727,
+    "total_energy": 6932.0,
+    "extra_metrics": {
+      "strategy": "Energy-First"
+    },
+    "strategy": "Energy-First"
   },
   {
-    "config_name": "No UAVs",
-    "users": 10,
-    "uavs": 0,
-    "edges": 4,
-    "time_limit": 500,
-    "total_tasks": 379,
-    "successful_tasks": 320,
-    "failed_tasks": 59,
-    "success_rate": 0.8443271767810027,
-    "avg_latency": 0.22906250000000244,
-    "avg_qos": 77.34375,
-    "total_energy": 1466.0
+    "name": "Latency-First",
+    "category": "Scheduling",
+    "total_tasks": 638,
+    "successful_tasks": 518,
+    "success_rate": 0.8119122257053292,
+    "avg_latency": 0.48579694919729205,
+    "avg_qos": 59.79667282809612,
+    "total_energy": 7609.0,
+    "extra_metrics": {
+      "strategy": "Latency-First"
+    },
+    "strategy": "Latency-First"
   },
   {
-    "config_name": "Many UAVs (5)",
-    "users": 10,
-    "uavs": 5,
-    "edges": 4,
-    "time_limit": 500,
-    "total_tasks": 379,
-    "successful_tasks": 231,
-    "failed_tasks": 148,
-    "success_rate": 0.6094986807387863,
-    "avg_latency": 0.2726190476190455,
-    "avg_qos": 68.84920634920636,
-    "total_energy": 1398.0
+    "name": "Balanced",
+    "category": "Scheduling",
+    "total_tasks": 638,
+    "successful_tasks": 398,
+    "success_rate": 0.6238244514106583,
+    "avg_latency": 0.4361744611269242,
+    "avg_qos": 63.424947145877375,
+    "total_energy": 7434.0,
+    "extra_metrics": {
+      "strategy": "Balanced"
+    },
+    "strategy": "Balanced"
   },
   {
-    "config_name": "Many UAVs (8)",
-    "users": 10,
-    "uavs": 8,
-    "edges": 4,
-    "time_limit": 500,
-    "total_tasks": 379,
-    "successful_tasks": 309,
-    "failed_tasks": 70,
-    "success_rate": 0.8153034300791556,
-    "avg_latency": 0.2893491124260316,
-    "avg_qos": 68.19526627218934,
-    "total_energy": 1980.0
-  },
-  {
-    "config_name": "Few Edges (2)",
-    "users": 10,
-    "uavs": 3,
-    "edges": 2,
-    "time_limit": 500,
-    "total_tasks": 379,
-    "successful_tasks": 193,
-    "failed_tasks": 186,
-    "success_rate": 0.5092348284960422,
-    "avg_latency": 0.34778325123152054,
-    "avg_qos": 67.48768472906404,
-    "total_energy": 1436.0
-  },
-  {
-    "config_name": "Many Edges (6)",
-    "users": 10,
-    "uavs": 3,
-    "edges": 6,
-    "time_limit": 500,
-    "total_tasks": 379,
-    "successful_tasks": 229,
-    "failed_tasks": 150,
-    "success_rate": 0.604221635883905,
-    "avg_latency": 0.2941422594142267,
-    "avg_qos": 71.75732217573221,
-    "total_energy": 1406.0
-  },
-  {
-    "config_name": "High Load",
-    "users": 30,
-    "uavs": 5,
-    "edges": 6,
-    "time_limit": 500,
-    "total_tasks": 1073,
-    "successful_tasks": 717,
-    "failed_tasks": 356,
-    "success_rate": 0.668219944082013,
-    "avg_latency": 0.3140211640211665,
-    "avg_qos": 68.58465608465609,
-    "total_energy": 4752.0
+    "name": "Utilization-Based",
+    "category": "Scheduling",
+    "total_tasks": 638,
+    "successful_tasks": 417,
+    "success_rate": 0.6536050156739812,
+    "avg_latency": 0.5055086694994284,
+    "avg_qos": 53.15040650406504,
+    "total_energy": 7100.0,
+    "extra_metrics": {
+      "strategy": "Utilization-Based"
+    },
+    "strategy": "Utilization-Based"
   }
 ]

@@ -77,8 +77,11 @@ def create_table_page(pdf: PdfPages, title: str, data: list, columns: list):
     fig.text(0.5, 0.95, title, fontsize=18, ha="center", va="top", fontweight="bold")
 
     # Prepare table data
+    # Pagination might be needed for large datasets, but we'll truncation/sample for now
+    display_data = data[:25] # Show first 25 rows max
+    
     table_data = []
-    for d in data:
+    for d in display_data:
         row = []
         for col in columns:
             val = d.get(col["key"], "N/A")
@@ -102,8 +105,8 @@ def create_table_page(pdf: PdfPages, title: str, data: list, columns: list):
     )
 
     table.auto_set_font_size(False)
-    table.set_fontsize(10)
-    table.scale(1.2, 1.5)
+    table.set_fontsize(8)
+    table.scale(1.2, 1.2)
 
     # Style header
     for i, _ in enumerate(col_labels):
@@ -117,6 +120,9 @@ def create_table_page(pdf: PdfPages, title: str, data: list, columns: list):
                 table[(i, j)].set_facecolor("#ecf0f1")
             else:
                 table[(i, j)].set_facecolor("#ffffff")
+        
+    if len(data) > 25:
+         fig.text(0.5, 0.05, f"*Showing first 25 of {len(data)} rows", fontsize=10, ha="center", style="italic")
 
     plt.tight_layout()
     pdf.savefig(fig)
@@ -129,6 +135,12 @@ def create_image_page(pdf: PdfPages, image_path: Path, title: str = "", caption:
 
     if title:
         fig.text(0.5, 0.96, title, fontsize=16, ha="center", va="top", fontweight="bold")
+
+    if not image_path.exists():
+        fig.text(0.5, 0.5, f"Image not found: {image_path.name}", ha="center", color="red")
+        pdf.savefig(fig)
+        plt.close(fig)
+        return
 
     # Load and display image
     img = mpimg.imread(str(image_path))
@@ -152,7 +164,7 @@ def create_image_page(pdf: PdfPages, image_path: Path, title: str = "", caption:
     plt.close(fig)
 
 
-def create_summary_page(pdf: PdfPages, basic_data: list, adv_data: list):
+def create_summary_page(pdf: PdfPages, paper_data: list, adv_data: list):
     """Create executive summary page."""
     fig = plt.figure(figsize=(11, 8.5))
 
@@ -160,26 +172,27 @@ def create_summary_page(pdf: PdfPages, basic_data: list, adv_data: list):
 
     # Key findings
     findings = []
+    findings.append("Overview:")
+    findings.append(f"• Total scenarios run: {len(paper_data) + len(adv_data)}")
+    findings.append(f"• Paper Replication Scenarios: {len(paper_data)}")
+    findings.append(f"• Advanced Scenarios: {len(adv_data)}")
+    findings.append("")
 
-    # Basic benchmark findings
-    valid_basic = [d for d in basic_data if d.get("total_tasks", 0) > 0]
-    if valid_basic:
-        best = max(valid_basic, key=lambda x: x.get("success_rate", 0))
-        name = best.get("config_name", best.get("name", "Unknown"))
-        findings.append(
-            f"• Best basic configuration: {name} ({best.get('success_rate', 0):.1%} success)"
-        )
-
-        efficient = min(valid_basic, key=lambda x: x.get("total_energy", float("inf")))
-        name = efficient.get("config_name", efficient.get("name", "Unknown"))
-        findings.append(
-            f"• Most energy efficient: {name} ({efficient.get('total_energy', 0):.0f} J)"
-        )
+    # Paper replication findings
+    valid_paper = [d for d in paper_data if d.get("total_tasks", 0) > 0]
+    if valid_paper:
+        best = max(valid_paper, key=lambda x: x.get("success_rate", 0))
+        name = best.get("name", "Unknown")
+        findings.append("Paper Replication Results:")
+        findings.append(f"• Best Configuration: {name}")
+        findings.append(f"  Success Rate: {best.get('success_rate', 0):.1%}")
 
     # Advanced benchmark findings
     valid_adv = [d for d in adv_data if d.get("total_tasks", 0) > 0]
     if valid_adv:
-        # By category
+        findings.append("")
+        findings.append("Advanced Benchmarks Highlights:")
+        # Group by category
         categories = {}
         for d in valid_adv:
             cat = d.get("category", "Unknown")
@@ -190,24 +203,16 @@ def create_summary_page(pdf: PdfPages, basic_data: list, adv_data: list):
         for cat, items in categories.items():
             best = max(items, key=lambda x: x.get("success_rate", 0))
             name = best.get("name", "Unknown")
-            findings.append(f"• Best {cat}: {name} ({best.get('success_rate', 0):.1%})")
-
-    # Add recommendations
-    findings.append("")
-    findings.append("Key Recommendations:")
-    findings.append("• Use grid positioning for optimal UAV coverage")
-    findings.append("• Energy-first scheduling reduces consumption by ~20%")
-    findings.append("• Static users achieve highest success rates")
-    findings.append("• 3-4 edge servers provide optimal balance")
+            findings.append(f"• {cat}: Best is {name} ({best.get('success_rate', 0):.1%})")
 
     # Display findings
     y_pos = 0.82
     for finding in findings:
-        if finding.startswith("Key"):
+        if finding.endswith(":"):
             fig.text(0.1, y_pos, finding, fontsize=14, va="top", fontweight="bold")
         else:
             fig.text(0.1, y_pos, finding, fontsize=12, va="top")
-        y_pos -= 0.05
+        y_pos -= 0.04
 
     pdf.savefig(fig)
     plt.close(fig)
@@ -219,195 +224,98 @@ def generate_pdf_report(results_dir: Path, output_path: Path):
 
     charts_dir = results_dir / "charts"
 
-    # Load JSON data
-    basic_data = []
-    basic_json = results_dir / "benchmark_report.json"
-    if basic_json.exists():
-        with basic_json.open() as f:
-            basic_data = json.load(f)
+    # Load Unified JSON data
+    data = []
+    json_path = results_dir / "benchmark_report.json"
+    if json_path.exists():
+        with json_path.open() as f:
+            data = json.load(f)
 
-    adv_data = []
-    adv_json = results_dir / "advanced_benchmark_report.json"
-    if adv_json.exists():
-        with adv_json.open() as f:
-            adv_data = json.load(f)
+    # Split data
+    paper_data = [d for d in data if d.get("category") == "Paper Replication"]
+    adv_data = [d for d in data if d.get("category") != "Paper Replication"]
 
     with PdfPages(str(output_path)) as pdf:
         # Title page
-        create_title_page(pdf, "AirCompSim", "Benchmark Report & Analysis")
+        create_title_page(pdf, "AirCompSim", "Unified Benchmark Report")
 
         # Executive summary
-        create_summary_page(pdf, basic_data, adv_data)
+        create_summary_page(pdf, paper_data, adv_data)
 
-        # Basic Benchmark Section
+        # 1. Paper Replication Section
         create_section_header(
             pdf,
-            "Basic Benchmark Results",
-            "Performance comparison across infrastructure configurations",
+            "1. Paper Replication",
+            "Replication of results from AirCompSim paper (Figs 4-6)",
         )
+        
+        # Table for Paper Replication
+        if paper_data:
+             create_table_page(
+                pdf,
+                "Replication Data",
+                paper_data,  # Has 25 rows
+                [
+                    {"label": "Name", "key": "name"},
+                    {"label": "Success", "key": "success_rate", "format": "percent"},
+                    {"label": "Latency", "key": "avg_latency", "format": "float"},
+                    {"label": "Energy (J)", "key": "total_energy", "format": "float"},
+                ],
+            )
+        
+        # Charts for Paper Replication
+        create_image_page(pdf, charts_dir / "basic_success_rate.png", "Figure 4: Success Rate", "Success Rate vs Users (Grouped by UAVs)")
+        create_image_page(pdf, charts_dir / "basic_latency.png", "Figure 5: Service Time", "Average Service Time vs Users")
+        create_image_page(pdf, charts_dir / "basic_energy.png", "Figure 6: Energy Consumption", "Total Energy Consumption vs Users")
 
-        # Basic benchmark table
-        if basic_data:
-            columns = [
-                {"key": "config_name", "label": "Configuration"},
-                {"key": "users", "label": "Users"},
-                {"key": "uavs", "label": "UAVs"},
-                {"key": "edges", "label": "Edges"},
-                {"key": "total_tasks", "label": "Tasks"},
-                {"key": "success_rate", "label": "Success", "format": "percent"},
-                {"key": "total_energy", "label": "Energy (J)", "format": "float"},
-            ]
-            create_table_page(pdf, "Infrastructure Configuration Results", basic_data, columns)
-
-        # Basic benchmark charts
-        basic_charts = [
-            (
-                "basic_success_rate.png",
-                "Success Rate by Configuration",
-                "Task completion success rates across different infrastructure setups",
-            ),
-            ("basic_energy.png", "Energy Consumption", "Total energy consumed during simulation"),
-            (
-                "basic_metrics.png",
-                "Multi-Metric Comparison",
-                "Normalized comparison of success, QoS, and throughput",
-            ),
-            (
-                "basic_tradeoff.png",
-                "Energy-Latency Trade-off",
-                "Relationship between energy consumption and task latency",
-            ),
-            (
-                "basic_radar.png",
-                "Configuration Radar Chart",
-                "Multi-dimensional comparison of top configurations",
-            ),
-        ]
-
-        for chart_file, title, caption in basic_charts:
-            chart_path = charts_dir / chart_file
-            if chart_path.exists():
-                create_image_page(pdf, chart_path, title, caption)
-
-        # Advanced Benchmark Section
+        # 2. Advanced Section
         create_section_header(
             pdf,
-            "Advanced Benchmark Results",
-            "UAV positioning, mobility patterns, and scheduling strategies",
+            "2. Advanced Scenarios",
+            "UAV Positioning, Charging, Mobility, and Scheduling",
         )
+        
+        # For each category in advanced data
+        categories = ["UAV Positioning", "Charging Stations", "Mobility Patterns", "Scheduling"]
+        
+        for cat in categories:
+            cat_data = [d for d in adv_data if d.get("category") == cat]
+            if not cat_data:
+                continue
+                
+            create_section_header(pdf, cat)
+            
+            create_table_page(
+                pdf,
+                f"{cat} Results",
+                cat_data,
+                [
+                    {"label": "Name", "key": "name"},
+                    {"label": "Success", "key": "success_rate", "format": "percent"},
+                    {"label": "Latency", "key": "avg_latency", "format": "float"},
+                    {"label": "Energy", "key": "total_energy", "format": "float"},
+                ],
+            )
+            
+            # Add specific charts based on category knowledge
+            if cat == "UAV Positioning":
+                create_image_page(pdf, charts_dir / "adv_uav_positioning_success.png", "Success Rate")
+                create_image_page(pdf, charts_dir / "adv_uav_positioning_energy.png", "Energy Consumption")
+            elif cat == "Charging Stations":
+                create_image_page(pdf, charts_dir / "adv_charging_stations_success.png", "Success Rate")
+            elif cat == "Mobility Patterns":
+                create_image_page(pdf, charts_dir / "adv_mobility_patterns_success.png", "Success Rate")
+            elif cat == "Scheduling":
+                create_image_page(pdf, charts_dir / "adv_scheduling_success.png", "Success Rate")
+                create_image_page(pdf, charts_dir / "adv_scheduling_latency.png", "Latency")
 
-        # Advanced benchmark by category
-        if adv_data:
-            # Group by category
-            categories = {}
-            for d in adv_data:
-                cat = d.get("category", "Unknown")
-                if cat not in categories:
-                    categories[cat] = []
-                categories[cat].append(d)
-
-            for cat_name, cat_data in categories.items():
-                if not any(d.get("total_tasks", 0) > 0 for d in cat_data):
-                    continue
-
-                columns = [
-                    {"key": "name", "label": "Strategy"},
-                    {"key": "total_tasks", "label": "Tasks"},
-                    {"key": "success_rate", "label": "Success", "format": "percent"},
-                    {"key": "avg_latency", "label": "Latency (s)", "format": "float"},
-                    {"key": "avg_qos", "label": "QoS", "format": "float"},
-                    {"key": "total_energy", "label": "Energy (J)", "format": "float"},
-                ]
-                create_table_page(pdf, f"{cat_name} Results", cat_data, columns)
-
-        # Advanced charts
-        adv_charts = [
-            (
-                "adv_uav_positioning_success.png",
-                "UAV Positioning Strategies",
-                "Success rates for different UAV placement strategies",
-            ),
-            (
-                "adv_mobility_patterns_success.png",
-                "User Mobility Impact",
-                "Effect of user movement patterns on task success",
-            ),
-            (
-                "adv_scheduling_success.png",
-                "Scheduling Algorithm Comparison",
-                "Performance of different scheduling strategies",
-            ),
-            (
-                "adv_heatmap.png",
-                "Performance Heatmap",
-                "Normalized metrics across all configurations",
-            ),
-            (
-                "adv_radar.png",
-                "Top Configurations",
-                "Radar comparison of best performing configurations",
-            ),
-        ]
-
-        for chart_file, title, caption in adv_charts:
-            chart_path = charts_dir / chart_file
-            if chart_path.exists():
-                create_image_page(pdf, chart_path, title, caption)
-
-        # Conclusion page
-        fig = plt.figure(figsize=(11, 8.5))
-        fig.patch.set_facecolor("#1a1a2e")
-
-        fig.text(
-            0.5,
-            0.55,
-            "Thank You",
-            fontsize=36,
-            ha="center",
-            va="center",
-            color="white",
-            fontweight="bold",
-        )
-
-        fig.text(
-            0.5,
-            0.40,
-            "AirCompSim Benchmark Report",
-            fontsize=16,
-            ha="center",
-            va="center",
-            color="#888888",
-        )
-
-        fig.text(
-            0.5,
-            0.25,
-            f"Generated on {datetime.now().strftime('%Y-%m-%d %H:%M')}",
-            fontsize=12,
-            ha="center",
-            va="center",
-            color="#666666",
-        )
-
-        pdf.savefig(fig)
-        plt.close(fig)
-
-    print(f"✅ PDF saved to: {output_path}")
-    return output_path
+    print(f"PDF Report saved to: {output_path}")
 
 
 def main():
-    """Main function."""
     results_dir = Path(__file__).parent.parent / "results"
     output_path = results_dir / "AirCompSim_Benchmark_Report.pdf"
-
-    print("=" * 60)
-    print("AirCompSim PDF Report Generator")
-    print("=" * 60)
-
     generate_pdf_report(results_dir, output_path)
-
-    print("=" * 60)
 
 
 if __name__ == "__main__":

@@ -127,8 +127,13 @@ class Server(ABC):
         processing_time = 1 / mu
 
         task.processing_time = processing_time
+        
+        # Update server state (queuing logic)
+        current_av_time = max(self.next_available_time, task.creation_time)
+        self.next_available_time = current_av_time + processing_time
+        task.waiting_time_in_queue = current_av_time - task.creation_time
+        
         self.utilization += processing_time
-        self.next_available_time += processing_time
         self._inner_time += processing_time
 
         # Track energy

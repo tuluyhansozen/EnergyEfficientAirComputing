@@ -29,7 +29,7 @@ class BoundaryConfig:
 class EdgeServerConfig:
     """Edge server configuration."""
 
-    capacity: float = 1000.0
+    capacity: float = 2000.0
     radius: float = 100.0
     power: float = 100.0
     count: int = 4
@@ -40,7 +40,7 @@ class EdgeServerConfig:
 class UAVConfig:
     """UAV configuration."""
 
-    capacity: float = 500.0
+    capacity: float = 1000.0
     radius: float = 100.0
     power: float = 50.0
     count: int = 5

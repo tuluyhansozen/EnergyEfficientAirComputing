@@ -16,9 +16,10 @@ import numpy as np
 from aircompsim.config.settings import SimulationConfig
 from aircompsim.core.event import Event, EventQueue, EventType
 from aircompsim.entities.location import Location, SimulationBoundary
-from aircompsim.entities.server import UAV, CloudServer, EdgeServer
+from aircompsim.entities.server import CloudServer, EdgeServer, UAV
 from aircompsim.entities.task import Application, ApplicationType, Task
 from aircompsim.entities.user import User
+from aircompsim.energy.scheduler import EnergyAwareScheduler, SchedulingStrategy
 
 if TYPE_CHECKING:
     from aircompsim.drl.base import BaseAgent
@@ -114,6 +115,9 @@ class Simulation:
         # Workload RNG
         self.workload_rng = np.random.RandomState()
 
+        # Scheduler
+        self.scheduler = EnergyAwareScheduler(strategy=SchedulingStrategy.BALANCED)
+
         logger.info(
             f"Simulation initialized: time_limit={self.config.time_limit}, "
             f"users={self.config.user_count}"
@@ -151,9 +155,7 @@ class Simulation:
 
         # Initialize workload RNG
         workload_seed = (
-            self.config.workload_seed
-            if self.config.workload_seed is not None
-            else self.config.seed
+            self.config.workload_seed if self.config.workload_seed is not None else self.config.seed
         )
         if workload_seed is not None:
             self.workload_rng.seed(workload_seed)
@@ -164,7 +166,7 @@ class Simulation:
             print(f"DEBUG: Seeded with {self.config.seed}. Random state: {random.getstate()[1][0]}")
 
         # ... (skip to _create_users)
-        
+
         # Create edge servers
         self._create_edge_servers()
 
@@ -355,8 +357,12 @@ class Simulation:
             return
 
         # Calculate processing delay
+        # Calculate processing delay and update server state
         processing_delay = server.get_processing_delay(task)
-        completion_time = self.simulation_time + processing_delay
+        
+        # Completion time is now tracked by the server's next_available_time
+        # (which includes queuing delay calculated in get_processing_delay)
+        completion_time = server.next_available_time
 
         # Schedule completion event
         completion_event = Event(
@@ -416,7 +422,7 @@ class Simulation:
             # DRL training logic would go here
 
     def _select_server(
-        self, _task: Task, location: Optional[Location]
+        self, task: Task, location: Optional[Location]
     ) -> Optional[EdgeServer | UAV]:
         """Select best server for task.
 
@@ -444,7 +450,14 @@ class Simulation:
         if not candidates:
             return None
 
-        # Simple selection: least utilized
+        # Use EnergyAwareScheduler if available
+        if self.scheduler:
+            decision = self.scheduler.select_server(task, candidates, self.simulation_time)
+            if decision.is_valid:
+                return decision.server
+            return None
+
+        # Fallback (should not be reached if scheduler initialized)
         return min(candidates, key=lambda s: s.get_utilization(self.simulation_time))
 
     def _get_state(self) -> np.ndarray:
