@@ -9,17 +9,17 @@ from __future__ import annotations
 import logging
 import random
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Callable
 
 import numpy as np
 
 from aircompsim.config.settings import SimulationConfig
 from aircompsim.core.event import Event, EventQueue, EventType
+from aircompsim.energy.scheduler import EnergyAwareScheduler, SchedulingStrategy
 from aircompsim.entities.location import Location, SimulationBoundary
-from aircompsim.entities.server import CloudServer, EdgeServer, UAV
+from aircompsim.entities.server import UAV, CloudServer, EdgeServer
 from aircompsim.entities.task import Application, ApplicationType, Task
 from aircompsim.entities.user import User
-from aircompsim.energy.scheduler import EnergyAwareScheduler, SchedulingStrategy
 
 if TYPE_CHECKING:
     from aircompsim.drl.base import BaseAgent
@@ -50,8 +50,8 @@ class SimulationResults:
     avg_qos: float = 0.0
     total_energy: float = 0.0
     simulation_time: float = 0.0
-    uav_stats: List[Dict[str, Any]] = field(default_factory=list)
-    edge_stats: List[Dict[str, Any]] = field(default_factory=list)
+    uav_stats: list[dict[str, Any]] = field(default_factory=list)
+    edge_stats: list[dict[str, Any]] = field(default_factory=list)
 
     @property
     def success_rate(self) -> float:
@@ -80,7 +80,7 @@ class Simulation:
         >>> print(f"Success rate: {results.success_rate:.2%}")
     """
 
-    def __init__(self, config: Optional[SimulationConfig] = None) -> None:
+    def __init__(self, config: SimulationConfig | None = None) -> None:
         """Initialize simulation.
 
         Args:
@@ -96,10 +96,10 @@ class Simulation:
         self.simulation_time: float = 0.0
 
         # Entity collections
-        self.cloud_server: Optional[CloudServer] = None
+        self.cloud_server: CloudServer | None = None
 
         # DRL agent (optional)
-        self.agent: Optional[BaseAgent] = None
+        self.agent: BaseAgent | None = None
         self.is_drl_training: bool = False
 
         # Metrics
@@ -109,7 +109,7 @@ class Simulation:
         self._total_qos: float = 0.0
 
         # Event handlers
-        self._event_handlers: Dict[EventType, Callable] = {}
+        self._event_handlers: dict[EventType, Callable] = {}
         self._setup_event_handlers()
 
         # Workload RNG
@@ -250,14 +250,13 @@ class Simulation:
 
             # Assign random application
             if app_types:
-                import random
 
                 idx = self.workload_rng.randint(0, len(app_types))
                 app_type = app_types[idx]
                 app = Application(app_type=app_type, start_time=0)
                 user.add_application(app)
 
-    def _generate_grid_locations(self, count: int) -> List[tuple[float, float]]:
+    def _generate_grid_locations(self, count: int) -> list[tuple[float, float]]:
         """Generate evenly distributed locations."""
         side = int(np.ceil(np.sqrt(count)))
         step_x = self.boundary.max_x / (side + 1)
@@ -358,8 +357,8 @@ class Simulation:
 
         # Calculate processing delay
         # Calculate processing delay and update server state
-        processing_delay = server.get_processing_delay(task)
-        
+        server.get_processing_delay(task)
+
         # Completion time is now tracked by the server's next_available_time
         # (which includes queuing delay calculated in get_processing_delay)
         completion_time = server.next_available_time
@@ -421,9 +420,7 @@ class Simulation:
             _state = self._get_state()
             # DRL training logic would go here
 
-    def _select_server(
-        self, task: Task, location: Optional[Location]
-    ) -> Optional[EdgeServer | UAV]:
+    def _select_server(self, task: Task, location: Location | None) -> EdgeServer | UAV | None:
         """Select best server for task.
 
         Args:
@@ -437,7 +434,7 @@ class Simulation:
             return None
 
         # Find covering servers
-        candidates: List[Union[EdgeServer, UAV]] = []
+        candidates: list[EdgeServer | UAV] = []
 
         for edge in EdgeServer.get_all():
             if edge.is_in_coverage(location):

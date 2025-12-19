@@ -11,7 +11,6 @@ import logging
 import math
 from dataclasses import dataclass, field
 from enum import Enum, auto
-from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -101,8 +100,8 @@ class EnergyModel:
 
     def __init__(
         self,
-        coefficients: Optional[EnergyCoefficients] = None,
-        specs: Optional[UAVSpecifications] = None,
+        coefficients: EnergyCoefficients | None = None,
+        specs: UAVSpecifications | None = None,
         use_physics_model: bool = False,
     ) -> None:
         """Initialize energy model.

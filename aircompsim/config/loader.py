@@ -9,12 +9,12 @@ from __future__ import annotations
 import json
 import logging
 from pathlib import Path
-from typing import Any, Dict, Union
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
 
-def load_yaml(path: Union[str, Path]) -> Dict[str, Any]:
+def load_yaml(path: str | Path) -> dict[str, Any]:
     """Load configuration from YAML file.
 
     Args:
@@ -47,7 +47,7 @@ def load_yaml(path: Union[str, Path]) -> Dict[str, Any]:
         raise ValueError(f"Invalid YAML file: {e}") from e
 
 
-def load_json(path: Union[str, Path]) -> Dict[str, Any]:
+def load_json(path: str | Path) -> dict[str, Any]:
     """Load configuration from JSON file.
 
     Args:
@@ -73,7 +73,7 @@ def load_json(path: Union[str, Path]) -> Dict[str, Any]:
         raise ValueError(f"Invalid JSON file: {e}") from e
 
 
-def load_config(path: Union[str, Path]) -> Dict[str, Any]:
+def load_config(path: str | Path) -> dict[str, Any]:
     """Load configuration from file (auto-detect format).
 
     Supports YAML (.yaml, .yml) and JSON (.json) files.
@@ -100,7 +100,7 @@ def load_config(path: Union[str, Path]) -> Dict[str, Any]:
         )
 
 
-def save_yaml(data: Dict[str, Any], path: Union[str, Path]) -> None:
+def save_yaml(data: dict[str, Any], path: str | Path) -> None:
     """Save configuration to YAML file.
 
     Args:
@@ -121,7 +121,7 @@ def save_yaml(data: Dict[str, Any], path: Union[str, Path]) -> None:
     logger.info(f"Saved configuration to {path}")
 
 
-def save_json(data: Dict[str, Any], path: Union[str, Path]) -> None:
+def save_json(data: dict[str, Any], path: str | Path) -> None:
     """Save configuration to JSON file.
 
     Args:
@@ -137,7 +137,7 @@ def save_json(data: Dict[str, Any], path: Union[str, Path]) -> None:
     logger.info(f"Saved configuration to {path}")
 
 
-def merge_configs(base: Dict[str, Any], override: Dict[str, Any]) -> Dict[str, Any]:
+def merge_configs(base: dict[str, Any], override: dict[str, Any]) -> dict[str, Any]:
     """Deep merge two configuration dictionaries.
 
     Args:

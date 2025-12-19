@@ -10,7 +10,7 @@ import logging
 import math
 from abc import ABC
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, ClassVar, List, Optional
+from typing import TYPE_CHECKING, ClassVar
 
 if TYPE_CHECKING:
     from aircompsim.entities.task import Task
@@ -49,7 +49,7 @@ class Server(ABC):
     utilization: float = field(default=0.0, repr=False)
     next_available_time: float = field(default=0.0, repr=False)
     _inner_time: float = field(default=0.0, repr=False)
-    _processed_tasks: List = field(default_factory=list, repr=False)
+    _processed_tasks: list = field(default_factory=list, repr=False)
 
     # Energy tracking
     energy_tracker: EnergyTracker = field(default_factory=EnergyTracker, repr=False)
@@ -127,12 +127,12 @@ class Server(ABC):
         processing_time = 1 / mu
 
         task.processing_time = processing_time
-        
+
         # Update server state (queuing logic)
         current_av_time = max(self.next_available_time, task.creation_time)
         self.next_available_time = current_av_time + processing_time
         task.waiting_time_in_queue = current_av_time - task.creation_time
-        
+
         self.utilization += processing_time
         self._inner_time += processing_time
 
@@ -203,7 +203,7 @@ class EdgeServer(Server):
 
     # Class variables (not instance fields)
     _id_counter: ClassVar[int] = 0
-    _all_servers: ClassVar[List[EdgeServer]] = []
+    _all_servers: ClassVar[list[EdgeServer]] = []
 
     def __post_init__(self) -> None:
         """Initialize edge server with unique ID."""
@@ -234,7 +234,7 @@ class EdgeServer(Server):
         logger.debug("EdgeServer registry reset")
 
     @classmethod
-    def get_all(cls) -> List[EdgeServer]:
+    def get_all(cls) -> list[EdgeServer]:
         """Get all edge servers."""
         return cls._all_servers.copy()
 
@@ -282,12 +282,12 @@ class UAV(Server):
     vertical_speed: float = 0.0
     is_flying: bool = False
     not_flying_since: float = 0.0
-    flying_to: Optional[Location] = None
-    trajectory: List[Location] = field(default_factory=list)
+    flying_to: Location | None = None
+    trajectory: list[Location] = field(default_factory=list)
 
     # Class variables (not instance fields)
     _id_counter: ClassVar[int] = 0
-    _all_uavs: ClassVar[List[UAV]] = []
+    _all_uavs: ClassVar[list[UAV]] = []
 
     def __post_init__(self) -> None:
         """Initialize UAV with unique ID."""
@@ -447,7 +447,7 @@ class UAV(Server):
         logger.debug("UAV registry reset")
 
     @classmethod
-    def get_all(cls) -> List[UAV]:
+    def get_all(cls) -> list[UAV]:
         """Get all UAVs."""
         return cls._all_uavs.copy()
 
@@ -494,11 +494,11 @@ class CloudServer(Server):
 
 
 # Alias for backward compatibility
-def get_all_edge_servers() -> List[EdgeServer]:
+def get_all_edge_servers() -> list[EdgeServer]:
     """Get all edge servers."""
     return EdgeServer.get_all()
 
 
-def get_all_uavs() -> List[UAV]:
+def get_all_uavs() -> list[UAV]:
     """Get all UAVs."""
     return UAV.get_all()

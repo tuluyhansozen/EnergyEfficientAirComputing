@@ -10,7 +10,7 @@ import logging
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from enum import Enum, auto
-from typing import TYPE_CHECKING, Any, Optional, Protocol
+from typing import TYPE_CHECKING, Any, Protocol
 
 if TYPE_CHECKING:
     from aircompsim.entities.server import Server
@@ -64,7 +64,7 @@ class SchedulingDecision:
         reason: Human-readable decision rationale.
     """
 
-    server: Optional[Server]
+    server: Server | None
     estimated_latency: float = 0.0
     estimated_energy: float = 0.0
     confidence: float = 1.0

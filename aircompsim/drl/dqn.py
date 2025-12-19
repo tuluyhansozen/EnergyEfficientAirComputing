@@ -7,7 +7,6 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
-from typing import Optional
 
 import numpy as np
 import torch
@@ -44,7 +43,7 @@ class DQNAgent(BaseAgent):
         hidden_size: int = 128,
         buffer_size: int = 100000,
         batch_size: int = 64,
-        device: Optional[str] = None,
+        device: str | None = None,
     ) -> None:
         """Initialize DQN agent.
 
@@ -107,7 +106,7 @@ class DQNAgent(BaseAgent):
 
     def learn(
         self, state: np.ndarray, action: int, reward: float, next_state: np.ndarray, done: bool
-    ) -> Optional[float]:
+    ) -> float | None:
         """Update agent from single experience.
 
         Stores experience and trains if buffer is ready.

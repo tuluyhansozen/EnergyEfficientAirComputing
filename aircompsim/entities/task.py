@@ -9,7 +9,7 @@ from __future__ import annotations
 import logging
 from dataclasses import dataclass, field
 from enum import Enum, auto
-from typing import TYPE_CHECKING, ClassVar, Dict, List, Optional
+from typing import TYPE_CHECKING, ClassVar
 
 import numpy as np
 
@@ -74,14 +74,14 @@ class ApplicationType:
     interarrival_time: float
 
     # Class-level registry
-    _registry: ClassVar[Dict[str, ApplicationType]] = {}
+    _registry: ClassVar[dict[str, ApplicationType]] = {}
 
     def __post_init__(self) -> None:
         """Register application type."""
         ApplicationType._registry[self.name] = self
 
     @classmethod
-    def get(cls, name: str) -> Optional[ApplicationType]:
+    def get(cls, name: str) -> ApplicationType | None:
         """Get application type by name."""
         return cls._registry.get(name)
 
@@ -91,7 +91,7 @@ class ApplicationType:
         cls._registry.clear()
 
     @classmethod
-    def get_all(cls) -> Dict[str, ApplicationType]:
+    def get_all(cls) -> dict[str, ApplicationType]:
         """Get all registered application types."""
         return cls._registry.copy()
 
@@ -148,15 +148,15 @@ class Task:
     waiting_time_in_queue: float = 0.0
     qos: int = -1
     is_success: bool = False
-    offload_entity: Optional[OffloadEntity] = None
-    offload_location: Optional[Location] = None
-    process_location: Optional[Location] = None
-    processed_server: Optional[Server] = None
-    return_location: Optional[Location] = None
+    offload_entity: OffloadEntity | None = None
+    offload_location: Location | None = None
+    process_location: Location | None = None
+    processed_server: Server | None = None
+    return_location: Location | None = None
 
     # Class-level tracking
     _id_counter: ClassVar[int] = 0
-    _all_tasks: ClassVar[List[Task]] = []
+    _all_tasks: ClassVar[list[Task]] = []
 
     def __post_init__(self) -> None:
         """Initialize task with unique ID and set offload location."""
@@ -245,7 +245,7 @@ class Task:
         logger.debug("Task registry reset")
 
     @classmethod
-    def get_all(cls) -> List[Task]:
+    def get_all(cls) -> list[Task]:
         """Get all created tasks."""
         return cls._all_tasks.copy()
 
@@ -277,15 +277,15 @@ class Application:
     app_type: ApplicationType
     start_time: float
     app_id: int = field(default=0)
-    user_id: Optional[int] = None
-    tasks: List = field(default_factory=list)
+    user_id: int | None = None
+    tasks: list = field(default_factory=list)
     _inner_time: float = field(default=0.0, repr=False)
     _qos: float = field(default=0.0, repr=False)
     _waiting_time: float = field(default=0.0, repr=False)
 
     # Class-level tracking
     _id_counter: ClassVar[int] = 0
-    _all_applications: ClassVar[List[Application]] = []
+    _all_applications: ClassVar[list[Application]] = []
 
     def __post_init__(self) -> None:
         """Initialize application with unique ID."""
@@ -342,7 +342,7 @@ class Application:
         """
         return self._inner_time < sim_time
 
-    def generate_task(self, user: User, rng: Optional[np.random.RandomState] = None) -> Task:
+    def generate_task(self, user: User, rng: np.random.RandomState | None = None) -> Task:
         """Generate a new task for this application.
 
         Uses exponential distribution for interarrival times.
@@ -355,10 +355,7 @@ class Application:
             New Task instance.
         """
         # Exponential interarrival time
-        if rng:
-            rand_val = rng.uniform(0, 1)
-        else:
-            rand_val = np.random.uniform(0, 1)
+        rand_val = rng.uniform(0, 1) if rng else np.random.uniform(0, 1)
 
         interarrival = -np.log(1 - rand_val) * self.interarrival_time
         creation_time = self._inner_time + interarrival
@@ -452,7 +449,7 @@ class Application:
         logger.debug("Application registry reset")
 
     @classmethod
-    def get_all_applications(cls) -> List[Application]:
+    def get_all_applications(cls) -> list[Application]:
         """Get all created applications."""
         return cls._all_applications.copy()
 

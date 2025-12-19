@@ -9,7 +9,7 @@ from __future__ import annotations
 import logging
 from dataclasses import dataclass, field
 from enum import Enum, auto
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from aircompsim.entities.location import Location
@@ -82,11 +82,11 @@ class Event:
 
     scheduled_time: float
     event_type: EventType = field(compare=False)
-    task: Optional[Task] = field(default=None, compare=False)
-    user: Optional[User] = field(default=None, compare=False)
-    uav: Optional[UAV] = field(default=None, compare=False)
-    location: Optional[Location] = field(default=None, compare=False)
-    data: Optional[dict[str, Any]] = field(default=None, compare=False)
+    task: Task | None = field(default=None, compare=False)
+    user: User | None = field(default=None, compare=False)
+    uav: UAV | None = field(default=None, compare=False)
+    location: Location | None = field(default=None, compare=False)
+    data: dict[str, Any] | None = field(default=None, compare=False)
     _id: int = field(default=0, compare=False, repr=False)
 
     # Class-level counter for unique IDs
@@ -231,7 +231,7 @@ class EventQueue:
         logger.debug(f"Event popped: {event}")
         return event
 
-    def peek(self) -> Optional[Event]:
+    def peek(self) -> Event | None:
         """View the next event without removing it.
 
         Returns:

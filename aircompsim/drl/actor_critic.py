@@ -7,7 +7,6 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
-from typing import Optional
 
 import numpy as np
 import torch
@@ -87,7 +86,7 @@ class ActorCriticAgent(BaseAgent):
         hidden_size: int = 256,
         entropy_coef: float = 0.01,
         value_coef: float = 0.5,
-        device: Optional[str] = None,
+        device: str | None = None,
     ) -> None:
         """Initialize Actor-Critic agent.
 
@@ -122,7 +121,7 @@ class ActorCriticAgent(BaseAgent):
         self.optimizer = optim.Adam(self.network.parameters(), lr=learning_rate)
 
         # For storing policy info
-        self.log_prob: Optional[torch.Tensor] = None
+        self.log_prob: torch.Tensor | None = None
 
         # Metrics
         self.actor_losses: list[float] = []
@@ -162,7 +161,7 @@ class ActorCriticAgent(BaseAgent):
 
     def learn(
         self, state: np.ndarray, _action: int, reward: float, next_state: np.ndarray, done: bool
-    ) -> Optional[float]:
+    ) -> float | None:
         """Update agent using TD error.
 
         Args:

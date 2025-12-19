@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass, field
-from typing import ClassVar, List, Optional, Set
+from typing import ClassVar
 
 import numpy as np
 
@@ -43,14 +43,14 @@ class User:
     user_id: int = field(default=0)
     is_moving: bool = False
     qoe: float = 0.0
-    applications: Set[Application] = field(default_factory=set)
-    trajectory: List[Location] = field(default_factory=list)
+    applications: set[Application] = field(default_factory=set)
+    trajectory: list[Location] = field(default_factory=list)
     city: str = ""
     speed: float = 2.0  # Default walking speed in m/s
 
     # Class-level registry
     _id_counter: ClassVar[int] = 0
-    _all_users: ClassVar[List[User]] = []
+    _all_users: ClassVar[list[User]] = []
 
     def __post_init__(self) -> None:
         """Initialize user with unique ID."""
@@ -127,7 +127,7 @@ class User:
         distance = Location.euclidean_distance_2d(self.location, destination)
         return distance / self.speed
 
-    def get_next_location(self, radius: float, boundary: Optional[tuple] = None) -> Location:
+    def get_next_location(self, radius: float, boundary: tuple | None = None) -> Location:
         """Generate a random next location within radius.
 
         Args:
@@ -199,7 +199,7 @@ class User:
         logger.debug("User registry reset")
 
     @classmethod
-    def get_all(cls) -> List[User]:
+    def get_all(cls) -> list[User]:
         """Get all users."""
         return cls._all_users.copy()
 
@@ -224,7 +224,7 @@ class User:
         return False
 
     @classmethod
-    def get_user(cls, user_id: int) -> Optional[User]:
+    def get_user(cls, user_id: int) -> User | None:
         """Get user by ID."""
         for user in cls._all_users:
             if user.user_id == user_id:
@@ -274,6 +274,6 @@ class FlyingUser(MobileUser):
 
 
 # Alias for backward compatibility
-def get_all_users() -> List[User]:
+def get_all_users() -> list[User]:
     """Get all users."""
     return User.get_all()

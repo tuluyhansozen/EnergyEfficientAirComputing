@@ -8,7 +8,6 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
-from typing import Optional
 
 import numpy as np
 import torch
@@ -49,7 +48,7 @@ class DDQNAgent(BaseAgent):
         batch_size: int = 64,
         tau: float = 0.01,
         target_update_freq: int = 10,
-        device: Optional[str] = None,
+        device: str | None = None,
     ) -> None:
         """Initialize DDQN agent.
 
@@ -133,7 +132,7 @@ class DDQNAgent(BaseAgent):
 
     def learn(
         self, state: np.ndarray, action: int, reward: float, next_state: np.ndarray, done: bool
-    ) -> Optional[float]:
+    ) -> float | None:
         """Update agent from single experience.
 
         Uses Double Q-learning: online network selects action,

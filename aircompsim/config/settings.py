@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +33,7 @@ class EdgeServerConfig:
     radius: float = 100.0
     power: float = 100.0
     count: int = 4
-    locations: Optional[List[tuple]] = None
+    locations: list[tuple] | None = None
 
 
 @dataclass
@@ -123,8 +123,8 @@ class SimulationConfig:
     # Simulation parameters
     time_limit: float = 1000.0
     warmup_period: float = 100.0
-    seed: Optional[int] = None
-    workload_seed: Optional[int] = None  # Dedicated seed for task generation
+    seed: int | None = None
+    workload_seed: int | None = None  # Dedicated seed for task generation
     log_level: str = "INFO"
     output_dir: str = "results"
 
@@ -139,7 +139,7 @@ class SimulationConfig:
     energy: EnergyConfig = field(default_factory=EnergyConfig)
     drl: DRLConfig = field(default_factory=DRLConfig)
     mobility: MobilityConfig = field(default_factory=MobilityConfig)
-    applications: List[ApplicationConfig] = field(default_factory=list)
+    applications: list[ApplicationConfig] = field(default_factory=list)
 
     def __post_init__(self) -> None:
         """Set up default applications if none provided."""
@@ -175,7 +175,7 @@ class SimulationConfig:
                 ),
             ]
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert configuration to dictionary."""
         import dataclasses
 
@@ -189,7 +189,7 @@ class SimulationConfig:
         return dict(convert(self))
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> SimulationConfig:
+    def from_dict(cls, data: dict[str, Any]) -> SimulationConfig:
         """Create configuration from dictionary.
 
         Args:

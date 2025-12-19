@@ -8,7 +8,6 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass
-from typing import Tuple
 
 import numpy as np
 
@@ -57,12 +56,12 @@ class Location:
         return hash((round(self.x, 6), round(self.y, 6), round(self.z, 6)))
 
     @property
-    def terrestrial(self) -> Tuple[float, float]:
+    def terrestrial(self) -> tuple[float, float]:
         """Get 2D terrestrial coordinates (x, y)."""
         return (self.x, self.y)
 
     @property
-    def coordinates(self) -> Tuple[float, float, float]:
+    def coordinates(self) -> tuple[float, float, float]:
         """Get full 3D coordinates (x, y, z)."""
         return (self.x, self.y, self.z)
 

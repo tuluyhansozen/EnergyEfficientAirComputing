@@ -9,7 +9,6 @@ from __future__ import annotations
 import logging
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import List, Optional, Tuple
 
 import numpy as np
 import torch
@@ -58,7 +57,7 @@ class ReplayBuffer:
             capacity: Maximum number of experiences to store.
         """
         self.capacity = capacity
-        self._buffer: List[Experience] = []
+        self._buffer: list[Experience] = []
         self._position = 0
 
     def push(
@@ -89,7 +88,7 @@ class ReplayBuffer:
 
     def sample(
         self, batch_size: int
-    ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
         """Sample a random batch of experiences.
 
         Args:
@@ -142,7 +141,7 @@ class BaseAgent(ABC):
         action_size: int,
         learning_rate: float = 0.001,
         discount_factor: float = 0.99,
-        device: Optional[str] = None,
+        device: str | None = None,
     ) -> None:
         """Initialize base agent.
 
@@ -178,7 +177,7 @@ class BaseAgent(ABC):
         # Training state
         self.training = True
         self.total_steps = 0
-        self.episode_rewards: List[float] = []
+        self.episode_rewards: list[float] = []
 
     @abstractmethod
     def select_action(self, state: np.ndarray) -> int:
@@ -195,7 +194,7 @@ class BaseAgent(ABC):
     @abstractmethod
     def learn(
         self, state: np.ndarray, action: int, reward: float, next_state: np.ndarray, done: bool
-    ) -> Optional[float]:
+    ) -> float | None:
         """Update agent from experience.
 
         Args:

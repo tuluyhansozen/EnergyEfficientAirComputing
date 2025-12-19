@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from aircompsim.entities.location import Location
@@ -175,14 +175,14 @@ class ChargingStationRegistry:
                 return True
         return False
 
-    def get_station(self, station_id: int) -> Optional[ChargingStation]:
+    def get_station(self, station_id: int) -> ChargingStation | None:
         """Get a station by ID."""
         for station in self._stations:
             if station.station_id == station_id:
                 return station
         return None
 
-    def find_nearest_available(self, location: Location) -> Optional[ChargingStation]:
+    def find_nearest_available(self, location: Location) -> ChargingStation | None:
         """Find the nearest available charging station.
 
         Args:

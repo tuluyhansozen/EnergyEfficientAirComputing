@@ -7,6 +7,8 @@ import matplotlib
 import matplotlib.pyplot as plt
 
 matplotlib.use("Agg")  # Non-interactive backend
+from typing import Optional
+
 import numpy as np
 
 # Set style
@@ -240,45 +242,37 @@ def create_line_comparison(
     group_by: str,
     title: str,
     output_path: str,
-    x_label: str = None,
-    y_label: str = None,
+    x_label: Optional[str] = None,
+    y_label: Optional[str] = None,
 ):
     """Create line chart comparing metrics grouped by a category."""
     plt.figure(figsize=(10, 6))
 
     # Identify groups
-    groups = sorted(list(set(d[group_by] for d in data)))
-    
-    # Check if x-axis is numeric for proper sorting
-    try:
-        x_values = sorted(list(set(d[x_metric] for d in data)))
-    except:
-        x_values = sorted(list(set(d[x_metric] for d in data)), key=str)
+    groups = sorted({d[group_by] for d in data})
 
     for group in groups:
         # Filter data for this group
         group_data = [d for d in data if d[group_by] == group]
         # Sort by x metric
         group_data.sort(key=lambda x: x[x_metric])
-        
+
         x = [d[x_metric] for d in group_data]
         y = [d[y_metric] for d in group_data]
-        
-        plt.plot(x, y, marker='o', label=f"{group} {group_by.upper()}")
+
+        plt.plot(x, y, marker="o", label=f"{group} {group_by.upper()}")
 
     plt.title(title, fontweight="bold", pad=15)
     plt.xlabel(x_label or x_metric.replace("_", " ").title())
     plt.ylabel(y_label or y_metric.replace("_", " ").title())
     plt.legend()
     plt.grid(True, alpha=0.3)
-    
+
     # Set y-axis limits for percentages if applicable
     if "rate" in y_metric or "percentage" in y_metric:
         plt.ylim(-0.05, 1.05)
         # Format y-axis as percentage
-        plt.gca().yaxis.set_major_formatter(
-            matplotlib.ticker.PercentFormatter(xmax=1.0)
-        )
+        plt.gca().yaxis.set_major_formatter(matplotlib.ticker.PercentFormatter(xmax=1.0))
 
     plt.tight_layout()
     plt.savefig(output_path, dpi=150, bbox_inches="tight")
@@ -290,7 +284,7 @@ def create_line_comparison(
 def generate_paper_replication_charts(data: list, charts_dir: Path):
     """Generate charts for Paper Replication section (Figs 4-6)."""
     print("  Generating Paper Replication Charts...")
-    
+
     # Filter for category
     subset = [d for d in data if d.get("category") == "Paper Replication"]
     if not subset:
@@ -306,7 +300,7 @@ def generate_paper_replication_charts(data: list, charts_dir: Path):
         title="Avg Task Success Rate (Fig. 4)",
         output_path=str(charts_dir / "basic_success_rate.png"),
         x_label="Number of Users",
-        y_label="Success Rate"
+        y_label="Success Rate",
     )
 
     # Figure 5: Service Time (Latency) vs Users
@@ -318,7 +312,7 @@ def generate_paper_replication_charts(data: list, charts_dir: Path):
         title="Avg Service Time (Fig. 5)",
         output_path=str(charts_dir / "basic_latency.png"),
         x_label="Number of Users",
-        y_label="Avg Service Time (s)"
+        y_label="Avg Service Time (s)",
     )
 
     # Figure 6: Energy/Utilization
@@ -330,7 +324,7 @@ def generate_paper_replication_charts(data: list, charts_dir: Path):
         title="Total Energy Consumption",
         output_path=str(charts_dir / "basic_energy.png"),
         x_label="Number of Users",
-        y_label="Total Energy (J)"
+        y_label="Total Energy (J)",
     )
 
 
@@ -342,50 +336,64 @@ def generate_advanced_charts(data: list, charts_dir: Path):
     subset = [d for d in data if d.get("category") == "UAV Positioning"]
     if subset:
         create_bar_comparison(
-            subset, "success_rate", "UAV Positioning - Success Rate", 
-            str(charts_dir / "adv_uav_positioning_success.png")
+            subset,
+            "success_rate",
+            "UAV Positioning - Success Rate",
+            str(charts_dir / "adv_uav_positioning_success.png"),
         )
         create_bar_comparison(
-            subset, "total_energy", "UAV Positioning - Energy", 
-            str(charts_dir / "adv_uav_positioning_energy.png"), "YlOrRd"
+            subset,
+            "total_energy",
+            "UAV Positioning - Energy",
+            str(charts_dir / "adv_uav_positioning_energy.png"),
+            "YlOrRd",
         )
 
     # 2. Charging Stations
     subset = [d for d in data if d.get("category") == "Charging Stations"]
     if subset:
         create_bar_comparison(
-            subset, "success_rate", "Charging Impact - Success Rate", 
-            str(charts_dir / "adv_charging_stations_success.png")
+            subset,
+            "success_rate",
+            "Charging Impact - Success Rate",
+            str(charts_dir / "adv_charging_stations_success.png"),
         )
 
     # 3. Mobility Patterns
     subset = [d for d in data if d.get("category") == "Mobility Patterns"]
     if subset:
         create_bar_comparison(
-            subset, "success_rate", "Mobility Impact - Success Rate", 
-            str(charts_dir / "adv_mobility_patterns_success.png")
+            subset,
+            "success_rate",
+            "Mobility Impact - Success Rate",
+            str(charts_dir / "adv_mobility_patterns_success.png"),
         )
 
     # 4. Scheduling
     subset = [d for d in data if d.get("category") == "Scheduling"]
     if subset:
         create_bar_comparison(
-            subset, "success_rate", "Scheduling - Success Rate", 
-            str(charts_dir / "adv_scheduling_success.png")
+            subset,
+            "success_rate",
+            "Scheduling - Success Rate",
+            str(charts_dir / "adv_scheduling_success.png"),
         )
         create_bar_comparison(
-            subset, "avg_latency", "Scheduling - Latency", 
-            str(charts_dir / "adv_scheduling_latency.png"), "Blues"
+            subset,
+            "avg_latency",
+            "Scheduling - Latency",
+            str(charts_dir / "adv_scheduling_latency.png"),
+            "Blues",
         )
-        
+
     # 5. Overall Radar (Top 5 Best Success Rates)
     valid_data = [d for d in data if d.get("total_tasks", 0) > 0]
     valid_data.sort(key=lambda x: x.get("success_rate", 0), reverse=True)
     top_5 = valid_data[:5]
-    
+
     if top_5:
         create_radar_chart(
-             top_5,
+            top_5,
             [
                 ("success_rate", "Success"),
                 ("avg_qos", "QoS"),
@@ -402,7 +410,7 @@ def main():
     """Generate all visualizations."""
     results_dir = Path(__file__).parent.parent / "results"
     json_path = results_dir / "benchmark_report.json"
-    
+
     if not json_path.exists():
         print(f"Results file not found: {json_path}")
         return
@@ -422,6 +430,7 @@ def main():
     print("\n" + "=" * 60)
     print("✅ Visualization generation complete!")
     print(f"   Charts saved to: {charts_dir}")
+
 
 if __name__ == "__main__":
     main()

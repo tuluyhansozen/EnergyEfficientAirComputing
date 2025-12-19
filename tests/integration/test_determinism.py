@@ -1,6 +1,5 @@
 """Integration tests for deterministic behavior."""
 
-import pytest
 from aircompsim.config.settings import SimulationConfig
 from aircompsim.core.simulation import Simulation
 

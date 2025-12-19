@@ -78,8 +78,8 @@ def create_table_page(pdf: PdfPages, title: str, data: list, columns: list):
 
     # Prepare table data
     # Pagination might be needed for large datasets, but we'll truncation/sample for now
-    display_data = data[:25] # Show first 25 rows max
-    
+    display_data = data[:25]  # Show first 25 rows max
+
     table_data = []
     for d in display_data:
         row = []
@@ -120,9 +120,16 @@ def create_table_page(pdf: PdfPages, title: str, data: list, columns: list):
                 table[(i, j)].set_facecolor("#ecf0f1")
             else:
                 table[(i, j)].set_facecolor("#ffffff")
-        
+
     if len(data) > 25:
-         fig.text(0.5, 0.05, f"*Showing first 25 of {len(data)} rows", fontsize=10, ha="center", style="italic")
+        fig.text(
+            0.5,
+            0.05,
+            f"*Showing first 25 of {len(data)} rows",
+            fontsize=10,
+            ha="center",
+            style="italic",
+        )
 
     plt.tight_layout()
     pdf.savefig(fig)
@@ -248,10 +255,10 @@ def generate_pdf_report(results_dir: Path, output_path: Path):
             "1. Paper Replication",
             "Replication of results from AirCompSim paper (Figs 4-6)",
         )
-        
+
         # Table for Paper Replication
         if paper_data:
-             create_table_page(
+            create_table_page(
                 pdf,
                 "Replication Data",
                 paper_data,  # Has 25 rows
@@ -262,11 +269,26 @@ def generate_pdf_report(results_dir: Path, output_path: Path):
                     {"label": "Energy (J)", "key": "total_energy", "format": "float"},
                 ],
             )
-        
+
         # Charts for Paper Replication
-        create_image_page(pdf, charts_dir / "basic_success_rate.png", "Figure 4: Success Rate", "Success Rate vs Users (Grouped by UAVs)")
-        create_image_page(pdf, charts_dir / "basic_latency.png", "Figure 5: Service Time", "Average Service Time vs Users")
-        create_image_page(pdf, charts_dir / "basic_energy.png", "Figure 6: Energy Consumption", "Total Energy Consumption vs Users")
+        create_image_page(
+            pdf,
+            charts_dir / "basic_success_rate.png",
+            "Figure 4: Success Rate",
+            "Success Rate vs Users (Grouped by UAVs)",
+        )
+        create_image_page(
+            pdf,
+            charts_dir / "basic_latency.png",
+            "Figure 5: Service Time",
+            "Average Service Time vs Users",
+        )
+        create_image_page(
+            pdf,
+            charts_dir / "basic_energy.png",
+            "Figure 6: Energy Consumption",
+            "Total Energy Consumption vs Users",
+        )
 
         # 2. Advanced Section
         create_section_header(
@@ -274,17 +296,17 @@ def generate_pdf_report(results_dir: Path, output_path: Path):
             "2. Advanced Scenarios",
             "UAV Positioning, Charging, Mobility, and Scheduling",
         )
-        
+
         # For each category in advanced data
         categories = ["UAV Positioning", "Charging Stations", "Mobility Patterns", "Scheduling"]
-        
+
         for cat in categories:
             cat_data = [d for d in adv_data if d.get("category") == cat]
             if not cat_data:
                 continue
-                
+
             create_section_header(pdf, cat)
-            
+
             create_table_page(
                 pdf,
                 f"{cat} Results",
@@ -296,15 +318,23 @@ def generate_pdf_report(results_dir: Path, output_path: Path):
                     {"label": "Energy", "key": "total_energy", "format": "float"},
                 ],
             )
-            
+
             # Add specific charts based on category knowledge
             if cat == "UAV Positioning":
-                create_image_page(pdf, charts_dir / "adv_uav_positioning_success.png", "Success Rate")
-                create_image_page(pdf, charts_dir / "adv_uav_positioning_energy.png", "Energy Consumption")
+                create_image_page(
+                    pdf, charts_dir / "adv_uav_positioning_success.png", "Success Rate"
+                )
+                create_image_page(
+                    pdf, charts_dir / "adv_uav_positioning_energy.png", "Energy Consumption"
+                )
             elif cat == "Charging Stations":
-                create_image_page(pdf, charts_dir / "adv_charging_stations_success.png", "Success Rate")
+                create_image_page(
+                    pdf, charts_dir / "adv_charging_stations_success.png", "Success Rate"
+                )
             elif cat == "Mobility Patterns":
-                create_image_page(pdf, charts_dir / "adv_mobility_patterns_success.png", "Success Rate")
+                create_image_page(
+                    pdf, charts_dir / "adv_mobility_patterns_success.png", "Success Rate"
+                )
             elif cat == "Scheduling":
                 create_image_page(pdf, charts_dir / "adv_scheduling_success.png", "Success Rate")
                 create_image_page(pdf, charts_dir / "adv_scheduling_latency.png", "Latency")

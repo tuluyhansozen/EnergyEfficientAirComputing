@@ -7,10 +7,9 @@ Runs all scenarios:
 
 import json
 import sys
-from dataclasses import dataclass, asdict
-from datetime import datetime
+from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 
 import numpy as np
 
@@ -37,7 +36,7 @@ class BenchmarkResult:
     avg_latency: float
     avg_qos: float
     total_energy: float
-    extra_metrics: Optional[Dict[str, Any]] = None
+    extra_metrics: Optional[dict[str, Any]] = None
 
     def to_dict(self):
         return asdict(self)
@@ -49,7 +48,7 @@ class UnifiedBenchmark:
     def __init__(self, output_dir: str = "results"):
         self.output_dir = Path(__file__).parent.parent / output_dir
         self.output_dir.mkdir(exist_ok=True)
-        self.results: List[BenchmarkResult] = []
+        self.results: list[BenchmarkResult] = []
 
     def run_all(self):
         """Run all test suites."""
@@ -147,7 +146,7 @@ class UnifiedBenchmark:
                 )
                 config.uav.count = uavs
                 config.edge.count = 4
-                
+
                 # We add extra metrics to help plotting later
                 res = self._run_simulation(name, "Paper Replication", config)
                 res.extra_metrics = {"users": users, "uavs": uavs}
@@ -340,7 +339,7 @@ class UnifiedBenchmark:
             config.edge.count = 4
 
             extra = {"strategy": name}
-            
+
             # Note: Strategy must be set in the scheduler, which is inside simulation
             # We need a setup callback to change the scheduler strategy
             def setup(sim, strat=strategy_enum):
@@ -358,7 +357,7 @@ class UnifiedBenchmark:
     def save_results(self):
         """Save results to JSON."""
         json_path = self.output_dir / "benchmark_report.json"
-        
+
         # Convert objects to dicts, flattening extra_metrics if needed
         data = []
         for r in self.results:
@@ -366,10 +365,10 @@ class UnifiedBenchmark:
             if r.extra_metrics:
                 d.update(r.extra_metrics)
             data.append(d)
-            
+
         with json_path.open("w") as f:
             json.dump(data, f, indent=2)
-            
+
         print(f"\nResults saved to: {json_path}")
         return json_path
 
